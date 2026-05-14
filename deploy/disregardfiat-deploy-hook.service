@@ -1,0 +1,16 @@
+[Unit]
+Description=disregardfiat.tech deploy webhook (localhost)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/disregardfiat-dot-tech
+EnvironmentFile=/home/ubuntu/disregardfiat-dot-tech/.env.deploy
+ExecStart=/usr/bin/python3 /home/ubuntu/disregardfiat-dot-tech/scripts/deploy_hook.py
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

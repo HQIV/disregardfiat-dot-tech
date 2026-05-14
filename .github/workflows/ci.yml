@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install and build
+        run: npm ci && npm run build
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger server deploy hook
+        env:
+          DEPLOY_HOOK_TOKEN: ${{ secrets.DEPLOY_HOOK_TOKEN }}
+        run: |
+          if [ -z "${DEPLOY_HOOK_TOKEN}" ]; then
+            echo "DEPLOY_HOOK_TOKEN secret is not set; skipping deploy."
+            exit 0
+          fi
+          curl -fsS -X POST \
+            -H "Authorization: Bearer ${DEPLOY_HOOK_TOKEN}" \
+            "https://disregardfiat.tech/_deploy/hook"
