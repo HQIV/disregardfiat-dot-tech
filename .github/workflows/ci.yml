@@ -30,8 +30,8 @@ jobs:
           DEPLOY_HOOK_TOKEN: ${{ secrets.DEPLOY_HOOK_TOKEN }}
         run: |
           if [ -z "${DEPLOY_HOOK_TOKEN}" ]; then
-            echo "DEPLOY_HOOK_TOKEN secret is not set; skipping deploy."
-            exit 0
+            echo "::error::Add repository secret DEPLOY_HOOK_TOKEN (same value as DEPLOY_HOOK_TOKEN in /home/ubuntu/disregardfiat-dot-tech/.env.deploy on the server)."
+            exit 1
           fi
           curl -fsS -X POST \
             -H "Authorization: Bearer ${DEPLOY_HOOK_TOKEN}" \
