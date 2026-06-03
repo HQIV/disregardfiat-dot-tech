@@ -16,6 +16,8 @@ export const ARENA_BUNDLED_LEADERBOARD_URL = '/arena/leaderboard.json'
 
 export const ARENA_INSTALL_SCRIPT_URL = `${ARENA_API_BASE}/install.sh`
 
+export const ARENA_GITHUB_LOGIN_URL = `${ARENA_API_BASE}/auth/github`
+
 export const PYHQIV_REPO = 'https://github.com/disregardfiat/pyhqiv'
 export const HQIV_LEAN_REPO = 'https://github.com/HQIV/hqiv-lean'
 export const ARENA_WORKFLOW_URL =

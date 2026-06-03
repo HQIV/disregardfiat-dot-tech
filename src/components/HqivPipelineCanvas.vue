@@ -5,6 +5,7 @@ const props = defineProps<{
   /** 0: shells, 1: K, 2: Ω, 3: (α,γ), 4: F/Maxwell, 5: G_eff */
   scene: number
   autoplay?: boolean
+  mode?: 'technical' | 'layman'
 }>()
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -30,6 +31,17 @@ function shellA(m: number): number {
 
 const captions = computed(() => {
   const s = Math.min(5, Math.max(0, props.scene))
+  if (props.mode === 'layman') {
+    const lines = [
+      'Each shell adds more “room” than the last—counted on the light cone.',
+      'History stacks up: every shell leaves a trace in the running total.',
+      'Compare today’s total to a reference shell—you get a forward-only dial.',
+      'The natural split is 60% / 40% (3/5 and 2/5), fixed by counting.',
+      'Forces are local grid bookkeeping on an eight-dimensional carrier.',
+      'Gravity’s effective strength follows the same 3/5 imprint as masses.',
+    ]
+    return lines[s] ?? lines[0]
+  }
   const lines = [
     'Null-shell growth: A(m)=4(m+2)(m+1), increment 8(m+2).',
     'Curvature density ρ(x)=x⁻¹(1+α log x); cumulative K(n).',

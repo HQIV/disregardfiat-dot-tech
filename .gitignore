@@ -6,6 +6,8 @@ dist
 .env.arena
 .env
 server/data/*.json
+server/data/oauth_states.json
+server/data/pending_claims.json
 !server/data/.gitkeep
 server/node_modules
 npm-debug.log*

@@ -4,6 +4,7 @@ import {
   ARENA_API_BASE,
   ARENA_BUNDLED_LEADERBOARD_URL,
   ARENA_CONTRIBUTING_URL,
+  ARENA_GITHUB_LOGIN_URL,
   ARENA_INSTALL_SCRIPT_URL,
   ARENA_LIVE_LEADERBOARD_URL,
   ARENA_PYHQIV_LEADERBOARD_URL,
@@ -26,9 +27,11 @@ const error = ref<string | null>(null)
 const dataSource = ref<'api' | 'pyhqiv' | 'bundled' | null>(null)
 
 const newKey = ref<string | null>(null)
+const keyGithub = ref<string | null>(null)
 const keyLoading = ref(false)
 const keyError = ref<string | null>(null)
-const githubHandle = ref('')
+const oauthEnabled = ref(true)
+const showAnonymousKey = ref(false)
 
 async function fetchJson(url: string): Promise<LeaderboardData> {
   const res = await fetch(url, { cache: 'no-store' })
@@ -72,18 +75,20 @@ async function load() {
   }
 }
 
-async function createApiKey() {
+function loginWithGithub() {
+  window.location.href = ARENA_GITHUB_LOGIN_URL
+}
+
+async function createAnonymousKey() {
   keyLoading.value = true
   keyError.value = null
   newKey.value = null
+  keyGithub.value = null
   try {
     const res = await fetch(`${ARENA_API_BASE}/keys`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        label: 'web',
-        github: githubHandle.value.trim() || null,
-      }),
+      body: JSON.stringify({ label: 'anonymous-web' }),
     })
     const body = await res.json()
     if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`)
@@ -95,11 +100,57 @@ async function createApiKey() {
   }
 }
 
+async function redeemOAuthClaim() {
+  const params = new URLSearchParams(location.search)
+  const claim = params.get('claim')
+  const arenaError = params.get('arena_error')
+  if (arenaError) {
+    keyError.value = decodeURIComponent(arenaError)
+    params.delete('arena_error')
+    history.replaceState(null, '', `${location.pathname}${params.toString() ? `?${params}` : ''}#arena`)
+    return
+  }
+  if (!claim) return
+  keyLoading.value = true
+  keyError.value = null
+  try {
+    const res = await fetch(`${ARENA_API_BASE}/auth/claim`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ claim }),
+    })
+    const body = await res.json()
+    if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`)
+    newKey.value = body.key
+    keyGithub.value = body.github || null
+    params.delete('claim')
+    history.replaceState(null, '', `${location.pathname}${params.toString() ? `?${params}` : ''}#arena`)
+  } catch (e: unknown) {
+    keyError.value = e instanceof Error ? e.message : 'Failed to claim API key'
+  } finally {
+    keyLoading.value = false
+  }
+}
+
+async function checkAuthStatus() {
+  try {
+    const res = await fetch(`${ARENA_API_BASE}/auth/status`)
+    const body = await res.json()
+    oauthEnabled.value = Boolean(body.github_oauth)
+  } catch {
+    oauthEnabled.value = false
+  }
+}
+
 function copyText(text: string) {
   void navigator.clipboard.writeText(text)
 }
 
-onMounted(load)
+onMounted(async () => {
+  await checkAuthStatus()
+  await redeemOAuthClaim()
+  await load()
+})
 
 const hasEntries = computed(() => (data.value?.entries?.length ?? 0) > 0)
 
@@ -172,30 +223,63 @@ function badgeClass(key: string) {
     </header>
 
     <main class="mx-auto max-w-5xl space-y-10 px-4 py-10">
-      <!-- Participate (ecdsa.fail-style) -->
+      <!-- Participate -->
       <section class="rounded-2xl border border-emerald-800/60 bg-slate-900/50 p-5 sm:p-6">
         <h2 class="text-lg font-medium text-white">Participate</h2>
         <p class="mt-2 text-sm text-slate-400">
-          One API key, no GitHub PAT required for provisional submissions. Install the CLI, log in,
-          run locally, then submit (full CI still runs on pyhqiv PRs).
+          Sign in with GitHub to get your personal Arena API key (like
+          <a
+            href="https://www.ecdsa.fail/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-emerald-300 underline-offset-2 hover:underline"
+            >ecdsa.fail</a
+          >). No GitHub PAT required — then use the CLI to run and submit.
         </p>
-        <ol class="mt-4 list-decimal space-y-2 pl-5 text-sm text-slate-300">
+
+        <div class="mt-5 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 rounded-lg bg-[#24292f] px-4 py-2.5 text-sm font-medium text-white ring-1 ring-slate-600 hover:bg-[#32383f] disabled:opacity-50"
+            :disabled="keyLoading || !oauthEnabled"
+            @click="loginWithGithub"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.88.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+              />
+            </svg>
+            {{ keyLoading ? 'Signing in…' : 'Sign in with GitHub' }}
+          </button>
+          <button
+            v-if="!showAnonymousKey"
+            type="button"
+            class="text-xs text-slate-500 underline-offset-2 hover:text-slate-300 hover:underline"
+            @click="showAnonymousKey = true"
+          >
+            Use anonymous key instead
+          </button>
+        </div>
+
+        <p v-if="!oauthEnabled" class="mt-3 text-sm text-amber-300/90">
+          GitHub login is not configured on the server yet (missing OAuth app credentials).
+        </p>
+
+        <div v-if="showAnonymousKey" class="mt-4 border-t border-slate-800 pt-4">
+          <button
+            type="button"
+            class="rounded-lg border border-slate-600 px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-800"
+            :disabled="keyLoading"
+            @click="createAnonymousKey"
+          >
+            Issue anonymous key (not linked to GitHub)
+          </button>
+        </div>
+
+        <ol class="mt-5 list-decimal space-y-2 pl-5 text-sm text-slate-300">
+          <li>Sign in with GitHub — your <code class="text-xs">hqiv_…</code> API key is shown once.</li>
           <li>
-            <button
-              type="button"
-              class="rounded-lg bg-emerald-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-600 disabled:opacity-50"
-              :disabled="keyLoading"
-              @click="createApiKey"
-            >
-              {{ keyLoading ? 'Creating…' : 'Get API key' }}
-            </button>
-            <span class="ml-2 text-slate-500">(shown once)</span>
-          </li>
-          <li>
-            Install:
-            <code class="ml-1 rounded bg-slate-950 px-2 py-1 text-xs text-emerald-200"
-              >curl -fsSL https://disregardfiat.tech/api/v1/install.sh | sh</code
-            >
+            <code class="rounded bg-slate-950 px-1 text-xs">curl -fsSL https://disregardfiat.tech/api/v1/install.sh | sh</code>
           </li>
           <li>
             <code class="rounded bg-slate-950 px-1 text-xs">hqiv-arena login hqiv_…</code> →
@@ -204,26 +288,21 @@ function badgeClass(key: string) {
             <code class="rounded bg-slate-950 px-1 text-xs">submit</code>
           </li>
         </ol>
-        <div class="mt-3 flex flex-wrap items-center gap-2">
-          <label class="text-xs text-slate-500">GitHub handle (optional)</label>
-          <input
-            v-model="githubHandle"
-            type="text"
-            placeholder="your-github-username"
-            class="rounded border border-slate-700 bg-slate-950 px-2 py-1 text-sm text-slate-200"
-          />
-        </div>
+
         <p v-if="keyError" class="mt-3 text-sm text-rose-400">{{ keyError }}</p>
         <div
           v-if="newKey"
-          class="mt-4 rounded-lg border border-emerald-900/50 bg-emerald-950/30 p-3"
+          class="mt-4 rounded-lg border border-emerald-900/50 bg-emerald-950/30 p-4"
         >
-          <p class="text-xs text-emerald-300">Copy now — this key is not shown again.</p>
+          <p v-if="keyGithub" class="text-sm text-emerald-200">
+            API key for <strong>@{{ keyGithub }}</strong> — copy now; it cannot be shown again.
+          </p>
+          <p v-else class="text-xs text-emerald-300">Copy now — this key is not shown again.</p>
           <pre
             class="mt-2 overflow-x-auto rounded bg-slate-950 p-2 font-mono text-xs text-emerald-100"
             >{{ newKey }}</pre
           >
-          <div class="mt-2 flex flex-wrap gap-2">
+          <div class="mt-3 flex flex-wrap gap-2">
             <button
               type="button"
               class="rounded border border-slate-600 px-2 py-1 text-xs hover:bg-slate-800"
@@ -240,14 +319,6 @@ function badgeClass(key: string) {
             </button>
           </div>
         </div>
-        <p class="mt-3 text-xs text-slate-500">
-          Install script:
-          <a
-            :href="ARENA_INSTALL_SCRIPT_URL"
-            class="text-emerald-400 underline-offset-2 hover:underline"
-            >{{ ARENA_INSTALL_SCRIPT_URL }}</a
-          >
-        </p>
       </section>
 
       <!-- Sigma everywhere -->

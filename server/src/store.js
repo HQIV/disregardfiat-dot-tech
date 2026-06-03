@@ -30,6 +30,8 @@ export function createStore(dataDir = DEFAULT_DATA_DIR) {
   const keysFile = path.join(dataDir, 'keys.json')
   const submissionsFile = path.join(dataDir, 'submissions.json')
   const leaderboardFile = path.join(dataDir, 'leaderboard.json')
+  const oauthStatesFile = path.join(dataDir, 'oauth_states.json')
+  const pendingClaimsFile = path.join(dataDir, 'pending_claims.json')
 
   function loadKeys() {
     return readJson(keysFile, { keys: [] })
@@ -43,7 +45,7 @@ export function createStore(dataDir = DEFAULT_DATA_DIR) {
     return crypto.createHash('sha256').update(token).digest('hex')
   }
 
-  function createKey({ label = 'solver', github = null } = {}) {
+  function createKey({ label = 'solver', github = null, github_id = null } = {}) {
     const raw = crypto.randomBytes(24).toString('base64url')
     const token = `hqiv_${raw}`
     const entry = {
@@ -51,20 +53,42 @@ export function createStore(dataDir = DEFAULT_DATA_DIR) {
       token_hash: hashToken(token),
       label: String(label).slice(0, 64),
       github: github ? String(github).slice(0, 39) : null,
+      github_id: github_id != null ? String(github_id) : null,
       created_at: new Date().toISOString(),
       last_used_at: null,
+      revoked_at: null,
     }
     const data = loadKeys()
     data.keys.push(entry)
     saveKeys(data)
-    return { token, key_id: entry.id, created_at: entry.created_at }
+    return { token, key_id: entry.id, created_at: entry.created_at, github: entry.github }
+  }
+
+  /** One active key per GitHub user: revoke prior keys before issuing a new one. */
+  function revokeKeysForGithubId(githubId) {
+    const id = String(githubId)
+    const data = loadKeys()
+    const now = new Date().toISOString()
+    for (const k of data.keys) {
+      if (k.github_id === id && !k.revoked_at) k.revoked_at = now
+    }
+    saveKeys(data)
+  }
+
+  function createKeyForGithubUser({ login, id, name = null }) {
+    revokeKeysForGithubId(id)
+    return createKey({
+      label: name || login,
+      github: login,
+      github_id: id,
+    })
   }
 
   function findKeyByToken(token) {
     if (!token || !token.startsWith('hqiv_')) return null
     const h = hashToken(token)
     const data = loadKeys()
-    const entry = data.keys.find((k) => k.token_hash === h)
+    const entry = data.keys.find((k) => k.token_hash === h && !k.revoked_at)
     if (!entry) return null
     entry.last_used_at = new Date().toISOString()
     saveKeys(data)
@@ -146,13 +170,71 @@ export function createStore(dataDir = DEFAULT_DATA_DIR) {
     return lb
   }
 
+  function saveOAuthState(state, payload) {
+    const data = readJson(oauthStatesFile, { states: [] })
+    const now = Date.now()
+    data.states = data.states.filter((s) => now - Date.parse(s.created_at) < 600_000)
+    data.states.push({ state, ...payload, created_at: new Date().toISOString() })
+    writeJson(oauthStatesFile, data)
+  }
+
+  function consumeOAuthState(state) {
+    const data = readJson(oauthStatesFile, { states: [] })
+    const idx = data.states.findIndex((s) => s.state === state)
+    if (idx < 0) return null
+    const [row] = data.states.splice(idx, 1)
+    writeJson(oauthStatesFile, data)
+    if (Date.now() - Date.parse(row.created_at) > 600_000) return null
+    return row
+  }
+
+  function createPendingClaim({ key, github, github_id, key_id }) {
+    const claim = crypto.randomBytes(24).toString('base64url')
+    const data = readJson(pendingClaimsFile, { claims: [] })
+    const now = Date.now()
+    data.claims = data.claims.filter((c) => now - Date.parse(c.created_at) < 600_000)
+    data.claims.push({
+      claim,
+      key,
+      github,
+      github_id: String(github_id),
+      key_id,
+      created_at: new Date().toISOString(),
+      used: false,
+    })
+    writeJson(pendingClaimsFile, data)
+    return claim
+  }
+
+  function consumePendingClaim(claimToken) {
+    const data = readJson(pendingClaimsFile, { claims: [] })
+    const idx = data.claims.findIndex((c) => c.claim === claimToken && !c.used)
+    if (idx < 0) return null
+    const row = data.claims[idx]
+    if (Date.now() - Date.parse(row.created_at) > 600_000) return null
+    row.used = true
+    data.claims[idx] = row
+    writeJson(pendingClaimsFile, data)
+    return {
+      key: row.key,
+      github: row.github,
+      github_id: row.github_id,
+      key_id: row.key_id,
+    }
+  }
+
   return {
     createKey,
+    createKeyForGithubUser,
     findKeyByToken,
     addSubmission,
     loadSubmissions,
     loadLocalLeaderboard,
     appendProvisionalEntry,
+    saveOAuthState,
+    consumeOAuthState,
+    createPendingClaim,
+    consumePendingClaim,
     dataDir,
   }
 }

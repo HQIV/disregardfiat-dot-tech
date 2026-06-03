@@ -1,9 +1,18 @@
+import crypto from 'node:crypto'
 import express from 'express'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createStore } from './store.js'
 import { fetchPyhqivLeaderboard, mergeLeaderboards } from './leaderboard.js'
+import {
+  arenaClaimRedirect,
+  arenaErrorRedirect,
+  exchangeCodeForToken,
+  fetchGithubUser,
+  githubOAuthConfigured,
+  startGithubOAuth,
+} from './github-auth.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PORT = Number(process.env.ARENA_API_PORT || 3020)
@@ -70,7 +79,88 @@ app.get('/api/v1/health', (_req, res) => {
   res.json({ ok: true, service: 'hqiv-arena-api', version: '0.1.0' })
 })
 
-/** ECDSA.fail-style: issue an API key (shown once). */
+/** Start GitHub OAuth — redirects to github.com; callback issues an Arena API key. */
+app.get('/api/v1/auth/github', (req, res) => {
+  if (!githubOAuthConfigured()) {
+    return res.status(503).json({
+      error: 'github_oauth_not_configured',
+      hint: 'Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in .env.arena on the server.',
+    })
+  }
+  const ip = clientIp(req)
+  if (!rateLimit(`oauth:${ip}`, 30, 3600_000)) {
+    return res.status(429).json({ error: 'rate_limited' })
+  }
+  const state = crypto.randomBytes(24).toString('base64url')
+  store.saveOAuthState(state, { ip })
+  res.redirect(302, startGithubOAuth(state))
+})
+
+app.get('/api/v1/auth/github/callback', async (req, res) => {
+  if (!githubOAuthConfigured()) {
+    return res.redirect(arenaErrorRedirect('GitHub login is not configured on this server.'))
+  }
+  const { code, state, error, error_description } = req.query
+  if (error) {
+    return res.redirect(arenaErrorRedirect(String(error_description || error)))
+  }
+  if (!code || !state || typeof code !== 'string' || typeof state !== 'string') {
+    return res.redirect(arenaErrorRedirect('Missing OAuth code or state.'))
+  }
+  if (!store.consumeOAuthState(state)) {
+    return res.redirect(arenaErrorRedirect('Invalid or expired OAuth state.'))
+  }
+  try {
+    const accessToken = await exchangeCodeForToken(code)
+    const user = await fetchGithubUser(accessToken)
+    if (!user?.id || !user?.login) {
+      return res.redirect(arenaErrorRedirect('Could not read your GitHub profile.'))
+    }
+    const created = store.createKeyForGithubUser({
+      login: user.login,
+      id: user.id,
+      name: user.name,
+    })
+    const claim = store.createPendingClaim({
+      key: created.token,
+      github: user.login,
+      github_id: user.id,
+      key_id: created.key_id,
+    })
+    res.redirect(302, arenaClaimRedirect(claim))
+  } catch (e) {
+    console.error('GitHub OAuth callback failed:', e)
+    return res.redirect(arenaErrorRedirect('GitHub login failed. Try again.'))
+  }
+})
+
+/** Redeem one-time claim token after OAuth redirect (?claim= on site URL). */
+app.post('/api/v1/auth/claim', (req, res) => {
+  const claimToken = String(req.body?.claim || req.query?.claim || '').trim()
+  if (!claimToken) {
+    return res.status(400).json({ error: 'claim_token_required' })
+  }
+  const row = store.consumePendingClaim(claimToken)
+  if (!row) {
+    return res.status(410).json({ error: 'claim_invalid_or_expired' })
+  }
+  res.json({
+    key: row.key,
+    github: row.github,
+    github_id: row.github_id,
+    key_id: row.key_id,
+    message: 'Store this key now — it cannot be retrieved again. Use: hqiv-arena login <key>',
+  })
+})
+
+app.get('/api/v1/auth/status', (_req, res) => {
+  res.json({
+    github_oauth: githubOAuthConfigured(),
+    keys_anonymous: true,
+  })
+})
+
+/** Anonymous key (no GitHub verification) — prefer /auth/github when OAuth is configured. */
 app.post('/api/v1/keys', (req, res) => {
   const ip = clientIp(req)
   if (!rateLimit(`keys:${ip}`, 10, 3600_000)) {
@@ -158,4 +248,5 @@ app.use('/api', (_req, res) => {
 app.listen(PORT, HOST, () => {
   console.log(`hqiv-arena-api listening on http://${HOST}:${PORT}`)
   console.log(`data: ${store.dataDir}`)
+  console.log(`GitHub OAuth: ${githubOAuthConfigured() ? 'enabled' : 'DISABLED (set GITHUB_CLIENT_ID/SECRET)'}`)
 })
