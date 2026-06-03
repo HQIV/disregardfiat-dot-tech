@@ -128,7 +128,7 @@ export const arenaGates: ArenaGate[] = [
   {
     title: 'Lean ↔ Python alignment',
     hard: true,
-    body: 'scripts/validate_hqiv_alignment.py must pass 100%. Witnesses + functional mirrors only (lightcone, metric, so8) — no hard-coded scoring constants.',
+    body: 'scripts/check_arena_source_integrity.py + validate_hqiv_alignment.py must pass 100%. Witnesses + functional mirrors only (lightcone, metric, so8) — no hard-coded scoring constants.',
   },
   {
     title: 'Python test suite',
