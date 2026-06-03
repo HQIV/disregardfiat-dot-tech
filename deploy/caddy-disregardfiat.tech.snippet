@@ -1,0 +1,5 @@
+# Insert into /etc/caddy/Caddyfile under the disregardfiat.tech block (before file_server handle):
+#
+#	handle /api/* {
+#		reverse_proxy 127.0.0.1:3020
+#	}

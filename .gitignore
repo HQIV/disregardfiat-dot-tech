@@ -3,6 +3,10 @@ dist
 .DS_Store
 *.local
 .env.deploy
+.env.arena
 .env
+server/data/*.json
+!server/data/.gitkeep
+server/node_modules
 npm-debug.log*
 node_modules/.tmp
