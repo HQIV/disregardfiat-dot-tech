@@ -6,7 +6,7 @@ Static Vue site for HQIV: plain-language overview, technical derivation tour, eq
 
 The Arena is the public face of the pyhqiv improvement benchmark:
 
-- **Arena API** (`server/`) — Node.js on `127.0.0.1:3020`, proxied at `https://disregardfiat.tech/api/v1/*` (Caddy). Issues API keys, records provisional submissions, merges leaderboard with [pyhqiv main](https://github.com/disregardfiat/pyhqiv).
+- **Arena API** (`server/`) — Node.js on `127.0.0.1:3020`, proxied at `https://disregardfiat.tech/api/v1/*` (Caddy). Issues API keys, records provisional submissions, merges leaderboard with [HQIV/pyhqiv main](https://github.com/HQIV/pyhqiv).
 - **Leaderboard** — `#arena` loads `/api/v1/leaderboard` first.
 - **Participate** — **Sign in with GitHub** at `#arena` (`GET /api/v1/auth/github`), or `POST /api/v1/keys` for anonymous keys. Then `hqiv-arena login hqiv_…`.
 

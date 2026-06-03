@@ -40,7 +40,7 @@ export const resources: Resource[] = [
       'Read here if you want to compile the Lean proofs, re-run a simulation, or read the actual source for a claim instead of a paragraph about it.',
     contains: [
       'hqiv-lean — Lean 4 formalisations (axioms, derivations, octonionic constructions)',
-      'pyhqiv — Python implementation, tests, and the HQIV Arena CI scorer',
+      'pyhqiv (HQIV/pyhqiv) — Python implementation, tests, and the HQIV Arena CI scorer',
       'hqiv-arena CLI — clone, run, submit PRs; leaderboard at disregardfiat.tech/#arena',
       'Browser calculators (Quantum Maxwell, octonion Lie-algebra)',
       'CLASS / N-body patches and analysis scripts',

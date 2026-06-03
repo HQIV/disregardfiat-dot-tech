@@ -1,11 +1,27 @@
-const PYHQIV_LEADERBOARD =
-  process.env.PYHQIV_LEADERBOARD_URL ||
-  'https://raw.githubusercontent.com/disregardfiat/pyhqiv/main/arena/leaderboard.json'
+const DEFAULT_PYHQIV_LEADERBOARD_URLS = [
+  'https://raw.githubusercontent.com/HQIV/pyhqiv/main/arena/leaderboard.json',
+  'https://raw.githubusercontent.com/disregardfiat/pyhqiv/main/arena/leaderboard.json',
+]
+
+function leaderboardUrls() {
+  if (process.env.PYHQIV_LEADERBOARD_URL) {
+    return [process.env.PYHQIV_LEADERBOARD_URL]
+  }
+  return DEFAULT_PYHQIV_LEADERBOARD_URLS
+}
 
 export async function fetchPyhqivLeaderboard() {
-  const res = await fetch(PYHQIV_LEADERBOARD, { cache: 'no-store' })
-  if (!res.ok) throw new Error(`pyhqiv leaderboard HTTP ${res.status}`)
-  return res.json()
+  let lastErr
+  for (const url of leaderboardUrls()) {
+    try {
+      const res = await fetch(url, { cache: 'no-store' })
+      if (!res.ok) throw new Error(`pyhqiv leaderboard HTTP ${res.status} (${url})`)
+      return res.json()
+    } catch (e) {
+      lastErr = e
+    }
+  }
+  throw lastErr ?? new Error('pyhqiv leaderboard unavailable')
 }
 
 /** Merge CI leaderboard with API provisional entries (API entries not already on main). */
@@ -37,7 +53,7 @@ export function mergeLeaderboards(remote, local) {
     note:
       remote?.note ||
       local?.note ||
-      'Merged pyhqiv main + Arena API provisional entries.',
+      'Merged HQIV/pyhqiv main + Arena API provisional entries.',
     sources: ['pyhqiv-main', 'arena-api'],
   }
 }

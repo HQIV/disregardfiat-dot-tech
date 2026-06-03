@@ -8,8 +8,12 @@ export const ARENA_API_BASE = '/api/v1'
 
 export const ARENA_LIVE_LEADERBOARD_URL = `${ARENA_API_BASE}/leaderboard`
 
-export const ARENA_PYHQIV_LEADERBOARD_URL =
-  'https://raw.githubusercontent.com/disregardfiat/pyhqiv/main/arena/leaderboard.json'
+/** Canonical pyhqiv repo (HQIV org); disregardfiat/pyhqiv redirects here. */
+export const PYHQIV_REPO = 'https://github.com/HQIV/pyhqiv'
+
+export const PYHQIV_RAW_MAIN = 'https://raw.githubusercontent.com/HQIV/pyhqiv/main'
+
+export const ARENA_PYHQIV_LEADERBOARD_URL = `${PYHQIV_RAW_MAIN}/arena/leaderboard.json`
 
 /** Bundled seed when API and pyhqiv are unavailable */
 export const ARENA_BUNDLED_LEADERBOARD_URL = '/arena/leaderboard.json'
@@ -18,14 +22,11 @@ export const ARENA_INSTALL_SCRIPT_URL = `${ARENA_API_BASE}/install.sh`
 
 export const ARENA_GITHUB_LOGIN_URL = `${ARENA_API_BASE}/auth/github`
 
-export const PYHQIV_REPO = 'https://github.com/disregardfiat/pyhqiv'
 export const HQIV_LEAN_REPO = 'https://github.com/HQIV/hqiv-lean'
-export const ARENA_WORKFLOW_URL =
-  'https://github.com/disregardfiat/pyhqiv/blob/main/.github/workflows/hqiv-arena.yml'
-export const ARENA_CONTRIBUTING_URL =
-  'https://github.com/disregardfiat/pyhqiv/blob/main/CONTRIBUTING.md'
-export const ARENA_TEMPLATES_URL =
-  'https://github.com/disregardfiat/pyhqiv/tree/main/arena/templates'
+export const ARENA_WORKFLOW_URL = `${PYHQIV_REPO}/blob/main/.github/workflows/hqiv-arena.yml`
+export const ARENA_CONTRIBUTING_URL = `${PYHQIV_REPO}/blob/main/CONTRIBUTING.md`
+export const ARENA_TEMPLATES_URL = `${PYHQIV_REPO}/tree/main/arena/templates`
+export const PYHQIV_CLONE_URL = `${PYHQIV_REPO}.git`
 export const GITHUB_TOKEN_URL = 'https://github.com/settings/tokens/new'
 
 export interface LeaderboardEntry {
@@ -43,6 +44,7 @@ export interface LeaderboardData {
   entries: LeaderboardEntry[]
   current_best: LeaderboardEntry | null
   history: Array<{ ts: string; score: number | null; sigma: number | null }>
+  badges?: Record<string, unknown>
   schema_version?: number
   note?: string
   sources?: string[]
@@ -126,7 +128,7 @@ export const arenaGates: ArenaGate[] = [
   {
     title: 'Lean ↔ Python alignment',
     hard: true,
-    body: 'scripts/validate_hqiv_alignment.py must pass 100%, plus scripts/check_arena_source_integrity.py on lightcone/metric mirrors (no new imports, no literal-return cheats). Witnesses + functional defs only.',
+    body: 'scripts/validate_hqiv_alignment.py must pass 100%. Witnesses + functional mirrors only (lightcone, metric, so8) — no hard-coded scoring constants.',
   },
   {
     title: 'Python test suite',
@@ -149,14 +151,25 @@ export type CliStep = { title: string; commands: string[]; detail: string }
 
 export const cliWorkflow: CliStep[] = [
   {
-    title: 'Authenticate (GitHub PAT with repo scope)',
-    commands: ['hqiv-arena login', '# or: hqiv-arena login ghp_YourTokenHere'],
-    detail: 'Token stored in ~/.config/hqiv-arena/. Override with HQIV_ARENA_TOKEN for agents.',
+    title: 'Authenticate',
+    commands: [
+      '# Arena API key (site): Sign in with GitHub at #arena → copy hqiv_…',
+      'export HQIV_ARENA_API_URL=https://disregardfiat.tech/api/v1',
+      '# PR workflow (pyhqiv CLI): GitHub PAT with repo scope, or gh auth login',
+      'hqiv-arena login',
+      '# or: hqiv-arena login ghp_YourTokenHere',
+    ],
+    detail:
+      'hqiv_… keys from this site authenticate Arena API calls (provisional leaderboard). The hqiv-arena CLI still uses a GitHub PAT (or gh) to push branches and open PRs for authoritative CI scoring.',
   },
   {
     title: 'Clone the benchmark workspace',
-    commands: ['hqiv-arena clone ./hqiv-workspace', 'cd hqiv-workspace/pyhqiv'],
-    detail: 'Clones hqiv-lean + pyhqiv with dev symlinks. Run later commands from inside the tree.',
+    commands: [
+      'hqiv-arena clone ./hqiv-workspace',
+      'cd hqiv-workspace/pyhqiv',
+      '# or: git clone --depth 1 ' + PYHQIV_CLONE_URL,
+    ],
+    detail: 'Clones hqiv-lean + pyhqiv (HQIV org) with dev symlinks. Run later commands from inside the tree.',
   },
   {
     title: 'Install & score locally',

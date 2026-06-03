@@ -4,5 +4,5 @@
   "history": [],
   "badges": {},
   "schema_version": 1,
-  "note": "Seed copy for disregardfiat.tech until pyhqiv main publishes arena/leaderboard.json. Updated automatically by HQIV Arena CI on merges to main."
+  "note": "Bundled fallback for disregardfiat.tech when API and HQIV/pyhqiv raw JSON are unreachable. Authoritative file: github.com/HQIV/pyhqiv arena/leaderboard.json (CI-updated on merge)."
 }

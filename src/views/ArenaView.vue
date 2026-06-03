@@ -260,10 +260,11 @@ function badgeClass(key: string) {
             <code class="rounded bg-slate-950 px-1 text-xs">curl -fsSL https://disregardfiat.tech/api/v1/install.sh | sh</code>
           </li>
           <li>
-            <code class="rounded bg-slate-950 px-1 text-xs">hqiv-arena login hqiv_…</code> →
-            <code class="rounded bg-slate-950 px-1 text-xs">clone</code> →
+            <code class="rounded bg-slate-950 px-1 text-xs">hqiv-arena clone</code> →
             <code class="rounded bg-slate-950 px-1 text-xs">run</code> →
             <code class="rounded bg-slate-950 px-1 text-xs">submit</code>
+            (PR step needs a GitHub PAT or <code class="text-xs">gh auth login</code>, not only
+            <code class="text-xs">hqiv_…</code>)
           </li>
         </ol>
 
