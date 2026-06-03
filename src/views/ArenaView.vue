@@ -30,7 +30,6 @@ const newKey = ref<string | null>(null)
 const keyGithub = ref<string | null>(null)
 const keyLoading = ref(false)
 const keyError = ref<string | null>(null)
-const oauthEnabled = ref(true)
 const showAnonymousKey = ref(false)
 
 async function fetchJson(url: string): Promise<LeaderboardData> {
@@ -132,22 +131,11 @@ async function redeemOAuthClaim() {
   }
 }
 
-async function checkAuthStatus() {
-  try {
-    const res = await fetch(`${ARENA_API_BASE}/auth/status`)
-    const body = await res.json()
-    oauthEnabled.value = Boolean(body.github_oauth)
-  } catch {
-    oauthEnabled.value = false
-  }
-}
-
 function copyText(text: string) {
   void navigator.clipboard.writeText(text)
 }
 
 onMounted(async () => {
-  await checkAuthStatus()
   await redeemOAuthClaim()
   await load()
 })
@@ -227,21 +215,15 @@ function badgeClass(key: string) {
       <section class="rounded-2xl border border-emerald-800/60 bg-slate-900/50 p-5 sm:p-6">
         <h2 class="text-lg font-medium text-white">Participate</h2>
         <p class="mt-2 text-sm text-slate-400">
-          Sign in with GitHub to get your personal Arena API key (like
-          <a
-            href="https://www.ecdsa.fail/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-emerald-300 underline-offset-2 hover:underline"
-            >ecdsa.fail</a
-          >). No GitHub PAT required — then use the CLI to run and submit.
+          Sign in with GitHub to get your personal Arena API key. No GitHub PAT required — then use
+          the CLI to run and submit.
         </p>
 
         <div class="mt-5 flex flex-wrap items-center gap-3">
           <button
             type="button"
             class="inline-flex items-center gap-2 rounded-lg bg-[#24292f] px-4 py-2.5 text-sm font-medium text-white ring-1 ring-slate-600 hover:bg-[#32383f] disabled:opacity-50"
-            :disabled="keyLoading || !oauthEnabled"
+            :disabled="keyLoading"
             @click="loginWithGithub"
           >
             <svg class="h-5 w-5" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -260,10 +242,6 @@ function badgeClass(key: string) {
             Use anonymous key instead
           </button>
         </div>
-
-        <p v-if="!oauthEnabled" class="mt-3 text-sm text-amber-300/90">
-          GitHub login is not configured on the server yet (missing OAuth app credentials).
-        </p>
 
         <div v-if="showAnonymousKey" class="mt-4 border-t border-slate-800 pt-4">
           <button

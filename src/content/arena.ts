@@ -126,7 +126,7 @@ export const arenaGates: ArenaGate[] = [
   {
     title: 'Lean ↔ Python alignment',
     hard: true,
-    body: 'scripts/validate_hqiv_alignment.py must pass 100%. Witnesses + functional mirrors only — no hard-coded scoring constants.',
+    body: 'scripts/validate_hqiv_alignment.py must pass 100%, plus scripts/check_arena_source_integrity.py on lightcone/metric mirrors (no new imports, no literal-return cheats). Witnesses + functional defs only.',
   },
   {
     title: 'Python test suite',
@@ -185,10 +185,10 @@ export const cliExtras: { label: string; command: string }[] = [
 ]
 
 export const protectedCores = [
-  'Ω_k horizons',
-  'lapse compression',
-  'shell mode counts',
+  'Ω_k mirror functions (not a fitted Ω_k value)',
+  'lapse / HQVM mirror (hqvm_lapse structure)',
+  'shell mode counts & reference_m ladder',
   'proton anchor (referenceM=4)',
-  'so(8) Lie closure dimension',
-  'combinatorial invariant',
+  'so(8) Lie closure dimension (28)',
+  'combinatorial curvature norm (6⁷√3)',
 ]
