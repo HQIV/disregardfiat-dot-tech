@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type ViewId = 'home' | 'explore' | 'bibliography' | 'resources' | 'atlas' | 'arena'
+type ViewId = 'home' | 'explore' | 'bibliography' | 'resources' | 'atlas' | 'arena' | 'mysteries'
 
 defineProps<{
   active: ViewId
@@ -67,6 +67,18 @@ const emit = defineEmits<{
           @click="emit('navigate', 'explore')"
         >
           Technical tour
+        </button>
+        <button
+          type="button"
+          class="rounded-lg px-3 py-1.5 text-sm transition"
+          :class="
+            active === 'mysteries'
+              ? 'bg-violet-900/40 text-violet-100 ring-1 ring-violet-700/60'
+              : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
+          "
+          @click="emit('navigate', 'mysteries')"
+        >
+          Open problems
         </button>
         <button
           type="button"

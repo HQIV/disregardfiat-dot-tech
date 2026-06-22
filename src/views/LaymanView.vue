@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import HqivPipelineCanvas from '../components/HqivPipelineCanvas.vue'
+import LeanResolutionCarousel from '../components/LeanResolutionCarousel.vue'
 import { faq, laymanSteps, outcomes } from '../content/layman'
-import { papers } from '../content/papers'
+import { papers, tierLabel } from '../content/papers'
 
 const emit = defineEmits<{
   explore: []
@@ -97,11 +98,18 @@ function next() {
             class="text-slate-300 underline-offset-2 hover:text-emerald-300 hover:underline"
             >Arena <span class="text-slate-600">— improve &amp; compete on σ</span></a
           >
+          <a
+            href="#mysteries"
+            class="text-slate-300 underline-offset-2 hover:text-violet-300 hover:underline"
+            >Open problems <span class="text-slate-600">— Wikipedia map + σ</span></a
+          >
         </p>
       </div>
     </header>
 
     <main class="mx-auto max-w-4xl space-y-16 px-4 py-12 sm:py-16">
+      <LeanResolutionCarousel />
+
       <section class="grid gap-8 sm:grid-cols-3">
         <article class="rounded-xl border border-slate-800 bg-slate-900/40 p-5">
           <h2 class="text-sm font-medium text-emerald-300">The puzzle</h2>
@@ -221,7 +229,7 @@ function next() {
           >
             <div class="flex flex-wrap items-center gap-2 text-xs">
               <span class="rounded-full border border-emerald-700/60 bg-emerald-900/40 px-2.5 py-0.5 font-medium uppercase tracking-wider text-emerald-100">
-                {{ idx < 3 ? 'Tier 0' : 'Tier 1' }}
+                {{ tierLabel(p.tier) }}
               </span>
               <span class="rounded-full border border-slate-700 bg-slate-800/60 px-2.5 py-0.5 text-slate-300">
                 {{ p.version }}
@@ -270,8 +278,8 @@ function next() {
 
         <p class="text-xs text-slate-500">
           Publication order follows <code class="text-slate-400">HQIV/papers/README.md</code>.
-          More papers (thermodynamics_arrow, lean_to_mass_spectrum, …) are in the queue and will
-          appear here once they receive Zenodo DOIs.
+          All Tier-0 through Tier-2 Zenodo records through HEP decay readout are indexed here;
+          Tier-3 applied phenomenology companions are queued next.
         </p>
       </section>
 

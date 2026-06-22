@@ -7,15 +7,18 @@ import BibliographyView from './views/BibliographyView.vue'
 import ResourcesView from './views/ResourcesView.vue'
 import EquationAtlasView from './views/EquationAtlasView.vue'
 import ArenaView from './views/ArenaView.vue'
+import MysteriesView from './views/MysteriesView.vue'
 
-type ViewId = 'home' | 'explore' | 'bibliography' | 'resources' | 'atlas' | 'arena'
+type ViewId = 'home' | 'explore' | 'bibliography' | 'resources' | 'atlas' | 'arena' | 'mysteries'
 
 function viewFromHash(): ViewId {
-  if (location.hash === '#explore') return 'explore'
-  if (location.hash === '#bibliography') return 'bibliography'
-  if (location.hash === '#resources') return 'resources'
-  if (location.hash === '#atlas') return 'atlas'
-  if (location.hash === '#arena') return 'arena'
+  const h = location.hash
+  if (h === '#explore' || h.startsWith('#explore-paper-')) return 'explore'
+  if (h === '#bibliography') return 'bibliography'
+  if (h === '#resources') return 'resources'
+  if (h === '#atlas') return 'atlas'
+  if (h === '#arena') return 'arena'
+  if (h === '#mysteries') return 'mysteries'
   return 'home'
 }
 
@@ -27,6 +30,7 @@ function hashFor(v: ViewId): string {
   if (v === 'resources') return '#resources'
   if (v === 'atlas') return '#atlas'
   if (v === 'arena') return '#arena'
+  if (v === 'mysteries') return '#mysteries'
   return ''
 }
 
@@ -73,6 +77,7 @@ watch(view, (v) => {
     <ResourcesView v-else-if="view === 'resources'" />
     <EquationAtlasView v-else-if="view === 'atlas'" />
     <ArenaView v-else-if="view === 'arena'" />
+    <MysteriesView v-else-if="view === 'mysteries'" />
     <HomeView v-else />
   </div>
 </template>

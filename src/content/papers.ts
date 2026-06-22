@@ -4,7 +4,7 @@
  * and the publish order declared in HQIV/papers/README.md.
  *
  * Papers appear in publication order (Tier 0 foundation, then Tier 1
- * foundation-extension trilogy, etc.). Each exposes:
+ * foundation-extension quartet, Tier-2 mass closure, etc.). Each exposes:
  *   - Permanent identifiers (Zenodo DOI + record URL).
  *   - A short hook + trimmed abstract for the index card.
  *   - Key formal claims (what is proven / certified / measured).
@@ -42,11 +42,14 @@ export type LayArticle = {
   licence?: 'CC-BY-4.0' | string
 }
 
+export type PaperTier = 0 | 1 | 2
+
 export type Paper = {
   id: string
   title: string
   shortTitle: string
   kind: 'preprint' | 'technical-note' | 'review'
+  tier: PaperTier
   version: string
   date: string
   /** Zenodo DOI without the https://doi.org/ prefix. */
@@ -56,6 +59,8 @@ export type Paper = {
   hook: string
   /** Trimmed abstract (≈ 3 sentences). */
   abstract: string
+  /** Short headline for the home-page Lean resolution carousel. */
+  leanResolution: string
   /** What this paper proves / certifies / predicts. */
   keyClaims: string[]
   /** Concrete artifacts the paper ships. */
@@ -65,6 +70,19 @@ export type Paper = {
   layArticle: LayArticle | null
 }
 
+export type LeanResolutionSlide = {
+  paperId: string
+  paperShortTitle: string
+  resolution: string
+  doi: string
+}
+
+export function tierLabel(tier: PaperTier): string {
+  if (tier === 0) return 'Tier 0'
+  if (tier === 1) return 'Tier 1'
+  return 'Tier 2'
+}
+
 export const papers: Paper[] = [
   {
     id: 'unified-framework',
@@ -72,6 +90,7 @@ export const papers: Paper[] = [
       'Horizon-Quantized Informational Vacuum (HQIV): A Unified Framework from Causal Horizon Monogamy and Discrete Null-Lattice Combinatorics',
     shortTitle: 'Unified framework (HQIV)',
     kind: 'preprint',
+    tier: 0,
     version: 'v2',
     date: '2026-03-07',
     doi: '10.5281/zenodo.18899939',
@@ -79,6 +98,8 @@ export const papers: Paper[] = [
     hook: 'The foundational paper: two independent routes converge on one auxiliary field and one modified inertia.',
     abstract:
       'HQIV is presented as a relativistic completion of Jacobson’s thermodynamic gravity that enforces entanglement monogamy on overlapping causal horizons together with an informational-energy conservation axiom. A geometric route (phase-horizon-corrected Maxwell equations satisfying Schüller’s hyperbolicity criterion) and a combinatorial route (integer mode counting on the discrete Planck-scale null lattice extended to octonions) converge on identical auxiliary-field and modified-inertia structures. The Standard Model is embedded inside Spin(8) with triality generations, the black-hole information paradox is resolved via a soft dynamical firewall, and a 51.2 Gyr wall-clock cosmic age is predicted with the observed 13.8 Gyr appearance following from observer-centric ADM lapse compression.',
+    leanResolution:
+      'the black-hole information paradox — via a soft dynamical firewall on the discrete null lattice',
     keyClaims: [
       'Geometric and combinatorial routes converge on the same auxiliary field and modified inertia (Lean 4 verified).',
       'Standard Model embedded inside Spin(8) with triality-organized generations.',
@@ -118,6 +139,7 @@ export const papers: Paper[] = [
       'Light-Cone-Derived Auxiliary Fields Supply an Explicit Derived Interpretation of Quantum Superposition',
     shortTitle: 'Auxiliary fields & superposition',
     kind: 'preprint',
+    tier: 0,
     version: 'v2',
     date: '2026-03-30',
     doi: '10.5281/zenodo.19336553',
@@ -125,6 +147,8 @@ export const papers: Paper[] = [
     hook: 'Born-rule statistics without dynamical collapse: a derived, pilot-wave-aligned reading of superposition on an octonionic ℝ⁸ carrier.',
     abstract:
       'A Lean-formalised discrete null-lattice light-cone construction derives an auxiliary field and rapidity ladder directly from combinatorial structure, supplying an explicit, lossless interpretation of quantum superposition on an octonionic ℝ⁸ carrier that exactly reproduces the inner-product invariants of standard quantum mechanics. Lattice combinatorics force the shell-wise curvature-imprint ratio α = 3/5 and the complementary unit-horizon fraction γ = 2/5 exactly. A finite measurement layer implements Born-rule normalisation together with closed energy accounting through auxiliary, birefringence and redshift channels — deterministic local accounting that rules out globally branching many-worlds interpretations and instead aligns the model with a pilot-wave ontology.',
+    leanResolution:
+      'quantum superposition — Born-rule statistics without dynamical collapse, on an explicit auxiliary-field carrier',
     keyClaims: [
       'α = 3/5 and γ = 2/5 forced exactly by lattice combinatorics.',
       'Born-rule statistics emerge from an explicit, calibrated measurement layer — no dynamical collapse.',
@@ -163,6 +187,7 @@ export const papers: Paper[] = [
       'Review: From Discrete Null-Lattice Growth to so(8) — Concrete Realization and Exact Lie Closure',
     shortTitle: 'so(8) closure (review)',
     kind: 'technical-note',
+    tier: 0,
     version: 'v1',
     date: '2026-05-15',
     doi: '10.5281/zenodo.20214211',
@@ -170,6 +195,8 @@ export const papers: Paper[] = [
     hook: 'A self-contained, certified construction: 𝔤₂ + Δ → 𝔰𝔬(8) on the Fano-basis octonion carrier.',
     abstract:
       'Asks whether a discrete quadratic growth law on ℕ, motivated by null-shell counting, can be chained through a divergent curvature channel and a normalized phase readout to an explicit exceptional Lie-algebra closure in eight dimensions. In the concrete Fano-basis octonion matrix realisation, adjoining the antisymmetric phase-lift generator Δ (supported on the distinguished plane span{e₁, e₇}) to the 14-dimensional derivation algebra 𝔤₂ of the octonions generates — via iterated Lie brackets — the full 28-dimensional algebra 𝔰𝔬(8). The result is certified by an exact symbolic proof object over ℚ, a pedagogical so(3) + Δ₄ → so(4) toy model, and full Lean 4 verification.',
+    leanResolution:
+      'Standard Model gauge structure — 𝔤₂ + Δ generating the full 𝔰𝔬(8) algebra on the octonion carrier',
     keyClaims: [
       '𝔤₂ + Δ generates 𝔰𝔬(8) on the Fano-basis octonion carrier (iterated Lie brackets).',
       'Symbolic proof object over ℚ with rational structure constants (`so8_symbolic_certificate.json`).',
@@ -211,6 +238,7 @@ export const papers: Paper[] = [
       'Three-Dimensional Causal Growth and the Octonionic Gauge Sector: Conditional Forcing and a Uniqueness Conjecture',
     shortTitle: '3D causal growth & gauge',
     kind: 'preprint',
+    tier: 1,
     version: 'v1',
     date: '2026-05-27',
     doi: '10.5281/zenodo.20415586',
@@ -218,6 +246,8 @@ export const papers: Paper[] = [
     hook: 'The dimensional hinge: quadratic null-shell growth (not cubic bulk) plus a shared rapidity bridge conditionally forces the octonionic gauge layer in Lean-checked steps.',
     abstract:
       'Mathematical sequel to the so(8) closure paper. Isolates the quadratic-vs-cubic signature of HQIV 3+1 null-lattice causal growth. Packages a machine-checked conditional forcing theorem (shared-manifold rapidity bridge + so(8) witness) and derives the curvature-imprint pair (α,γ)=(3/5,2/5) as the d=3 case of a closed family from unit-split plus minimal spanning-tree overlap. States the uniqueness conjecture for the octonionic gauge sector explicitly. All cited Lean theorems are sorry-free; full audit graph in appendix.',
+    leanResolution:
+      'why three spatial dimensions — quadratic null-shell growth (not cubic bulk) conditionally forces the octonionic gauge layer',
     keyClaims: [
       'HQIV shell law is quadratic A(m)=4(m+2)(m+1) — null modes on the light cone, not cubic bulk volume of classical causal sets.',
       'Conditional forcing theorem (Lean-certified, zero sorry): shared-manifold rapidity bridge + imported so(8) span witness entails common rapidity, curvature-channel positivity/divergence, and reference normalization.',
@@ -254,6 +284,7 @@ export const papers: Paper[] = [
       'Octonionic Action from the HQIV-LEAN Variational Layer: Derivation, Holonomy Alignment, and a Tiered Uniqueness Thesis',
     shortTitle: 'Octonionic action & holonomy',
     kind: 'preprint',
+    tier: 1,
     version: 'v1',
     date: '2026-05-27',
     doi: '10.5281/zenodo.20416085',
@@ -261,6 +292,8 @@ export const papers: Paper[] = [
     hook: 'The discrete action layer in one place: O–Maxwell Lagrangian, Euler–Lagrange identity, lapse dragging that unifies gauge and gravity sectors, and certified holonomy alignment.',
     abstract:
       'Variational sequel centring the action already present in HQIV-LEAN: discrete octonion-indexed gauge potential A, O–Maxwell Lagrangian, proved Euler–Lagrange identity, gravitational constraint shown equivalent to the HQVM Friedmann identity with G_eff(φ)=φ^{3/5}, “lapse dragging” as the cross-sector φ identification, and holonomy alignment (cyclic Stokes, trivial plaquette holonomy, Wilson bounds). Introduces a tiered uniqueness thesis. Explicit minimal Fin 4 seed realisation with numerical verification and companion scripts.',
+    leanResolution:
+      'unifying gravity and gauge forces — lapse dragging identifies the same auxiliary φ across O–Maxwell and Friedmann sectors',
     keyClaims: [
       'Discrete O–Maxwell action and Euler–Lagrange identity derived and proved on the Fin8 × Fin4 carrier — matches discrete divergence of field strength minus sources.',
       'Gravitational constraint is exactly the HQVM Friedmann identity once the same auxiliary scalar φ is identified across sectors via “lapse dragging”.',
@@ -297,13 +330,16 @@ export const papers: Paper[] = [
       "Kirchhoff's Law of Thermal Emission with Built-in UV/IR Cutoffs from HQIV's Discrete Null Lattice",
     shortTitle: 'Finite-mode Kirchhoff radiation',
     kind: 'preprint',
+    tier: 1,
     version: 'v1',
     date: '2026-05-27',
     doi: '10.5281/zenodo.20416564',
     zenodoUrl: 'https://zenodo.org/records/20416564',
     hook: 'Blackbody spectrum as a finite sum with built-in Planck-pole UV cutoff and lock-in IR cutoff — no hand-imposed regularisation, no UV catastrophe.',
     abstract:
-      'Third paper in the Tier-1 foundation-extension trilogy. Derives Kirchhoff’s law directly from the discrete null lattice (mode count N(m)=(m+2)(m+1) from stars-and-bars) plus informational monogamy fixing α=3/5. The spectrum is an explicit finite sum between m=0 (Planck pole) and the lock-in reference shell. Recovers radiation-era H ∝ T² from the propagation-shell identification. Quantitative prediction: 0.379° isotropic cosmic birefringence at the present epoch using wall-clock age (agrees with Planck PR4 EB within −0.40σ). All core theorems machine-checked in Lean 4.',
+      'Third paper in the Tier-1 foundation-extension quartet. Derives Kirchhoff’s law directly from the discrete null lattice (mode count N(m)=(m+2)(m+1) from stars-and-bars) plus informational monogamy fixing α=3/5. The spectrum is an explicit finite sum between m=0 (Planck pole) and the lock-in reference shell. Recovers radiation-era H ∝ T² from the propagation-shell identification. Quantitative prediction: 0.379° isotropic cosmic birefringence at the present epoch using wall-clock age (agrees with Planck PR4 EB within −0.40σ). All core theorems machine-checked in Lean 4.',
+    leanResolution:
+      'the ultraviolet catastrophe — finite blackbody mode sums with built-in Planck-pole UV and lock-in IR cutoffs',
     keyClaims: [
       'Mode count per shell is finite by construction: N(m)=(m+2)(m+1), cumulative given by the hockey-stick identity — UV catastrophe never appears.',
       'Blackbody energy density is a finite sum between explicit UV cutoff (m=0 Planck pole) and IR cutoff at the lock-in reference shell; no renormalisation required.',
@@ -334,7 +370,251 @@ export const papers: Paper[] = [
       licence: 'CC-BY-4.0',
     },
   },
+  {
+    id: 'thermodynamics-arrow',
+    title:
+      'Thermodynamics and the Arrow of Time from the HQIV Temperature Ladder: Finite Blackbody Entropy, Causal Monogamy, and Machine-Checked Dissipation Signs',
+    shortTitle: 'Thermodynamics & arrow of time',
+    kind: 'preprint',
+    tier: 1,
+    version: 'v1',
+    date: '2026-05-31',
+    doi: '10.5281/zenodo.20478826',
+    zenodoUrl: 'https://zenodo.org/records/20478826',
+    hook: 'The four laws of thermodynamics and the arrow of time emerge from the shell temperature ladder T(m)=1/(m+1) — not postulated — with finite blackbody entropy and machine-checked dissipation signs.',
+    abstract:
+      'Fourth paper in the Tier-1 foundation-extension quartet. On the discrete shell temperature ladder T(m)=1/(m+1), Lean certifies the zeroth through third laws, finite-shell photon density and entropy density s=(4/3)U/T without a continuum ω/T→∞ limit, and Stefan–Boltzmann T⁴ scaling once enough shells are occupied. The macroscopic arrow of time is derived as the conjunction of causal acyclicity, nonnegative discrete entropy production, monotonic outward shell indexing, and a machine-checked Lyapunov descent toward the S³ null reference. A new section derives (α,γ)=(3/5,2/5) directly from the octonionic null-lattice mode budget.',
+    leanResolution:
+      'the arrow of time — derived from causal acyclicity, nonnegative entropy production, and shell-cooling monotonicity',
+    keyClaims: [
+      'Zeroth through third laws machine-checked on the ladder T(m)=1/(m+1); finite blackbody entropy without continuum limit.',
+      'Stefan–Boltzmann T⁴ scaling recovered from finite-shell occupation table — not imported.',
+      'Arrow of time derived (not postulated): acyclic ≺ + nonnegative entropy production + monotonic shell cooling + Lyapunov deficit descent to the S³ reference.',
+      '(α,γ)=(3/5,2/5) re-derived as outputs of the discrete null-lattice axioms in a self-contained section.',
+    ],
+    artifacts: [
+      'scripts.zip (ladder values, C3 dissipation sign, Euler monotonicity, finite-vs-large-cutoff blackbody table)',
+      'Lean 4 thermodynamic arrow certificate (HQIVParallelPoincare build target)',
+    ],
+    pipelineSteps: [0, 1, 2, 3, 4, 8, 9, 11, 12],
+    layArticle: {
+      slug: 'thermodynamics-arrow',
+      contributor: {
+        name: 'HQIV project (high-school level starter summaries)',
+        url: 'https://disregardfiat.tech',
+      },
+      contributedAt: '2026-05-31',
+      hook: 'Why does time only run forward? In HQIV the answer is not a mystery postulate — it falls out of four ordinary rules already built into the discrete light-cone bookkeeping: no closed causal loops, entropy never decreases on finite patches, outer shells are always cooler, and under-filled early shells relax toward balance.',
+      paragraphs: [
+        'Thermodynamics is usually taught as four laws plus an extra assumption that "entropy increases" because that is what we observe. This paper shows that on HQIV\'s discrete temperature ladder — where shell m has temperature T(m) = 1/(m+1) — all four laws and the arrow of time are theorems, not axioms.',
+        'On each finite shell the photon count, radiation pressure P = U/3, and entropy density s = (4/3)U/T are defined without ever taking the dangerous continuum limit where the number of modes goes to infinity. When you add up enough shells, the familiar Stefan–Boltzmann T⁴ law appears anyway, but only after the finite bookkeeping is done honestly.',
+        'The direction of time comes from four structures that were already in the programme: the causal partial order cannot loop back on itself; entropy production on any finite heat patch is nonnegative; moving outward on the null lattice means moving to lower temperature; and any horizon that starts with too few occupied early shells must relax via a machine-checked Lyapunov descent until it reaches the S³ null reference. Together these force a macroscopic arrow without importing one by hand.',
+        'The paper also re-derives the famous 3/5 and 2/5 split between curvature imprint and monogamy overlap directly from the octonionic null-lattice mode budget, reinforcing that those numbers are outputs of the discrete axioms rather than fitted inputs.',
+        'What remains open is the full continuum dictionary for complicated astrophysical environments with gradients, bulk motion, and magnetic fields. The finite-patch theorems are rigorous; translating them patch-by-patch into everyday engineering thermodynamics is ongoing work.',
+      ],
+      takeaway: 'The arrow of time may be nothing more than what happens when information on a discrete, acyclic light-cone lattice is forbidden from double-counting itself and must always settle its early-shell deficits before moving on.',
+      licence: 'CC-BY-4.0',
+    },
+  },
+  {
+    id: 'tuft-sm-lagrangian',
+    title:
+      'Dynamic Fermion Mass Spectrum and Standard Model Lagrangian from the HQIV Discrete Octonion Action: Nielsen TUFT Hopf Shells and Inner–Outer Casimir Realization',
+    shortTitle: 'SM Lagrangian & mass spectrum',
+    kind: 'preprint',
+    tier: 2,
+    version: 'v2',
+    date: '2026-06-08',
+    doi: '10.5281/zenodo.20601215',
+    zenodoUrl: 'https://zenodo.org/records/20601215',
+    hook: 'From two discrete axioms plus octonion tables, Lean certifies a sector-by-sector bridge to the Standard Model Lagrangian — masses and Yukawa weights from the inner–outer Casimir chart κ₆(ξ,Φ,t), proton lock-in fixing the dimensionful chart.',
+    abstract:
+      'Opening Tier-2 combined foundation. From light-cone combinatorics + informational monogamy and concrete octonion tables, Lean certifies (zero sorry) a sector-by-sector bridge S_HQIV ⇒ L_SM in which masses and Yukawa weights follow the inner–outer Casimir chart κ₆(ξ,Φ,t)=η_local(ξ)·γ·C₂(ξ,Φ,t). At the reference lock-in slice ξ_lock=5, charged leptons, electroweak bosons, neutrinos, and selected hadrons match PDG centrals to ~0.2%, ~0.4%, Σm_ν≈6.6×10⁻³ eV (~5% of the cosmological cap), and ~1% respectively — PDG values are comparison layers only. A single local proton measurement m_p=938.272 MeV fixes the dimensionful chart and downstream cosmological outputs (apparent age ≈13.8 Gyr, wall-clock age ≈51.2 Gyr, T_CMB≈2.7255 K) without simultaneous fits.',
+    leanResolution:
+      'the Standard Model Lagrangian — sector-by-sector bridge from discrete octonion action with masses from the κ₆ Casimir chart',
+    keyClaims: [
+      'S_HQIV ⇒ L_SM bridge certified sector-by-sector in Lean; κ₆ factorisation with C₂=56/45 at lock-in and five sector equalities.',
+      'Charged leptons, W/Z, neutrinos, and selected hadrons match PDG centrals at the lock-in slice to ~0.2–1% — no per-flavour fitting.',
+      'Proton lock-in scale witness: one local m_p measurement fixes the entire dimensionful chart and cosmological readouts.',
+      'Hopf-shell / Nielsen TUFT alignment packaged with explicit chart distinctions; not claimed: full anomaly cancellation or complete non-abelian holonomy.',
+    ],
+    artifacts: [
+      'scripts.zip (sector mass charts, lock-in witness reproduction)',
+      'Lean 4 mass-spectrum and Lagrangian-bridge modules (paper_tuft_sm_lagrangian target)',
+    ],
+    pipelineSteps: [5, 6, 7, 8, 9, 10, 11, 12],
+    layArticle: {
+      slug: 'tuft-sm-lagrangian',
+      contributor: {
+        name: 'HQIV project (high-school level starter summaries)',
+        url: 'https://disregardfiat.tech',
+      },
+      contributedAt: '2026-06-02',
+      hook: 'The masses of electrons, muons, W and Z bosons, neutrinos, and even some hadrons can be read off a single discrete bookkeeping chart — once you fix one anchor (the proton mass), the rest of the Standard Model Lagrangian follows with no per-particle tuning.',
+      paragraphs: [
+        'Particle physics usually treats the masses and coupling strengths of the Standard Model as measured inputs — dozens of numbers you look up in a table. This paper is the first HQIV release that tries to derive the whole Lagrangian sector-by-sector from the discrete octonion action already built in earlier work.',
+        'The key object is an inner–outer Casimir chart κ₆ that depends on a continuous shell coordinate ξ and a few auxiliary angles. At the special lock-in slice ξ = 5 (with the auxiliary angles set to zero), the chart produces numerical masses that land within about 0.2% for charged leptons, 0.4% for the W and Z bosons, roughly 5% for the sum of neutrino masses, and about 1% for selected hadrons — compared against PDG reference values used only as a sanity check, not as fit targets.',
+        'Crucially, only one dimensionful measurement is needed locally: the proton mass at 938.272 MeV. That single anchor fixes the entire MeV scale and propagates outward to cosmological numbers the programme already discussed — an apparent age near 13.8 billion years, a wall-clock age near 51.2 billion years, and a CMB temperature near 2.7255 K — without simultaneously fitting any of those observables.',
+        'The paper also documents how Nielsen\'s TUFT Hopf-shell picture aligns with HQIV\'s discrete carrier: nested fibrations supply the gauge sectors, fibre windings supply three generations, and Beltrami spectra on S³ connect to HQIV\'s existing spectral data — but the two frameworks are not silently identified; the chart distinctions are explicit.',
+        'What is honestly not yet claimed includes full anomaly cancellation, a complete choice of measure, and all subleading zeta corrections. The Lean certificate covers the patch-level bridge and the five named sector equalities; extending to every hadron and every loop correction is queued work.',
+      ],
+      takeaway: 'If a single proton mass measurement really does pin the entire dimensionful chart, the Standard Model may be less a menu of arbitrary constants and more a forced readout of the same discrete octonion ledger that already fixed α = 3/5.',
+      licence: 'CC-BY-4.0',
+    },
+  },
+  {
+    id: 'baryogenesis-lockin',
+    title:
+      'Curvature-Ratio Lock-In for Baryon Asymmetry: Demonstrated on the HQIV Discrete Spine (Lean Formalisation)',
+    shortTitle: 'Baryogenesis lock-in',
+    kind: 'preprint',
+    tier: 2,
+    version: 'v1',
+    date: '2026-06-16',
+    doi: '10.5281/zenodo.20711255',
+    zenodoUrl: 'https://zenodo.org/records/20711255',
+    hook: 'Baryon asymmetry as a theorem-level readout of the same lock-in calibration and horizon-ratio monotonicity used for hadrons and BBN.',
+    abstract:
+      'Tier-2 capability demonstration on the shared discrete curvature-ratio spine. At lock-in shell m=4, horizon ratios Ω_k(n;N)=I(n)/I(N) are proved monotone with Ω_k(M;M)=1, and the baryon readout η(n;N) shares that normalisation; a single quarantined anchor η_paper supplies the comparison-layer scale. Primary artefacts are the Lean formalisation and Python reproduction bundle.',
+    leanResolution:
+      'baryon asymmetry — monotone η(n;N) readout at lock-in shell m=4 from horizon-ratio bookkeeping',
+    keyClaims: [
+      'Horizon ratios Ω_k(n;N) proved monotone at lock-in with Ω_k(M;M)=1 (Lean-certified).',
+      'Baryon readout η(n;N) shares the same normalisation as hadron and BBN witnesses on the spine.',
+      'Single quarantined anchor η_paper for comparison layer only — not a fit target inside the formal readout.',
+      'Same lock-in calibration, monotonicity, and triality scaffolds as nucleon binding and BBN downstream.',
+    ],
+    artifacts: [
+      'Lean 4 baryogenesis lock-in modules',
+      'scripts.zip (horizon-ratio and η witness reproduction)',
+    ],
+    pipelineSteps: [4, 8, 9, 11, 12],
+    layArticle: null,
+  },
+  {
+    id: 'nucleon-binding',
+    title:
+      'Binding Energy and the Weak Force from HQIV Composite-Trace Weights: Lock-In Masses, Three Ledgers, and Zero-Knob Half-Lives',
+    shortTitle: 'Nucleon binding & β decay',
+    kind: 'preprint',
+    tier: 2,
+    version: 'v1',
+    date: '2026-06-16',
+    doi: '10.5281/zenodo.20711453',
+    zenodoUrl: 'https://zenodo.org/records/20711453',
+    hook: 'Local-curvature slot equations B_curv(ξ), three β ledgers, and composite-trace binding — from nucleons through condensed matter.',
+    abstract:
+      'Establishes the local-curvature slot equations witnessed from nucleon binding through bulk condensed matter. At lock-in shell referenceM=4, proton and neutron masses are constituent energies minus a shared 8×8 composite-trace binding on the 𝔰𝔬(8) network. Three strictly separate β ledgers (strong overlap, kinematic Q, weak width) yield free-neutron width to ≲0.01% without half-life fit parameters; integrated τ_n≈880 s at 300 K.',
+    leanResolution:
+      'nucleon masses and β-decay — three-ledger composite-trace weights with zero-knob weak widths',
+    keyClaims: [
+      'Proton and neutron masses from constituent energies minus shared composite-trace E_bind on the 𝔰𝔬(8) network.',
+      'Three β ledgers strictly separated: strong overlap, kinematic Q, and weak width from Fermi coupling.',
+      'Free-neutron weak width matches reference to ≲0.01% in phase space — no half-life fit parameters.',
+      'Light-isotope masses agree at mean 0.003% on the A≤4 panel; same B_curv(ξ) stack as BBN integrator.',
+    ],
+    artifacts: [
+      'scripts.zip (nucleon mass charts, β tipping, binding network reproduction)',
+      'Lean 4 nucleon-binding and three-ledger modules (paper_nucleon_binding target)',
+    ],
+    pipelineSteps: [5, 6, 7, 8, 9, 10, 11, 12],
+    layArticle: null,
+  },
+  {
+    id: 'bbn',
+    title:
+      'Big-Bang Nucleosynthesis from HQIV Network Weights: Lock-In η, Epoch Ladder, and Integrated Witnesses in the Lean Library',
+    shortTitle: 'BBN light elements',
+    kind: 'preprint',
+    tier: 2,
+    version: 'v1',
+    date: '2026-06-16',
+    doi: '10.5281/zenodo.20723606',
+    zenodoUrl: 'https://zenodo.org/records/20723606',
+    hook: 'Primordial Y_p, D/H, ³He/H, and ⁷Li/H from an 8×8 network readout when lock-in η and nucleon masses are fixed upstream.',
+    abstract:
+      'States what the BBN Lean stack proves about primordial light-element readouts when lock-in η, nucleon masses, and composite-trace binding weights are already fixed upstream. At lock-in the library defines an 8×8 network readout for Y_p, D/H, ³He/H, and ⁷Li/H; an integrated witness certifies Y_p in the observed band. Python reproduction at η_paper yields Y_p≈0.244, D/H≈2.51×10⁻⁵, ³He/H≈1.01×10⁻⁵, and ⁷Li/H≈2.54×10⁻¹⁰.',
+    leanResolution:
+      'primordial abundances — Y_p, D/H, ³He/H, and ⁷Li/H from network weights at lock-in η',
+    keyClaims: [
+      '8×8 network readout for Y_p, D/H, ³He/H, and ⁷Li/H from valley counts and cluster binding Q values.',
+      'BBN epoch placed on the temperature shell ladder between QCD lock-in and the CMB today.',
+      'Integrated Y_p witness certified in the observed band; umbrella bbn_full_vital_readout in Lean.',
+      'η imported from baryogenesis witness layer — not refit in this note; Coc semi-analytic fits are comparison-only.',
+    ],
+    artifacts: [
+      'scripts.zip (BBN integrator, epoch ladder, abundance reproduction)',
+      'Lean 4 BBN vital readout and stoichiometric integrator modules',
+    ],
+    pipelineSteps: [8, 9, 11, 12],
+    layArticle: null,
+  },
+  {
+    id: 'gluon-curvature',
+    title:
+      'The Gluon as Curvature Artifact: Strong Binding from Inner–Outer Casimir Trapping on the Octonion Carrier',
+    shortTitle: 'Gluon as curvature artifact',
+    kind: 'technical-note',
+    tier: 2,
+    version: 'v1',
+    date: '2026-06-17',
+    doi: '10.5281/zenodo.20724572',
+    zenodoUrl: 'https://zenodo.org/records/20724572',
+    hook: 'Continuum “gluons” and “QCD binding” are reader translations of trapped Casimir on strong octonion channels — not independent vector fields.',
+    abstract:
+      'Tier-2 closure note establishing that continuum gluons and QCD binding are reader translations of inner–outer Casimir trapping on the strong octonion channels, not independent vector fields in the proved discrete action. Hadronic and nuclear binding is discharged upstream by composite-trace weights; pion exchange and other meson mediators are not required in the proved library. Binding uses one network sum with trapped-Casimir factorisation of latticeSimplexCount·α_eff.',
+    leanResolution:
+      'strong force confinement — binding as trapped Casimir on octonion channels, not independent gluon fields',
+    keyClaims: [
+      'Strong kinetic term is abelian octonion kinetic density restricted to channels {4,5,6,7}.',
+      'Uniform network binding E_bind(m) with trapped-Casimir factorisation of coupling cells (Lean-certified).',
+      'Pion exchange and meson mediators not required in the proved library beyond masked abelian kinetic + trapped Casimir.',
+      'Shared inner–outer Casimir primitive drives heavy lepton gap and strong-sector trapping on one geometric object.',
+    ],
+    artifacts: [
+      'scripts.zip (trapped-Casimir and strong-kinetic witness reproduction)',
+      'Lean 4 gluon-curvature closure modules (paper_gluon_curvature target)',
+    ],
+    pipelineSteps: [5, 6, 7, 8, 9],
+    layArticle: null,
+  },
+  {
+    id: 'hep-decay-readout',
+    title:
+      'Heavy-Flavour Branching Ratios Derived from Discrete Three-Ledger Rules on the HQIV Null-Lattice Carrier',
+    shortTitle: 'HEP decay readout',
+    kind: 'preprint',
+    tier: 2,
+    version: 'v1',
+    date: '2026-06-21',
+    doi: '10.5281/zenodo.20780430',
+    zenodoUrl: 'https://zenodo.org/records/20780430',
+    hook: '567 open-channel heavy-flavour readouts from γ-rational CKM/OZI ledger weights — PDG enters only in a quarantined comparison layer.',
+    abstract:
+      'Heavy-flavour branching ratios read out from discrete combinatorial rules on the fixed three-ledger null-lattice spine, using only γ=2/5, γ-rational CKM/OZI weights, spine-discharge contacts, phase space, and normalization. Laboratory masses and PDG branching fractions enter exclusively in a quarantined comparison layer. Programmatic channel generation produces 567 open-channel readouts with zero structural failures on the 81-witness suite; curated panel of 17 channels lies within 3σ (mean 0.22σ).',
+    leanResolution:
+      'heavy-flavour decays — 567 channel readouts from γ-rational three-ledger rules (81/81 structural witnesses)',
+    keyClaims: [
+      'f_EM=37/10 for hidden-quarkonium EM contact derived as theorem of monogamy bookkeeping on the fixed carrier.',
+      '567 open-channel readouts with zero structural failures on the 81-witness suite.',
+      'Curated 17-channel panel within 3σ (mean 0.22σ, max 0.86σ) after Monte Carlo witness propagation.',
+      'Extends three-ledger β tipping from nucleon binding to open and hidden heavy flavour — PDG quarantined.',
+    ],
+    artifacts: [
+      'scripts.zip (multichannel readout pipeline, 81-witness suite)',
+      'Lean 4 HEP decay readout modules (paper_hep_decay_readout target)',
+    ],
+    pipelineSteps: [5, 6, 7, 8, 9, 10],
+    layArticle: null,
+  },
 ]
+
+export const leanResolutionSlides: LeanResolutionSlide[] = papers.map((p) => ({
+  paperId: p.id,
+  paperShortTitle: p.shortTitle,
+  resolution: p.leanResolution,
+  doi: p.doi,
+}))
 
 /**
  * Example lay article used as the contribution template on the

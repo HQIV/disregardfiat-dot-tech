@@ -56,8 +56,20 @@ async function paintEquation(s: number) {
   if (el && tex) renderDisplay(el, tex)
 }
 
+function scrollToPaperFromHash() {
+  const m = location.hash.match(/^#explore-paper-(.+)$/)
+  if (!m) return
+  const id = m[1]
+  activePaperId.value = id
+  nextTick(() => {
+    document.getElementById(`paper-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  })
+}
+
 onMounted(() => {
   void paintEquation(step.value)
+  scrollToPaperFromHash()
+  window.addEventListener('hashchange', scrollToPaperFromHash)
 })
 
 watch(step, (s) => {
@@ -297,7 +309,7 @@ function formatDate(iso: string): string {
       <section id="pipeline" class="scroll-mt-24 space-y-3">
         <h2 class="text-xl font-medium text-white">Derivation pipeline (internal bookkeeping)</h2>
         <p class="text-sm text-slate-400">
-          The same 13 steps recur across all three papers — shell counting through
+          The same 13 steps recur across the published series — shell counting through
           <span class="font-medium text-emerald-300">G<sub>eff</sub>(φ)=φ<sup>3/5</sup></span>.
           Each step shows which paper(s) treat it formally.
         </p>

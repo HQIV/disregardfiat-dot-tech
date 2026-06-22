@@ -3,6 +3,8 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { equations, type Equation, type PhysicsDomain, filterEquations } from '../content/equations'
 import { renderDisplay } from '../lib/katexRender'
 import DerivationCanvas from '../components/DerivationCanvas.vue'
+import AtlasCalculator from '../components/AtlasCalculator.vue'
+import HqivCalculatorPanel from '../components/HqivCalculatorPanel.vue'
 
 const domains: Array<'All' | PhysicsDomain> = ['All', 'GR', 'EM', 'SM', 'Thermo', 'Gauge', 'Quantum']
 const activeDomain = ref<'All' | PhysicsDomain>('All')
@@ -56,19 +58,10 @@ async function paintEquation(el: HTMLElement | null, tex: string) {
   renderDisplay(el, tex)
 }
 
-function getVisibleSteps(eq: Equation) {
-  const count = visibleStepCounts.value[eq.id] ?? 1
-  return eq.steps.slice(0, count)
-}
-
 // Repaint KaTeX for the current step when the panel opens or the step index changes
 watch([expandedId, currentStepIndex], async () => {
   await nextTick()
 }, { deep: true })
-
-function isFullyRevealed(eq: Equation) {
-  return (visibleStepCounts.value[eq.id] ?? 1) >= eq.steps.length
-}
 
 function domainChipClass(d: PhysicsDomain) {
   const map: Record<PhysicsDomain, string> = {
@@ -102,9 +95,12 @@ function domainChipClass(d: PhysicsDomain) {
         </p>
         <p class="mt-3 text-sm text-slate-400">
           All derivations are anchored in the peer-curated HQIV Zenodo records and the machine-checked Lean library.
+          Each step includes a <span class="text-cyan-300/90">live pyhqiv calculation</span> — the same Python package, running in your browser via Pyodide WASM.
         </p>
       </div>
     </header>
+
+    <HqivCalculatorPanel />
 
     <div class="mx-auto max-w-6xl px-4 pt-8">
       <!-- Filters -->
@@ -249,6 +245,11 @@ function domainChipClass(d: PhysicsDomain) {
                 {{ eq.steps[getCurrentStep(eq)].prose }}
               </p>
             </div>
+
+            <AtlasCalculator
+              :equation-id="eq.id"
+              :step-id="eq.steps[getCurrentStep(eq)].id"
+            />
 
             <!-- References footer -->
             <div class="mt-4 border-t border-slate-800 pt-3 text-xs text-slate-500">

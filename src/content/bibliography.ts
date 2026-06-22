@@ -376,7 +376,8 @@ export const bibliography: Author[] = [
     name: 'M. E. (Mike) McCulloch',
     role: 'Physicist · Lecturer in Geomatics',
     affiliation: 'University of Plymouth',
-    imageCredit: 'Portrait omitted pending a permissively-licensed source.',
+    imageUrl: '/mem_400x400.jpg',
+    imageCredit: 'Portrait used with permission (via X).',
     links: {
       institution: 'https://www.plymouth.ac.uk/staff/mike-mcculloch',
       blog: 'https://physicsfromtheedge.blogspot.com/',
