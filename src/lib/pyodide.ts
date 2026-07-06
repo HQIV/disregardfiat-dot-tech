@@ -137,6 +137,11 @@ import pyhqiv.thermodynamic_fundamentals
 import pyhqiv.quantum_optics.horizon_qed
 import pyhqiv.so8_generators
 import pyhqiv.scale_witness
+import pyhqiv.chemistry
+import pyhqiv.chemistry.electronic_chart
+import pyhqiv.bonded_horizon_casimir
+import pyhqiv.thermo
+import pyhqiv.hqiv_bound_states
 import importlib.metadata as _im
 print("pyhqiv", _im.version("pyhqiv"), "ready")
 `)

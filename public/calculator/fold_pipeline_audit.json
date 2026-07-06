@@ -1,0 +1,62 @@
+{
+  "policy": "PDB/COD Cα coordinates grade HQIV fold readouts only — never fold inputs.",
+  "audited_at": "2026-07-06",
+  "fold_api": "fold_peptide(sequence, ss, closure=True, staged=None)",
+  "fold_inputs": ["sequence (1-letter)", "ss (H/E/C/S per residue)", "closure flag", "staged flag"],
+  "fold_excludes": [
+    "PDB Cα coordinates",
+    "witness ca_angstrom arrays",
+    "named miniprotein register profiles",
+    "NIST/PDG tabulated bond lengths as fold inputs"
+  ],
+  "contact_targets": "Derived NeRF prototypes (helix i±3/4, sheet i+2, helix–sheet, hydrophobic scale) + optional seed distances from HQIV spine placement — not witness coordinates",
+  "browser_engine": "public/calculator/peptide_spine.py",
+  "python_mirror": "hqiv_lab/miniprotein_{basin,backbone,contacts,closure,fold}.py",
+  "lean_module": "Hqiv/ProteinResearch/",
+  "checks": [
+    {
+      "id": "spine_no_witness_symbols",
+      "pass": true,
+      "detail": "peptide_spine.py contains no witness, PDB, kabsch, or ca_angstrom identifiers — fold path is self-contained."
+    },
+    {
+      "id": "fold_api_minimal",
+      "pass": true,
+      "detail": "Browser invokes fold_peptide(seq, ss, closure=…) only; Pyodide exec has no access to witness JSON."
+    },
+    {
+      "id": "witness_json_quarantined",
+      "pass": true,
+      "detail": "miniprotein_witnesses.json and protein_folder_audit.json are fetched by Vue for compare/RMSD display only."
+    },
+    {
+      "id": "pdb_import_witness_only",
+      "pass": true,
+      "detail": "PDB import sets sequence + SS labels from HELIX/SHEET or backbone φ/ψ; Cα goes to witnessCa prop, not into fold_peptide."
+    },
+    {
+      "id": "no_named_register_profiles",
+      "pass": true,
+      "detail": "Basin assignment uses 8×8 carrier matrix readout + SS topology — registerTrpCage/registerHairpin profiles removed."
+    },
+    {
+      "id": "closure_derived_targets",
+      "pass": true,
+      "detail": "Tertiary contact SSE minimizes distances to spine-derived targets; helix–sheet dress uses HQIV seed trace, not PDB."
+    },
+    {
+      "id": "bond_geometry_from_spine",
+      "pass": true,
+      "detail": "N–Cα, Cα–C, C–N from diamond-node θ(Z) and monogamy spectator — same as hqiv_lab/miniprotein_backbone.py."
+    },
+    {
+      "id": "hqiv_witness_post_fold_only",
+      "pass": true,
+      "detail": "hqiv_lab/miniprotein_fold.py accepts witness_ca only for post-fold kabsch_rmsd grading in audit scripts."
+    }
+  ],
+  "source_repos": {
+    "website": "https://github.com/disregardfiat/disregardfiat-dot-tech",
+    "hqiv_lean": "https://github.com/HQIV/hqiv-lean"
+  }
+}

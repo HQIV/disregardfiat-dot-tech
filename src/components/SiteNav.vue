@@ -54,7 +54,7 @@ const emit = defineEmits<{
           "
           @click="emit('navigate', 'atlas')"
         >
-          Equation Atlas
+          HQIV Calculator
         </button>
         <button
           type="button"

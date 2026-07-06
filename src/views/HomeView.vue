@@ -301,7 +301,7 @@ function formatDate(iso: string): string {
       <div class="mb-3 rounded-xl border border-slate-800 bg-slate-900/30 p-4 text-sm">
         <p class="font-medium text-slate-200">Primary experience moved</p>
         <p class="mt-1 text-slate-400">
-          The new <a href="#atlas" class="text-emerald-400 underline-offset-2 hover:underline">Equation Atlas</a> is now the recommended entry point — a catalog of real foundational equations (Kirchhoff, Maxwell, Friedmann, SM Lagrangian, gauge structure, etc.) with step-by-step algebraic derivations showing how the HQIV lattice yields them.
+          The <a href="#atlas" class="text-emerald-400 underline-offset-2 hover:underline">HQIV Chemistry Calculator</a> is now the recommended entry point — build molecules atom-by-atom (Z-only inputs), read off spine observables, and fold peptides from derived Ramachandran geometry.
           The 13-step internal pipeline below is retained for readers who want the pure bookkeeping sequence.
         </p>
       </div>

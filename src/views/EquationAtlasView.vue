@@ -1,79 +1,11 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
-import { equations, type Equation, type PhysicsDomain, filterEquations } from '../content/equations'
-import { renderDisplay } from '../lib/katexRender'
-import DerivationCanvas from '../components/DerivationCanvas.vue'
-import AtlasCalculator from '../components/AtlasCalculator.vue'
-import HqivCalculatorPanel from '../components/HqivCalculatorPanel.vue'
+import { ref } from 'vue'
+import ChemistryBuilder from '../components/ChemistryBuilder.vue'
+import PeptideFoldPanel from '../components/PeptideFoldPanel.vue'
 
-const domains: Array<'All' | PhysicsDomain> = ['All', 'GR', 'EM', 'SM', 'Thermo', 'Gauge', 'Quantum']
-const activeDomain = ref<'All' | PhysicsDomain>('All')
+type TabId = 'molecule' | 'peptide'
 
-const filtered = computed(() => filterEquations(equations, activeDomain.value))
-
-const expandedId = ref<string | null>(null)
-const currentStepIndex = ref<Record<string, number>>({})
-
-function toggle(id: string) {
-  if (expandedId.value === id) {
-    expandedId.value = null
-  } else {
-    expandedId.value = id
-    if (currentStepIndex.value[id] === undefined) {
-      currentStepIndex.value[id] = 0
-    }
-  }
-  nextTick(() => {
-    if (expandedId.value) {
-      const el = document.getElementById(`eq-${expandedId.value}`)
-      el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  })
-}
-
-function getCurrentStep(eq: Equation) {
-  return currentStepIndex.value[eq.id] ?? 0
-}
-
-function nextStep(id: string, total: number) {
-  const cur = currentStepIndex.value[id] ?? 0
-  currentStepIndex.value[id] = Math.min(total - 1, cur + 1)
-}
-
-function prevStep(id: string) {
-  const cur = currentStepIndex.value[id] ?? 0
-  currentStepIndex.value[id] = Math.max(0, cur - 1)
-}
-
-function resetToStart(id: string) {
-  currentStepIndex.value[id] = 0
-}
-
-// Cleanup note: the old visibleStepCounts / reveal* / isFullyRevealed helpers have been removed
-// in favor of the single-step canvas + stepper model the user requested.
-
-async function paintEquation(el: HTMLElement | null, tex: string) {
-  if (!el || !tex) return
-  await nextTick()
-  renderDisplay(el, tex)
-}
-
-// Repaint KaTeX for the current step when the panel opens or the step index changes
-watch([expandedId, currentStepIndex], async () => {
-  await nextTick()
-}, { deep: true })
-
-function domainChipClass(d: PhysicsDomain) {
-  const map: Record<PhysicsDomain, string> = {
-    GR: 'border-rose-700/60 bg-rose-900/30 text-rose-200',
-    EM: 'border-sky-700/60 bg-sky-900/30 text-sky-200',
-    SM: 'border-violet-700/60 bg-violet-900/30 text-violet-200',
-    Thermo: 'border-amber-700/60 bg-amber-900/30 text-amber-200',
-    Gauge: 'border-emerald-700/60 bg-emerald-900/30 text-emerald-200',
-    Quantum: 'border-fuchsia-700/60 bg-fuchsia-900/30 text-fuchsia-200',
-  }
-  return map[d]
-}
+const tab = ref<TabId>('molecule')
 </script>
 
 <template>
@@ -81,200 +13,89 @@ function domainChipClass(d: PhysicsDomain) {
     <header class="border-b border-slate-800/60 bg-slate-900/40">
       <div class="mx-auto max-w-6xl px-4 py-10">
         <div class="flex items-center gap-3">
-          <span class="rounded-full border border-emerald-700/60 bg-emerald-900/30 px-3 py-0.5 text-xs font-medium uppercase tracking-wider text-emerald-200">
-            New
+          <span class="rounded-full border border-violet-700/60 bg-violet-900/30 px-3 py-0.5 text-xs font-medium uppercase tracking-wider text-violet-200">
+            Live calculator
           </span>
-          <p class="text-xs uppercase tracking-[3px] text-emerald-400/80">HQIV • From counting to the equations you already use</p>
+          <p class="text-xs uppercase tracking-[3px] text-violet-400/80">HQIV · Chemistry from Z alone</p>
         </div>
         <h1 class="mt-3 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-          Equation Atlas
+          HQIV Chemistry Calculator
         </h1>
         <p class="mt-4 max-w-3xl text-lg leading-relaxed text-slate-300">
-          A catalog of foundational physics equations that are currently treated as observational inputs or fitted parameters.
-          Each entry shows the standard form, then walks through the algebraic steps by which the HQIV discrete null-lattice construction yields (or corrects) it.
+          Build molecules atom-by-atom and read off every observable the spine currently discharges —
+          Aufbau/Slater, Compton slots, bonded-horizon surpluses, thermo, and (on the peptide tab)
+          backbone folding from derived Ramachandran geometry.
         </p>
         <p class="mt-3 text-sm text-slate-400">
-          All derivations are anchored in the peer-curated HQIV Zenodo records and the machine-checked Lean library.
-          Each step includes a <span class="text-cyan-300/90">live pyhqiv calculation</span> — the same Python package, running in your browser via Pyodide WASM.
+          Anchored in
+          <a
+            href="https://github.com/HQIV/hqiv-lean"
+            target="_blank"
+            class="text-violet-400 hover:underline"
+          >HqivSpine</a>
+          (<code class="text-violet-300/80">Chemistry.*</code>, ~130 modules, 0 sorry) and
+          <a
+            href="https://github.com/disregardfiat/pyhqiv"
+            target="_blank"
+            class="text-violet-400 hover:underline"
+          >pyhqiv</a>
+          running in your browser via Pyodide WASM.
         </p>
       </div>
     </header>
 
-    <HqivCalculatorPanel />
-
-    <div class="mx-auto max-w-6xl px-4 pt-8">
-      <!-- Filters -->
-      <div class="flex flex-wrap items-center gap-2">
+    <div class="mx-auto max-w-6xl px-4 pt-6">
+      <div class="flex gap-2 border-b border-slate-800 pb-px">
         <button
-          v-for="d in domains"
-          :key="d"
-          class="rounded-full border px-4 py-1 text-sm transition"
-          :class="activeDomain === d
-            ? 'border-emerald-600 bg-emerald-900/40 text-emerald-100'
-            : 'border-slate-700 bg-slate-900/40 text-slate-300 hover:border-slate-500 hover:text-slate-100'"
-          @click="activeDomain = d"
+          type="button"
+          class="rounded-t-lg px-4 py-2 text-sm font-medium transition"
+          :class="tab === 'molecule'
+            ? 'border border-b-0 border-violet-700/60 bg-violet-950/30 text-violet-100'
+            : 'text-slate-400 hover:text-slate-200'"
+          @click="tab = 'molecule'"
         >
-          {{ d }}
+          Molecule builder
         </button>
-        <div class="ml-auto text-xs text-slate-500">
-          {{ filtered.length }} equations
-        </div>
-      </div>
-
-      <!-- Card grid -->
-      <div class="mt-8 grid gap-6 lg:grid-cols-2">
-        <article
-          v-for="eq in filtered"
-          :id="`eq-${eq.id}`"
-          :key="eq.id"
-          class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/40 transition"
-          :class="{ 'ring-1 ring-emerald-700/60': expandedId === eq.id }"
+        <button
+          type="button"
+          class="rounded-t-lg px-4 py-2 text-sm font-medium transition"
+          :class="tab === 'peptide'
+            ? 'border border-b-0 border-amber-700/60 bg-amber-950/20 text-amber-100'
+            : 'text-slate-400 hover:text-slate-200'"
+          @click="tab = 'peptide'"
         >
-          <div class="p-6">
-            <div class="flex flex-wrap items-center gap-2">
-              <span
-                v-for="d in eq.domains"
-                :key="d"
-                class="rounded-full border px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider"
-                :class="domainChipClass(d)"
-              >
-                {{ d }}
-              </span>
-            </div>
-
-            <h3 class="mt-3 text-xl font-semibold leading-tight text-white">{{ eq.title }}</h3>
-
-            <!-- Standard form -->
-            <div class="mt-4 rounded-xl border border-slate-800 bg-slate-950/70 p-4">
-              <p class="text-[10px] font-medium uppercase tracking-wider text-slate-500">Standard (phenomenological)</p>
-              <div class="mt-2 overflow-x-auto text-slate-200">
-                <div :ref="(el) => { if (el) paintEquation(el as HTMLElement, eq.standardTeX) }" class="katex-display text-base" />
-              </div>
-              <p class="mt-2 text-sm text-slate-400">{{ eq.standardHook }}</p>
-            </div>
-
-            <!-- HQIV yield (teaser) -->
-            <div class="mt-3 rounded-xl border border-emerald-900/60 bg-emerald-950/10 p-4">
-              <p class="text-[10px] font-medium uppercase tracking-wider text-emerald-400/80">HQIV yield</p>
-              <div class="mt-2 overflow-x-auto text-emerald-100">
-                <div :ref="(el) => { if (el) paintEquation(el as HTMLElement, eq.hqivYieldTeX) }" class="katex-display text-base" />
-              </div>
-              <p class="mt-2 text-sm text-emerald-300/90">{{ eq.hqivHook }}</p>
-            </div>
-
-            <button
-              type="button"
-              class="mt-5 inline-flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800/60 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-emerald-700 hover:bg-emerald-900/30 hover:text-emerald-100"
-              @click="toggle(eq.id)"
-            >
-              {{ expandedId === eq.id ? 'Hide derivation' : 'Show derivation' }}
-              <span aria-hidden="true">{{ expandedId === eq.id ? '↑' : '↓' }}</span>
-            </button>
-          </div>
-
-          <!-- Expanded derivation panel (canvas-driven) -->
-          <div
-            v-if="expandedId === eq.id"
-            class="border-t border-slate-800 bg-slate-950/60 p-6"
-          >
-            <p class="mb-3 text-xs font-medium uppercase tracking-wider text-emerald-400">
-              Algebraic derivation — step {{ getCurrentStep(eq) + 1 }} / {{ eq.steps.length }}
-            </p>
-
-            <!-- Single canvas driven by the current step -->
-            <DerivationCanvas
-              :equation-id="eq.id"
-              :step-index="getCurrentStep(eq)"
-            />
-
-            <!-- Stepper controls -->
-            <div class="mt-3 flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                class="rounded border border-slate-700 px-3 py-1 text-xs text-slate-200 hover:bg-slate-800 disabled:opacity-40"
-                :disabled="getCurrentStep(eq) === 0"
-                @click="prevStep(eq.id)"
-              >
-                ← Prev
-              </button>
-              <button
-                type="button"
-                class="rounded border border-emerald-700/60 bg-emerald-900/30 px-3 py-1 text-xs text-emerald-100 hover:bg-emerald-900/50"
-                :disabled="getCurrentStep(eq) >= eq.steps.length - 1"
-                @click="nextStep(eq.id, eq.steps.length)"
-              >
-                Next step →
-              </button>
-              <button
-                type="button"
-                class="rounded border border-slate-700 px-3 py-1 text-xs text-slate-300 hover:bg-slate-800"
-                @click="resetToStart(eq.id)"
-              >
-                Reset
-              </button>
-              <span class="ml-auto text-[10px] text-slate-500">
-                Canvas shows motion / cancellation / substitution for the current step
-              </span>
-            </div>
-
-            <!-- Current step info at the bottom -->
-            <div class="mt-4 rounded-xl border border-slate-800 bg-slate-900/40 p-4">
-              <div class="flex items-center gap-2">
-                <span class="font-mono text-[10px] text-slate-500">
-                  {{ (getCurrentStep(eq) + 1).toString().padStart(2, '0') }}
-                </span>
-                <span class="text-sm font-medium text-white">
-                  {{ eq.steps[getCurrentStep(eq)].label }}
-                </span>
-                <span
-                  v-if="eq.steps[getCurrentStep(eq)].lockIn"
-                  class="ml-auto rounded-full border border-emerald-700/60 bg-emerald-900/30 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-300"
-                >
-                  Lock-in
-                </span>
-              </div>
-
-              <div class="mt-3 overflow-x-auto rounded-lg bg-black/50 p-4 text-emerald-50">
-                <div
-                  class="katex-display text-lg"
-                  :ref="(el) => { if (el) paintEquation(el as HTMLElement, eq.steps[getCurrentStep(eq)].teX) }"
-                />
-              </div>
-
-              <p class="mt-3 text-sm leading-relaxed text-slate-300">
-                {{ eq.steps[getCurrentStep(eq)].prose }}
-              </p>
-            </div>
-
-            <AtlasCalculator
-              :equation-id="eq.id"
-              :step-id="eq.steps[getCurrentStep(eq)].id"
-            />
-
-            <!-- References footer -->
-            <div class="mt-4 border-t border-slate-800 pt-3 text-xs text-slate-500">
-              <span class="font-medium text-slate-400">Anchored in:</span>
-              {{ eq.references.paper || 'HQIV papers' }}
-              <span v-if="eq.references.lean"> · Lean: <code class="text-emerald-400/70">{{ eq.references.lean }}</code></span>
-              <span v-if="eq.references.zenodo"> · <a :href="eq.references.zenodo" target="_blank" class="text-emerald-400/70 hover:underline">Zenodo</a></span>
-            </div>
-          </div>
-        </article>
+          Peptides → folding
+        </button>
       </div>
     </div>
 
-    <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <ChemistryBuilder v-if="tab === 'molecule'" />
+      <PeptideFoldPanel v-else />
+    </div>
+
+    <div class="mx-auto max-w-6xl px-4 pb-12">
       <div class="rounded-2xl border border-slate-800 bg-slate-900/30 p-6 text-sm text-slate-400">
-        <p class="font-medium text-slate-200">About this atlas</p>
+        <p class="font-medium text-slate-200">About this calculator</p>
         <p class="mt-2 leading-relaxed">
-          Every equation above is currently an input, a fit, or a postulate in standard physics.
-          HQIV treats them as readouts from a single discrete null-lattice bookkeeping rule plus informational monogamy on overlapping horizons.
-          The derivations are taken directly from the peer-curated papers in the
-          <a href="https://zenodo.org/communities/hqiv" target="_blank" class="text-emerald-400 hover:underline">HQIV Zenodo community</a>
-          and the machine-checked Lean library. Where a step is still scaffolded rather than fully certified, the panel notes it.
+          The old Equation Atlas derivation catalog moved aside in favor of interactive chemistry.
+          Spine-grade results use only Z (atomic number) and lattice-derived constants — no PDG masses,
+          no NIST bond tables as inputs. Comparison witnesses (PDB Cα RMSD, AME binding) appear only
+          on the peptide ladder panel.
         </p>
         <p class="mt-3 text-xs">
-          The older 13-step internal pipeline remains available under “Technical tour” for readers who want the pure bookkeeping sequence.
+          Peptide folding:
+          <a href="https://github.com/disregardfiat/disregardfiat-dot-tech/blob/main/public/calculator/peptide_spine.py" target="_blank" rel="noopener noreferrer" class="text-violet-400 hover:underline">peptide_spine.py</a>
+          (browser) ·
+          <a href="https://github.com/HQIV/hqiv-lean/tree/main/hqiv_lab" target="_blank" rel="noopener noreferrer" class="text-violet-400 hover:underline">hqiv_lab</a>
+          (Python mirror) ·
+          <a href="/calculator/fold_pipeline_audit.json" target="_blank" class="text-violet-400 hover:underline">fold audit</a>
+        </p>
+        <p class="mt-3 text-xs">
+          Agent contract:
+          <code class="text-violet-400/70">HQIV_LEAN/AGENTS/HQIVSPINE.md</code>
+          · Lab package:
+          <code class="text-violet-400/70">hqiv_lab/</code>
         </p>
       </div>
     </div>
