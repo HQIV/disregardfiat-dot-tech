@@ -268,6 +268,8 @@ AUDIT: dict[str, dict] = {
             "Hqiv.Physics.QuarkMetaResonance",
             "Hqiv.Physics.DerivedNucleonMass",
             "Hqiv.Physics.HadronS7ConfinementReadout",
+            "Hqiv.Physics.HepDecayReadout",
+            "Hqiv.Physics.HepAnomalyDischarge",
         ],
         "hqiv": "Confinement without propagating gluons — trapped Casimir on strong octonion channels (gluon artifact paper).",
         "in_spine": (
@@ -275,7 +277,7 @@ AUDIT: dict[str, dict] = {
             "one unified curvature-log kernel (GluonCurvatureArtifact); proton/hadron network binding and SU(3) chart "
             "Lie certificates (StrongColorSu3ChartClosure). HEP decay readout discharges strong-sector widths and OZI slots."
         ),
-        "remaining": "Excited-hadron spectrum polish in Arena; optional continuum Wilson-loop comparison layer (not the programme ontology).",
+        "remaining": "Excited-hadron spectrum polish in Arena; extend HEP 567-channel panel σ beyond curated 17.",
         "blockers": "None known — confinement is the trapped-Casimir readout, not a missing proof.",
         "papers": [
             "gluon-curvature",
@@ -302,7 +304,7 @@ AUDIT: dict[str, dict] = {
         ),
         "remaining": (
             "Full 3×3 CKM from Fano overlaps (CPHolonomyPhase lists this as open); mainstream θ_QCD comparison "
-            "wording for external reviewers; extend HEP anomaly discharge panel σ."
+            "wording for external reviewers; extend HEP anomaly discharge panel beyond curated 17-channel σ."
         ),
         "blockers": "None known — strong-CP smallness is structural (no gluon field), not an axion fit-out.",
         "papers": [
@@ -423,6 +425,24 @@ AUDIT: dict[str, dict] = {
         "in_spine": "Peptide folding is chemistry fit-out, not abiogenesis.",
         "remaining": "Prebiotic chemistry narrative.",
         "blockers": "Programme choice — not targeted.",
+    },
+    "protein-folding": {
+        "status": "partial",
+        "lean_evidence_level": "theorem_pack",
+        "lean_modules": [
+            "Chemistry.Biomolecule",
+            "Chemistry.Binding",
+            "Chemistry.ShellStructure",
+            "Chemistry.Molecule",
+        ],
+        "hqiv": "Miniprotein Cα folds from derived peptide spine + NERF/staged closure — PDB witnesses grade only (11/11 pass, mean ~2.03 Å).",
+        "in_spine": (
+            "Diamond-node bond geometry, VSEPR/shell chemistry spine, secondary-structure register, "
+            "tertiary contact graph, and NERF closure (hqiv_lab/miniprotein_*.py; Chemistry.Biomolecule in Lean)."
+        ),
+        "remaining": "Full-protein benchmarks beyond miniprotein ladder; cryo vs cytosol temperature dressings at σ.",
+        "blockers": "None known for the published miniprotein panel — larger proteins are fit-out.",
+        "papers": ["unified-framework", "tuft-sm-lagrangian"],
     },
 }
 

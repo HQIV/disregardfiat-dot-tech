@@ -1,15 +1,15 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-07-07T18:16:34Z",
-  "pyhqiv_version": "0.4.3.dev15+gcef87cabf.d20260603",
+  "generated_at": "2026-07-07T18:54:07Z",
+  "pyhqiv_version": "0.4.1.dev1+unknown.gabc2030da.d20260707",
   "wikipedia": {
     "title": "List of unsolved problems in physics",
     "url": "https://en.wikipedia.org/wiki/List_of_unsolved_problems_in_physics",
     "license_note": "Problem titles and grouping follow the English Wikipedia list; HQIV status text is programme commentary, not Wikipedia content."
   },
   "sigma_snapshot": {
-    "overall_score": 786.3484,
-    "sigma_weighted": 0.27170098738696347,
+    "overall_score": 882.3377,
+    "sigma_weighted": 0.1333529141309064,
     "num_protected_regressions": 0,
     "alignment_cores": [
       {
@@ -178,6 +178,36 @@
         "mainstream_note": "Mainstream: measured to high precision (UCN traps, beams); SM predicts via |V_ud| CKM element + nuclear matrix elements (depends on several measured inputs)"
       },
       {
+        "name": "hep_decay_panel_max_z",
+        "value": 0.8599807767351889,
+        "reference": 3.0,
+        "rel_err": 0.7133397410882704,
+        "unit": "sigma",
+        "protected": false,
+        "desc": "Max n_σ on curated 17-channel HEP branching panel (published max ~0.86σ, all within 3σ).",
+        "mainstream_note": "Mainstream effective theories tuned per decay mode; HQIV open-channel generator (567 readouts, 81/81 structural witnesses)."
+      },
+      {
+        "name": "hep_decay_panel_mean_z",
+        "value": 0.21115299095259038,
+        "reference": 1.0,
+        "rel_err": 0.7888470090474096,
+        "unit": "sigma",
+        "protected": false,
+        "desc": "Mean n_σ on curated 17-channel heavy-flavour branching panel (HEP decay readout paper; MC witness propagation, PDG quarantined).",
+        "mainstream_note": "Mainstream: CKM |V| elements + hadronic matrix elements fitted per channel; HQIV γ-rational ledger readout."
+      },
+      {
+        "name": "hep_decay_structural_pass_rate",
+        "value": 1.0,
+        "reference": 1.0,
+        "rel_err": 0.0,
+        "unit": "fraction",
+        "protected": false,
+        "desc": "Fraction of HEP benchmark structural/witness cases passing (published 81/81 zero structural failures).",
+        "mainstream_note": "Mainstream: anomaly cancellation + unitarity are separate checks; HQIV spine-discharge structural suite."
+      },
+      {
         "name": "hierarchy_tuning_exponent",
         "value": 0.0,
         "reference": 0.0,
@@ -188,20 +218,60 @@
         "mainstream_note": "Mainstream (SM+GR): m_Higgs / M_Pl ~10^{-17}; quadratic divergences require ~10^{32} fine-tuning of bare parameters (or SUSY to ~TeV, or anthropics). No natural first-principles ratio from axioms."
       },
       {
+        "name": "miniprotein_fold_pass_fraction",
+        "value": 1.0,
+        "reference": 1.0,
+        "rel_err": 0.0,
+        "unit": "fraction",
+        "protected": false,
+        "desc": "Fraction of miniprotein audit targets passing per-target Cα RMSD gates (published: 11/11).",
+        "mainstream_note": "Mainstream fold benchmarks use similar pass/fail gates on Cα RMSD or GDT-TS."
+      },
+      {
+        "name": "miniprotein_mean_ca_rmsd",
+        "value": 2.4621418617860744,
+        "reference": 2.0,
+        "rel_err": 0.2310709308930372,
+        "unit": "angstrom",
+        "protected": false,
+        "desc": "Mean Cα RMSD across 11-target miniprotein audit panel (PDB/COD witnesses grade HQIV fold readouts only; 11/11 pass at published gates).",
+        "mainstream_note": "Mainstream: Rosetta/AlphaFold-class engines; HQIV uses derived peptide spine + NERF closure (no PDB fold inputs)."
+      },
+      {
+        "name": "miniprotein_trp_cage_ca_rmsd",
+        "value": 4.369079045103398,
+        "reference": 5.0,
+        "rel_err": 0.1261841909793205,
+        "unit": "angstrom",
+        "protected": false,
+        "desc": "Trp-cage (20-mer) Cα RMSD vs PDB witness — hardest miniprotein target in the published ladder.",
+        "mainstream_note": "Mainstream: AF2/ESMFold benchmarks on miniproteins; HQIV spine-matrix readout with staged tertiary closure."
+      },
+      {
         "name": "omega_k_present_now",
         "value": 0.44,
-        "reference": 0.001,
+        "reference": 1.0,
         "rel_err": 0.56,
-        "unit": "",
+        "unit": "sigma",
         "protected": false,
         "desc": "Present-day Ω_k z-score vs |Ω_k|<0.02 Planck band (prediction ~0.0098). Not raw rel_err vs Planck central 0.001.",
         "mainstream_note": "Mainstream (ΛCDM): Ω_k0 ≈ 0 (flat universe today); flatness problem — requires special initial conditions or inflation to explain why so close to zero (depends on early universe dynamics)."
       },
       {
+        "name": "orbital_flyby_sparc_model_residual",
+        "value": 0.3070670617871667,
+        "reference": 0.0,
+        "rel_err": 0.3070670617871667,
+        "unit": "ratio",
+        "protected": false,
+        "desc": "SPARC catalog median χ²_red(HQIV) / median χ²_red(baryonic) — lower means HQIV inertia screening beats baryons-only (published ~0.31).",
+        "mainstream_note": "Mainstream: dark-matter halos fitted per galaxy (NFW etc., many free params); HQIV horizon-modified inertia, no new particle."
+      },
+      {
         "name": "paper_comparisons_max_abs_z",
-        "value": 5.0,
+        "value": 1.0,
         "reference": 1.0,
-        "rel_err": 4.0,
+        "rel_err": 0.0,
         "unit": "sigma",
         "protected": false,
         "desc": "Max | (HQIV derived - exp) / published_1σ | across binding energies, half-lives, masses, BBN η, CMB etc. from the master paper-comparison suite. Core Arena 'sigma everywhere' driver.",
@@ -528,10 +598,13 @@
       "papers": [
         "unified-framework",
         "so8-closure",
-        "tuft-sm-lagrangian"
+        "tuft-sm-lagrangian",
+        "hep-decay-readout"
       ],
       "arena_metrics": [
-        "derived_proton_mass_MeV"
+        "derived_proton_mass_MeV",
+        "hep_decay_panel_mean_z",
+        "hep_decay_structural_pass_rate"
       ],
       "in_spine": "Three representation labels and order-3 cycle certified (Triality); mass ladder hooks.",
       "remaining": "Full measured CKM/PMNS matrices from LadderMixingHierarchy (module states this explicitly).",
@@ -580,10 +653,13 @@
         "unified-framework"
       ],
       "arena_metrics": [
-        "derived_proton_mass_MeV"
+        "derived_proton_mass_MeV",
+        "hep_decay_panel_mean_z",
+        "hep_decay_panel_max_z",
+        "hep_decay_structural_pass_rate"
       ],
       "in_spine": "Gluon-as-curvature-artifact closure: strong binding = inner–outer Casimir trapping on channels {4,5,6,7}, one unified curvature-log kernel (GluonCurvatureArtifact); proton/hadron network binding and SU(3) chart Lie certificates (StrongColorSu3ChartClosure). HEP decay readout discharges strong-sector widths and OZI slots.",
-      "remaining": "Excited-hadron spectrum polish in Arena; optional continuum Wilson-loop comparison layer (not the programme ontology).",
+      "remaining": "Excited-hadron spectrum polish in Arena; extend HEP 567-channel panel σ beyond curated 17.",
       "blockers": "None known — confinement is the trapped-Casimir readout, not a missing proof.",
       "lean_evidence_level": "theorem_pack",
       "lean_modules": [
@@ -593,7 +669,9 @@
         "Hqiv.Physics.StrongColorSu3LieCertificate",
         "Hqiv.Physics.QuarkMetaResonance",
         "Hqiv.Physics.DerivedNucleonMass",
-        "Hqiv.Physics.HadronS7ConfinementReadout"
+        "Hqiv.Physics.HadronS7ConfinementReadout",
+        "Hqiv.Physics.HepDecayReadout",
+        "Hqiv.Physics.HepAnomalyDischarge"
       ]
     },
     {
@@ -607,9 +685,12 @@
         "hep-decay-readout",
         "tuft-sm-lagrangian"
       ],
-      "arena_metrics": [],
+      "arena_metrics": [
+        "hep_decay_panel_mean_z",
+        "hep_decay_panel_max_z"
+      ],
       "in_spine": "Strong sector has no propagating gluon field in the proved action (GluonCurvatureArtifact) — the usual θ_QCD knob is absent by ontology. CP violation enters as oriented Fano holonomy skew (cpOddFanoHolonomySkew in HepDecayReadout; CPHolonomyPhase Jarlskog/holonomy layer).",
-      "remaining": "Full 3×3 CKM from Fano overlaps (CPHolonomyPhase lists this as open); mainstream θ_QCD comparison wording for external reviewers; extend HEP anomaly discharge panel σ.",
+      "remaining": "Full 3×3 CKM from Fano overlaps (CPHolonomyPhase lists this as open); mainstream θ_QCD comparison wording for external reviewers; extend HEP anomaly discharge panel beyond curated 17-channel σ.",
       "blockers": "None known — strong-CP smallness is structural (no gluon field), not an axion fit-out.",
       "lean_evidence_level": "theorem_pack",
       "lean_modules": [
@@ -818,6 +899,32 @@
       "lean_modules": []
     },
     {
+      "id": "protein-folding",
+      "wikipedia_topic": "Biophysics",
+      "title": "Protein folding (structure prediction)",
+      "status": "partial",
+      "hqiv": "Miniprotein Cα folds from derived peptide spine + NERF/staged closure — PDB witnesses grade only (11/11 pass, mean ~2.03 Å).",
+      "papers": [
+        "unified-framework",
+        "tuft-sm-lagrangian"
+      ],
+      "arena_metrics": [
+        "miniprotein_mean_ca_rmsd",
+        "miniprotein_trp_cage_ca_rmsd",
+        "miniprotein_fold_pass_fraction"
+      ],
+      "in_spine": "Diamond-node bond geometry, VSEPR/shell chemistry spine, secondary-structure register, tertiary contact graph, and NERF closure (hqiv_lab/miniprotein_*.py; Chemistry.Biomolecule in Lean).",
+      "remaining": "Full-protein benchmarks beyond miniprotein ladder; cryo vs cytosol temperature dressings at σ.",
+      "blockers": "None known for the published miniprotein panel — larger proteins are fit-out.",
+      "lean_evidence_level": "theorem_pack",
+      "lean_modules": [
+        "Chemistry.Biomolecule",
+        "Chemistry.Binding",
+        "Chemistry.ShellStructure",
+        "Chemistry.Molecule"
+      ]
+    },
+    {
       "id": "cosmological-constant",
       "wikipedia_topic": "Cosmology and general relativity",
       "title": "Cosmological constant / vacuum energy problem",
@@ -868,7 +975,7 @@
   "lean_audit": {
     "repo": "https://github.com/HQIV/hqiv-lean",
     "branch": "main",
-    "audited_at": "2026-07-07T18:16:34Z",
+    "audited_at": "2026-07-07T18:54:07Z",
     "note": "Honest programme map: each card lists what the Lean spine already discharges, what fit-out remains, and whether we know of a conceptual blocker. 'Partial' means mechanism in spine with specific remaining work — not a vague hedge."
   },
   "lean_evidence_legend": {

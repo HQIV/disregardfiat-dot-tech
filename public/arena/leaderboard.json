@@ -1,16 +1,17 @@
 {
+  "schema_version": 2,
+  "generated_at": "2026-07-07T18:54:07Z",
   "entries": [
     {
       "branch": "main",
-      "sha": "abc2030da2c908173f74aa99a35bbbf8ba5a6eb5",
-      "author": "disregardfiat",
-      "score": 941.1086,
-      "sigma_weighted": 0.06257666,
+      "sha": "local-published-benchmarks",
+      "author": "HQIV",
+      "score": 886.0607,
+      "sigma_weighted": 0.12859086,
       "sigma_programme_max_z": 1.0,
-      "timestamp": "2026-07-07T18:16:11.045132+00:00",
-      "regressions": 0,
-      "badges": [],
-      "status": "baseline",
+      "coverage_count": 27,
+      "coverage_total": 27,
+      "num_metrics": 27,
       "metrics": {
         "curvature_norm_combinatorial": {
           "abs_err": 0.0,
@@ -166,6 +167,39 @@
           "value": 0.0016,
           "weight": 1.5
         },
+        "hep_decay_panel_max_z": {
+          "abs_err": 2.140019223264811,
+          "desc": "Max n_\u03c3 on curated 17-channel HEP branching panel (published max ~0.86\u03c3, all within 3\u03c3).",
+          "name": "hep_decay_panel_max_z",
+          "protected": false,
+          "reference": 3.0,
+          "rel_err": 0.7133397410882704,
+          "unit": "sigma",
+          "value": 0.8599807767351889,
+          "weight": 1.5
+        },
+        "hep_decay_panel_mean_z": {
+          "abs_err": 0.7888470090474096,
+          "desc": "Mean n_\u03c3 on curated 17-channel heavy-flavour branching panel (HEP decay readout paper; MC witness propagation, PDG quarantined).",
+          "name": "hep_decay_panel_mean_z",
+          "protected": false,
+          "reference": 1.0,
+          "rel_err": 0.7888470090474096,
+          "unit": "sigma",
+          "value": 0.21115299095259038,
+          "weight": 2.0
+        },
+        "hep_decay_structural_pass_rate": {
+          "abs_err": 0.0,
+          "desc": "Fraction of HEP benchmark structural/witness cases passing (published 81/81 zero structural failures).",
+          "name": "hep_decay_structural_pass_rate",
+          "protected": false,
+          "reference": 1.0,
+          "rel_err": 0.0,
+          "unit": "fraction",
+          "value": 1.0,
+          "weight": 1.0
+        },
         "hierarchy_tuning_exponent": {
           "abs_err": 0.0,
           "desc": "Hierarchy tuning exponent: HQIV derives weak/Planck (and GUT) scale separation from lock-in m~4 + discrete counts without quadratic tuning. Matches paper derivations of m_p, alpha_GUT.",
@@ -177,6 +211,39 @@
           "value": 0.0,
           "weight": 2.0
         },
+        "miniprotein_fold_pass_fraction": {
+          "abs_err": 0.0,
+          "desc": "Fraction of miniprotein audit targets passing per-target C\u03b1 RMSD gates (published: 11/11).",
+          "name": "miniprotein_fold_pass_fraction",
+          "protected": false,
+          "reference": 1.0,
+          "rel_err": 0.0,
+          "unit": "fraction",
+          "value": 1.0,
+          "weight": 1.0
+        },
+        "miniprotein_mean_ca_rmsd": {
+          "abs_err": 0.4621418617860744,
+          "desc": "Mean C\u03b1 RMSD across 11-target miniprotein audit panel (PDB/COD witnesses grade HQIV fold readouts only; 11/11 pass at published gates).",
+          "name": "miniprotein_mean_ca_rmsd",
+          "protected": false,
+          "reference": 2.0,
+          "rel_err": 0.2310709308930372,
+          "unit": "angstrom",
+          "value": 2.4621418617860744,
+          "weight": 2.0
+        },
+        "miniprotein_trp_cage_ca_rmsd": {
+          "abs_err": 0.6309209548966024,
+          "desc": "Trp-cage (20-mer) C\u03b1 RMSD vs PDB witness \u2014 hardest miniprotein target in the published ladder.",
+          "name": "miniprotein_trp_cage_ca_rmsd",
+          "protected": false,
+          "reference": 5.0,
+          "rel_err": 0.1261841909793205,
+          "unit": "angstrom",
+          "value": 4.369079045103398,
+          "weight": 1.5
+        },
         "omega_k_present_now": {
           "abs_err": 0.56,
           "desc": "Present-day \u03a9_k z-score vs Planck band (prediction ~0.0098; |\u03a9_k|<~0.02). Horizon-self \u03a9_k(N;N)=1 is a separate protected theorem.",
@@ -186,6 +253,17 @@
           "rel_err": 0.56,
           "unit": "sigma",
           "value": 0.43999999999999995,
+          "weight": 1.5
+        },
+        "orbital_flyby_sparc_model_residual": {
+          "abs_err": 0.3070670617871667,
+          "desc": "SPARC catalog median \u03c7\u00b2_red(HQIV) / median \u03c7\u00b2_red(baryonic) \u2014 lower means HQIV inertia screening beats baryons-only (published ~0.31).",
+          "name": "orbital_flyby_sparc_model_residual",
+          "protected": false,
+          "reference": 0.0,
+          "rel_err": 0.3070670617871667,
+          "unit": "ratio",
+          "value": 0.3070670617871667,
           "weight": 1.5
         },
         "paper_comparisons_max_abs_z": {
@@ -233,265 +311,8 @@
           "weight": 3.0
         }
       },
-      "github_login": "disregardfiat",
-      "coverage_count": 20,
-      "num_metrics": 20,
-      "coverage_total": 20,
-      "coverage_ratio": 1.0,
-      "score_coverage_adjusted": 941.1086,
-      "avatar_url": "https://github.com/disregardfiat.png?size=64"
+      "note": "Bundled from local pyhqiv baseline until main refresh after push."
     }
   ],
-  "current_best": {
-    "branch": "main",
-    "sha": "abc2030da2c908173f74aa99a35bbbf8ba5a6eb5",
-    "author": "disregardfiat",
-    "score": 941.1086,
-    "sigma_weighted": 0.06257666,
-    "sigma_programme_max_z": 1.0,
-    "timestamp": "2026-07-07T18:16:11.045132+00:00",
-    "regressions": 0,
-    "badges": [],
-    "status": "baseline",
-    "metrics": {
-      "curvature_norm_combinatorial": {
-        "abs_err": 0.0,
-        "desc": "Combinatorial curvature norm N67 = 6^7 \u221a3 from discrete null lattice (Lean OctonionicLightCone)",
-        "name": "curvature_norm_combinatorial",
-        "protected": true,
-        "reference": 484863.3748676012,
-        "rel_err": 0.0,
-        "unit": "",
-        "value": 484863.3748676012,
-        "weight": 2.0
-      },
-      "derived_proton_mass_MeV": {
-        "abs_err": 0.0,
-        "desc": "Proton mass anchor formally derived from Lean (DerivedNucleonMass + tuft etc)",
-        "name": "derived_proton_mass_MeV",
-        "protected": true,
-        "reference": 938.2720813,
-        "rel_err": 0.0,
-        "unit": "MeV",
-        "value": 938.2720813,
-        "weight": 2.0
-      },
-      "lapse_factor_ref_point": {
-        "abs_err": 0.0,
-        "desc": "ADM lapse at canonical reference-like point (Lean HQVMetric / HQVM_lapse)",
-        "name": "lapse_factor_ref_point",
-        "protected": true,
-        "reference": 1.4,
-        "rel_err": 0.0,
-        "unit": "",
-        "value": 1.4,
-        "weight": 1.5
-      },
-      "omega_k_at_horizon_self": {
-        "abs_err": 0.0,
-        "desc": "\u03a9_k(N;N) must be exactly 1 at the horizon (Lean theorem omega_k_at_horizon_self)",
-        "name": "omega_k_at_horizon_self",
-        "protected": true,
-        "reference": 1.0,
-        "rel_err": 0.0,
-        "unit": "1",
-        "value": 1.0,
-        "weight": 3.0
-      },
-      "omega_k_partial_at_reference": {
-        "abs_err": 0.0,
-        "desc": "\u03a9_k at lock-in/reference shell relative to itself (Lean omega_k_lockin_calibration)",
-        "name": "omega_k_partial_at_reference",
-        "protected": true,
-        "reference": 1.0,
-        "rel_err": 0.0,
-        "unit": "1",
-        "value": 1.0,
-        "weight": 3.0
-      },
-      "reference_m": {
-        "abs_err": 0.0,
-        "desc": "Lock-in shell index (qcdShell + lattice steps) \u2014 changing this is a major formal shift",
-        "name": "reference_m",
-        "protected": true,
-        "reference": 4.0,
-        "rel_err": 0.0,
-        "unit": "shell",
-        "value": 4.0,
-        "weight": 1.0
-      },
-      "so8_dim": {
-        "abs_err": 0.0,
-        "desc": "so(8) Lie closure dimension (Lean SO8Closure + triality + GeneratorsLieClosure)",
-        "name": "so8_dim",
-        "protected": true,
-        "reference": 28.0,
-        "rel_err": 0.0,
-        "unit": "dim",
-        "value": 28.0,
-        "weight": 2.0
-      },
-      "alpha_GUT": {
-        "abs_err": 0.0,
-        "desc": "GUT coupling from Lean \u03b2-running engine (1/42 in paper)",
-        "name": "alpha_GUT",
-        "protected": false,
-        "reference": 0.023809523809523808,
-        "rel_err": 0.0,
-        "unit": "",
-        "value": 0.023809523809523808,
-        "weight": 1.0
-      },
-      "available_modes_ref": {
-        "abs_err": 0.0,
-        "desc": "Combinatorial mode count at reference shell (Lean lattice)",
-        "name": "available_modes_ref",
-        "protected": false,
-        "reference": 120.0,
-        "rel_err": 0.0,
-        "unit": "modes",
-        "value": 120.0,
-        "weight": 0.5
-      },
-      "bbn_eta10": {
-        "abs_err": 0.09782424638201803,
-        "desc": "Baryon-to-photon ratio \u03b7 \u00d7 10^10 at BBN/CMB from HQIV first-principles (dynamic shell integrator: curvature shells + vev + binding feedback + seed imprint over QCD-to-lock-in window). Paper script hqiv_dynamic_bulk_bbn.py gives ~6.19782 (not 6.10).",
-        "name": "bbn_eta10",
-        "protected": false,
-        "reference": 6.1,
-        "rel_err": 0.01603676170197017,
-        "unit": "",
-        "value": 6.197824246382018,
-        "weight": 2.0
-      },
-      "cmb_birefringence_z": {
-        "abs_err": 0.6063829787234045,
-        "desc": "CMB birefringence \u03b2 (deg) at now from HQIV (\u03b1 imprint + self-clock; paper script 0.379 deg). Python current 0.3 from witness. Agrees with obs within ~0.4\u03c3 per paper.",
-        "name": "cmb_birefringence_z",
-        "protected": false,
-        "reference": 1.0,
-        "rel_err": 0.6063829787234045,
-        "unit": "sigma",
-        "value": 0.3936170212765955,
-        "weight": 1.5
-      },
-      "deuteron_binding_z": {
-        "abs_err": 0.24999999996918143,
-        "desc": "Deuteron total binding B (MeV) from Lean spectraDeuteronBinding_MeV witness vs AME2020 (with real exp \u03c3). Heavier-nuclei ladder polish remains a separate Arena target.",
-        "name": "deuteron_binding_z",
-        "protected": false,
-        "reference": 1.0,
-        "rel_err": 0.24999999996918143,
-        "unit": "sigma",
-        "value": 0.7500000000308186,
-        "weight": 2.0
-      },
-      "flatness_tuning_exponent": {
-        "abs_err": 0.0,
-        "desc": "Tuning exponent for initial curvature to produce observed near-flat universe today. HQIV dynamics from lattice gives natural small Omega_k(now) ~ paper value 0.0098 (agrees with Planck/bounds).",
-        "name": "flatness_tuning_exponent",
-        "protected": false,
-        "reference": 0.0,
-        "rel_err": 0.0,
-        "unit": "decades",
-        "value": 0.0,
-        "weight": 2.0
-      },
-      "free_neutron_half_life": {
-        "abs_err": 0.0016,
-        "desc": "Free n lifetime (beta decay) from G_F^2 m_e^5 |M|^2 scaffold + ladder (isotope_ladder + hqiv_nuclear_spectra). Matches experiment to ~0.16% in current ladder (benchmark).",
-        "name": "free_neutron_half_life",
-        "protected": false,
-        "reference": 0.0,
-        "rel_err": 0.0016,
-        "unit": "rel_err",
-        "value": 0.0016,
-        "weight": 1.5
-      },
-      "hierarchy_tuning_exponent": {
-        "abs_err": 0.0,
-        "desc": "Hierarchy tuning exponent: HQIV derives weak/Planck (and GUT) scale separation from lock-in m~4 + discrete counts without quadratic tuning. Matches paper derivations of m_p, alpha_GUT.",
-        "name": "hierarchy_tuning_exponent",
-        "protected": false,
-        "reference": 0.0,
-        "rel_err": 0.0,
-        "unit": "decades",
-        "value": 0.0,
-        "weight": 2.0
-      },
-      "omega_k_present_now": {
-        "abs_err": 0.56,
-        "desc": "Present-day \u03a9_k z-score vs Planck band (prediction ~0.0098; |\u03a9_k|<~0.02). Horizon-self \u03a9_k(N;N)=1 is a separate protected theorem.",
-        "name": "omega_k_present_now",
-        "protected": false,
-        "reference": 1.0,
-        "rel_err": 0.56,
-        "unit": "sigma",
-        "value": 0.43999999999999995,
-        "weight": 1.5
-      },
-      "paper_comparisons_max_abs_z": {
-        "abs_err": 0.0,
-        "desc": "Max | (HQIV derived - exp) / published_1\u03c3 | across binding energies, half-lives, masses, BBN \u03b7, CMB etc. from the master paper-comparison suite. Core Arena 'sigma everywhere' driver.",
-        "name": "paper_comparisons_max_abs_z",
-        "protected": false,
-        "reference": 1.0,
-        "rel_err": 0.0,
-        "unit": "sigma",
-        "value": 1.0,
-        "weight": 2.5
-      },
-      "proton_electron_mass_ratio": {
-        "abs_err": 1.3429426644506748e-05,
-        "desc": "m_p / m_e from HQIV resonance ladder + nucleon binding (tuft + SM_GR_Unification papers)",
-        "name": "proton_electron_mass_ratio",
-        "protected": false,
-        "reference": 1836.15267343,
-        "rel_err": 7.313894339417914e-09,
-        "unit": "",
-        "value": 1836.1526600005734,
-        "weight": 2.0
-      },
-      "tuft_hopf_kappa6_correction": {
-        "abs_err": 2.5849394142282115e-26,
-        "desc": "TUFT Hopf \u03ba\u2086 = \u03b7_paper \u00d7 \u03b3 \u00d7 C\u2082 (C2 = lapse conc at lock-in) for advanced mass/binding corrections in papers. Python now mirrors Lean.",
-        "name": "tuft_hopf_kappa6_correction",
-        "protected": false,
-        "reference": 1.708e-10,
-        "rel_err": 1.5134305703912246e-16,
-        "unit": "",
-        "value": 1.7079999999999997e-10,
-        "weight": 0.5
-      },
-      "vacuum_energy_discrepancy": {
-        "abs_err": 0.0,
-        "desc": "Vacuum energy density from finite sum \u00bd N(m) \u03c9(m) over causal modes 0 to m_now (matches paper kirchhoff_finite_mode script). HQIV gives observed small value naturally.",
-        "name": "vacuum_energy_discrepancy",
-        "protected": false,
-        "reference": 0.0,
-        "rel_err": 0.0,
-        "unit": "",
-        "value": 0.0,
-        "weight": 3.0
-      }
-    },
-    "github_login": "disregardfiat",
-    "coverage_count": 20,
-    "num_metrics": 20,
-    "coverage_total": 20,
-    "coverage_ratio": 1.0,
-    "score_coverage_adjusted": 941.1086,
-    "avatar_url": "https://github.com/disregardfiat.png?size=64"
-  },
-  "history": [
-    {
-      "ts": "2026-07-07T18:16:11.045132+00:00",
-      "score": 941.1086,
-      "sigma": 1.0
-    }
-  ],
-  "badges": {},
-  "schema_version": 1,
-  "note": "Corrected baseline: Lean deuteron witness + Planck \u03a9_k band (pending pyhqiv main merge).",
-  "coverage_total": 20
+  "source": "local pyhqiv baseline"
 }
