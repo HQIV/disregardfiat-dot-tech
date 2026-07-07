@@ -8,8 +8,17 @@ import ResourcesView from './views/ResourcesView.vue'
 import EquationAtlasView from './views/EquationAtlasView.vue'
 import ArenaView from './views/ArenaView.vue'
 import MysteriesView from './views/MysteriesView.vue'
+import SponsorView from './views/SponsorView.vue'
 
-type ViewId = 'home' | 'explore' | 'bibliography' | 'resources' | 'atlas' | 'arena' | 'mysteries'
+type ViewId =
+  | 'home'
+  | 'explore'
+  | 'bibliography'
+  | 'resources'
+  | 'atlas'
+  | 'arena'
+  | 'mysteries'
+  | 'sponsor'
 
 function viewFromHash(): ViewId {
   const h = location.hash
@@ -19,6 +28,7 @@ function viewFromHash(): ViewId {
   if (h === '#atlas') return 'atlas'
   if (h === '#arena') return 'arena'
   if (h === '#mysteries') return 'mysteries'
+  if (h === '#sponsor') return 'sponsor'
   return 'home'
 }
 
@@ -31,6 +41,7 @@ function hashFor(v: ViewId): string {
   if (v === 'atlas') return '#atlas'
   if (v === 'arena') return '#arena'
   if (v === 'mysteries') return '#mysteries'
+  if (v === 'sponsor') return '#sponsor'
   return ''
 }
 
@@ -78,6 +89,7 @@ watch(view, (v) => {
     <EquationAtlasView v-else-if="view === 'atlas'" />
     <ArenaView v-else-if="view === 'arena'" />
     <MysteriesView v-else-if="view === 'mysteries'" />
+    <SponsorView v-else-if="view === 'sponsor'" />
     <HomeView v-else />
   </div>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import SiteFooter from '../components/SiteFooter.vue'
 import {
   ARENA_API_BASE,
   ARENA_BUNDLED_LEADERBOARD_URL,
@@ -542,23 +543,6 @@ function badgeClass(key: string) {
       </section>
     </main>
 
-    <footer class="border-t border-slate-800 py-8 text-center text-xs text-slate-600">
-      <p>HQIV Arena · disregardfiat.tech/#arena</p>
-      <p class="mt-1">
-        <a href="#home" class="underline-offset-2 hover:text-slate-400 hover:underline">Overview</a>
-        ·
-        <a href="#resources" class="underline-offset-2 hover:text-slate-400 hover:underline"
-          >Resources</a
-        >
-        ·
-        <a
-          :href="PYHQIV_REPO"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline-offset-2 hover:text-slate-400 hover:underline"
-          >pyhqiv on GitHub</a
-        >
-      </p>
-    </footer>
+    <SiteFooter tagline="HQIV Arena · disregardfiat.tech/#arena" />
   </div>
 </template>

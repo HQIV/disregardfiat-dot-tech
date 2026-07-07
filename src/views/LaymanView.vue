@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import HqivPipelineCanvas from '../components/HqivPipelineCanvas.vue'
 import LeanResolutionCarousel from '../components/LeanResolutionCarousel.vue'
+import SiteFooter from '../components/SiteFooter.vue'
 import { faq, laymanSteps, outcomes } from '../content/layman'
 import { papers, tierLabel } from '../content/papers'
 
@@ -334,37 +335,8 @@ function next() {
       </section>
     </main>
 
-    <footer class="border-t border-slate-800 py-8 text-center text-xs text-slate-600">
-      <p>HQIV research · disregardfiat.tech</p>
+    <SiteFooter>
       <p class="mt-1">Intuitive overview; formal claims live in HQIV-LEAN papers and proofs.</p>
-      <p class="mt-2">
-        Source on
-        <a
-          href="https://github.com/HQIV"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline-offset-2 hover:text-slate-400 hover:underline"
-          >GitHub</a
-        >
-        · Archive on
-        <a
-          href="https://zenodo.org/communities/hqiv"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline-offset-2 hover:text-slate-400 hover:underline"
-          >Zenodo</a
-        >
-        · Chat on
-        <a
-          href="https://discord.gg/UUfGBQBv"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline-offset-2 hover:text-slate-400 hover:underline"
-          >Discord</a
-        >
-        ·
-        <a href="#arena" class="underline-offset-2 hover:text-slate-400 hover:underline">Arena</a>
-      </p>
-    </footer>
+    </SiteFooter>
   </div>
 </template>

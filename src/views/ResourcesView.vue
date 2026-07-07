@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { resources, curationPillars, type Resource } from '../content/resources'
+import SiteFooter from '../components/SiteFooter.vue'
 
 const tone: Record<Resource['kind'], { ring: string; chip: string; label: string }> = {
   code: {
@@ -339,36 +340,6 @@ function hostOf(url: string): string {
       </section>
     </main>
 
-    <footer class="border-t border-slate-800 py-8 text-center text-xs text-slate-600">
-      <p>HQIV research · disregardfiat.tech</p>
-      <p class="mt-1">
-        Source on
-        <a
-          href="https://github.com/HQIV"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline-offset-2 hover:text-slate-400 hover:underline"
-          >GitHub</a
-        >
-        · Archive on
-        <a
-          href="https://zenodo.org/communities/hqiv"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline-offset-2 hover:text-slate-400 hover:underline"
-          >Zenodo</a
-        >
-        · Chat on
-        <a
-          href="https://discord.gg/8uGfuyjTvk"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline-offset-2 hover:text-slate-400 hover:underline"
-          >Discord</a
-        >
-        ·
-        <a href="#arena" class="underline-offset-2 hover:text-slate-400 hover:underline">Arena</a>
-      </p>
-    </footer>
+    <SiteFooter show-resources-link />
   </div>
 </template>

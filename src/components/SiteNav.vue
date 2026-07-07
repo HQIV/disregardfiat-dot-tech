@@ -1,5 +1,13 @@
 <script setup lang="ts">
-type ViewId = 'home' | 'explore' | 'bibliography' | 'resources' | 'atlas' | 'arena' | 'mysteries'
+type ViewId =
+  | 'home'
+  | 'explore'
+  | 'bibliography'
+  | 'resources'
+  | 'atlas'
+  | 'arena'
+  | 'mysteries'
+  | 'sponsor'
 
 defineProps<{
   active: ViewId
@@ -115,6 +123,18 @@ const emit = defineEmits<{
           @click="emit('navigate', 'arena')"
         >
           Arena
+        </button>
+        <button
+          type="button"
+          class="rounded-lg px-3 py-1.5 text-sm transition"
+          :class="
+            active === 'sponsor'
+              ? 'bg-amber-900/40 text-amber-100 ring-1 ring-amber-700/60'
+              : 'text-slate-400 hover:bg-slate-800/80 hover:text-slate-200'
+          "
+          @click="emit('navigate', 'sponsor')"
+        >
+          Sponsor
         </button>
       </div>
     </div>

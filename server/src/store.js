@@ -32,6 +32,7 @@ export function createStore(dataDir = DEFAULT_DATA_DIR) {
   const leaderboardFile = path.join(dataDir, 'leaderboard.json')
   const oauthStatesFile = path.join(dataDir, 'oauth_states.json')
   const pendingClaimsFile = path.join(dataDir, 'pending_claims.json')
+  const contactFile = path.join(dataDir, 'contact.json')
 
   function loadKeys() {
     return readJson(keysFile, { keys: [] })
@@ -223,6 +224,26 @@ export function createStore(dataDir = DEFAULT_DATA_DIR) {
     }
   }
 
+  function addContactMessage({ name, email, interest, tier, message, ip }) {
+    const entry = {
+      id: crypto.randomBytes(8).toString('hex'),
+      name: String(name).slice(0, 120),
+      email: String(email).slice(0, 254),
+      interest: String(interest).slice(0, 32),
+      tier: tier ? String(tier).slice(0, 32) : null,
+      message: String(message).slice(0, 5000),
+      ip: ip ? String(ip).slice(0, 64) : null,
+      created_at: new Date().toISOString(),
+    }
+    const data = readJson(contactFile, { messages: [] })
+    data.messages.push(entry)
+    if (data.messages.length > 500) {
+      data.messages = data.messages.slice(-500)
+    }
+    writeJson(contactFile, data)
+    return entry
+  }
+
   return {
     createKey,
     createKeyForGithubUser,
@@ -235,6 +256,7 @@ export function createStore(dataDir = DEFAULT_DATA_DIR) {
     consumeOAuthState,
     createPendingClaim,
     consumePendingClaim,
+    addContactMessage,
     dataDir,
   }
 }

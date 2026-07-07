@@ -13,13 +13,19 @@ import {
   githubOAuthConfigured,
   startGithubOAuth,
 } from './github-auth.js'
+import { createSponsorStore } from './sponsors.js'
+import { createSponsorRoutes, createPayPalIpnHandler } from './sponsor-routes.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PORT = Number(process.env.ARENA_API_PORT || 3020)
 const HOST = process.env.ARENA_API_HOST || '127.0.0.1'
 const CORS_ORIGIN = process.env.ARENA_CORS_ORIGIN || 'https://disregardfiat.tech'
+const PAYPAL_SANDBOX = process.env.PAYPAL_SANDBOX === '1'
 
 const store = createStore()
+const sponsorStore = createSponsorStore(
+  process.env.ARENA_DATA_DIR || path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data'),
+)
 const app = express()
 app.set('trust proxy', 1)
 
@@ -53,7 +59,15 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(express.json({ limit: '32kb' }))
+const sponsorRoutes = createSponsorRoutes({
+  sponsorStore,
+  rateLimit,
+  clientIp,
+})
+app.post('/api/v1/paypal/ipn', ...createPayPalIpnHandler({ sponsorStore, paypalSandbox: PAYPAL_SANDBOX }))
+
+app.use(express.json({ limit: '512kb' }))
+app.use('/api/v1', sponsorRoutes)
 
 function bearerToken(req) {
   const h = req.headers.authorization || ''
@@ -236,6 +250,51 @@ app.post('/api/v1/submissions', requireKey, (req, res) => {
 })
 
 const installSh = path.join(__dirname, '..', 'install.sh')
+
+const CONTACT_INTERESTS = new Set(['sponsorship', 'collaboration', 'press', 'general', 'other'])
+const CONTACT_TIERS = new Set(['supporter', 'partner', 'principal'])
+
+function isValidEmail(s) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) && s.length <= 254
+}
+
+app.post('/api/v1/contact', (req, res) => {
+  const ip = clientIp(req)
+  if (!rateLimit(`contact:${ip}`, 5, 3600_000)) {
+    return res.status(429).json({ error: 'rate_limited', retry_after_sec: 3600 })
+  }
+
+  if (req.body?.website) {
+    return res.status(201).json({ ok: true })
+  }
+
+  const name = String(req.body?.name || '').trim()
+  const email = String(req.body?.email || '').trim()
+  const interest = String(req.body?.interest || 'general').trim()
+  const tier = req.body?.tier ? String(req.body.tier).trim() : null
+  const message = String(req.body?.message || '').trim()
+
+  if (!name || name.length > 120) {
+    return res.status(400).json({ error: 'name_required', max_chars: 120 })
+  }
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ error: 'valid_email_required' })
+  }
+  if (!CONTACT_INTERESTS.has(interest)) {
+    return res.status(400).json({ error: 'invalid_interest' })
+  }
+  if (tier && !CONTACT_TIERS.has(tier)) {
+    return res.status(400).json({ error: 'invalid_tier' })
+  }
+  if (!message || message.length < 10 || message.length > 5000) {
+    return res.status(400).json({ error: 'message_required', min_chars: 10, max_chars: 5000 })
+  }
+
+  const saved = store.addContactMessage({ name, email, interest, tier, message, ip })
+  console.log(`contact message ${saved.id} from ${email} (${interest})`)
+  res.status(201).json({ ok: true, id: saved.id })
+})
+
 app.get('/api/v1/install.sh', (_req, res) => {
   res.setHeader('Content-Type', 'text/plain; charset=utf-8')
   res.send(fs.readFileSync(installSh, 'utf8'))
