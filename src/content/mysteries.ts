@@ -18,6 +18,9 @@ export type ProblemStatus =
   | 'open'
   | 'out_of_scope'
 
+/** How much of the problem claim is discharged in hqiv-lean (schema v2). */
+export type LeanEvidenceLevel = 'theorem_pack' | 'calibrated_witness' | 'scaffold' | 'none'
+
 export type ArenaMetricRow = {
   name: string
   value: number
@@ -26,6 +29,8 @@ export type ArenaMetricRow = {
   unit: string
   protected: boolean
   desc: string
+  mainstream_note?: string
+  lean_modules?: string[]
 }
 
 export type ProgrammeProblem = {
@@ -33,9 +38,25 @@ export type ProgrammeProblem = {
   wikipedia_topic: string
   title: string
   status: ProblemStatus
+  /** One-line programme pitch. */
   hqiv: string
+  /** What Lean / the spine already discharges. */
+  in_spine?: string
+  /** Specific treatment still missing. */
+  remaining?: string
+  /** Known conceptual blockers, or an explicit none-known statement. */
+  blockers?: string
   papers: string[]
   arena_metrics: string[]
+  lean_modules?: string[]
+  lean_evidence_level?: LeanEvidenceLevel
+}
+
+export type LeanAuditMeta = {
+  repo: string
+  branch: string
+  audited_at: string
+  note: string
 }
 
 export type ProgrammeSigmaDocument = {
@@ -47,6 +68,7 @@ export type ProgrammeSigmaDocument = {
     url: string
     license_note: string
   }
+  lean_audit?: LeanAuditMeta
   sigma_snapshot: {
     overall_score: number | null
     sigma_weighted: number | null
@@ -56,15 +78,45 @@ export type ProgrammeSigmaDocument = {
     note: string
   }
   status_legend: Record<ProblemStatus, string>
+  lean_evidence_legend?: Record<LeanEvidenceLevel, string>
+  copy_legend?: Record<'in_spine' | 'remaining' | 'blockers', string>
   problems: ProgrammeProblem[]
 }
 
+export const HQIV_LEAN_REPO = 'https://github.com/HQIV/hqiv-lean'
+
+/** Lean module dotted name → GitHub source path (Hqiv.* / HqivSpine.*). */
+export function leanModuleUrl(module: string): string {
+  const path = module.replace(/\./g, '/') + '.lean'
+  return `${HQIV_LEAN_REPO}/blob/main/${path}`
+}
+
+export const leanEvidenceLabels: Record<LeanEvidenceLevel, string> = {
+  theorem_pack: 'Lean theorem pack',
+  calibrated_witness: 'Calibrated witness',
+  scaffold: 'Scaffold only',
+  none: 'No Lean module',
+}
+
+export function leanEvidenceTone(level: LeanEvidenceLevel): string {
+  switch (level) {
+    case 'theorem_pack':
+      return 'border-emerald-700/50 bg-emerald-950/30 text-emerald-200'
+    case 'calibrated_witness':
+      return 'border-amber-700/50 bg-amber-950/25 text-amber-200'
+    case 'scaffold':
+      return 'border-slate-600 bg-slate-800/50 text-slate-300'
+    default:
+      return 'border-slate-700 bg-slate-900/40 text-slate-500'
+  }
+}
+
 export const statusLabels: Record<ProblemStatus, string> = {
-  addressed: 'Addressed in spine',
-  partial: 'Partial / in progress',
-  reinterpreted: 'Reinterpreted',
-  open: 'Open in programme',
-  out_of_scope: 'Out of scope',
+  addressed: 'Mechanism closed',
+  partial: 'Fit-out open',
+  reinterpreted: 'Reframed',
+  open: 'Not started',
+  out_of_scope: 'Not targeted',
 }
 
 export function statusTone(s: ProblemStatus): string {
