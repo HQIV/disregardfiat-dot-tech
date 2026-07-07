@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import ArenaEntryModal from '../components/ArenaEntryModal.vue'
+import ArenaShowcasePanel from '../components/ArenaShowcasePanel.vue'
 import SiteFooter from '../components/SiteFooter.vue'
 import {
   ARENA_API_BASE,
@@ -29,8 +31,16 @@ import {
   type LeaderboardData,
   type LeaderboardEntry,
 } from '../content/arena'
+import {
+  PROGRAMME_SIGMA_BUNDLED_URL,
+  PROGRAMME_SIGMA_LIVE_URL,
+  type ProgrammeSigmaDocument,
+} from '../content/mysteries'
 
 const data = ref<LeaderboardData | null>(null)
+const programme = ref<ProgrammeSigmaDocument | null>(null)
+const programmeLoading = ref(true)
+const selectedEntry = ref<LeaderboardEntry | null>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
 const dataSource = ref<'api' | 'pyhqiv' | 'bundled' | null>(null)
@@ -41,7 +51,7 @@ const keyLoading = ref(false)
 const keyError = ref<string | null>(null)
 const showAnonymousKey = ref(false)
 
-async function fetchJson(url: string): Promise<LeaderboardData> {
+async function fetchJson<T>(url: string): Promise<T> {
   const res = await fetch(url, { cache: 'no-store' })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   return res.json()
@@ -60,7 +70,7 @@ async function load() {
   try {
     for (const { url, source } of trySources) {
       try {
-        const payload = await fetchJson(url)
+        const payload = await fetchJson<LeaderboardData>(url)
         if ((payload.entries?.length ?? 0) === 0 && source !== 'bundled') continue
         data.value = enrichLeaderboardData(payload)
         dataSource.value = source
@@ -156,10 +166,47 @@ function copyText(text: string) {
   void navigator.clipboard.writeText(text)
 }
 
+async function loadProgramme() {
+  programmeLoading.value = true
+  try {
+    programme.value = await fetchJson<ProgrammeSigmaDocument>(PROGRAMME_SIGMA_BUNDLED_URL)
+    try {
+      const live = await fetchJson<ProgrammeSigmaDocument>(PROGRAMME_SIGMA_LIVE_URL)
+      if (programme.value && live.sigma_snapshot) {
+        programme.value.sigma_snapshot = live.sigma_snapshot
+        if (live.pyhqiv_version) programme.value.pyhqiv_version = live.pyhqiv_version
+        if (live.generated_at) programme.value.generated_at = live.generated_at
+      }
+    } catch {
+      /* bundled copy is enough */
+    }
+  } catch {
+    try {
+      programme.value = await fetchJson<ProgrammeSigmaDocument>(PROGRAMME_SIGMA_LIVE_URL)
+    } catch {
+      programme.value = null
+    }
+  } finally {
+    programmeLoading.value = false
+  }
+}
+
+function openEntry(entry: LeaderboardEntry) {
+  selectedEntry.value = entry
+}
+
+function closeEntry() {
+  selectedEntry.value = null
+}
+
 onMounted(async () => {
   await redeemOAuthClaim()
-  await load()
+  await Promise.all([load(), loadProgramme()])
 })
+
+async function refreshAll() {
+  await Promise.all([load(), loadProgramme()])
+}
 
 const hasEntries = computed(() => (data.value?.entries?.length ?? 0) > 0)
 
@@ -198,6 +245,10 @@ function authorInitial(entry: LeaderboardEntry | null | undefined) {
 function deuteronGapSigma(entry: LeaderboardEntry | null | undefined): number | null {
   const v = entry?.metrics?.deuteron_binding_z?.value
   return v != null && Number.isFinite(v) ? v : null
+}
+
+function entryHasMetrics(entry: LeaderboardEntry | null | undefined): boolean {
+  return Object.keys(entry?.metrics ?? {}).length > 0
 }
 </script>
 
@@ -241,10 +292,10 @@ function deuteronGapSigma(entry: LeaderboardEntry | null | undefined): number | 
           <button
             type="button"
             class="rounded-lg border border-slate-600 bg-slate-900/60 px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800"
-            :disabled="loading"
-            @click="load"
+            :disabled="loading || programmeLoading"
+            @click="refreshAll"
           >
-            {{ loading ? 'Loading…' : 'Refresh' }}
+            {{ loading || programmeLoading ? 'Loading…' : 'Refresh' }}
           </button>
         </div>
       </div>
@@ -381,6 +432,28 @@ function deuteronGapSigma(entry: LeaderboardEntry | null | undefined): number | 
         </p>
       </section>
 
+      <!-- Test suite showcase -->
+      <section class="rounded-2xl border border-slate-800 bg-slate-900/30 p-5 sm:p-6">
+        <div>
+          <h2 class="text-lg font-medium text-white">Physics showcase</h2>
+          <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-400">
+            Case-by-case comparisons against PDG, AME, Planck, SPARC, PDB, and laboratory branching refs.
+            The proton at referenceM=4 is a <strong class="font-medium text-amber-200/90">lock-in anchor</strong>,
+            not a blind prediction. GUT-only and tuning-exponent metrics stay in scoring but are hidden here.
+          </p>
+        </div>
+
+        <div v-if="programmeLoading" class="mt-4 text-sm text-slate-500">Loading showcase…</div>
+        <div v-else-if="programme" class="mt-6">
+          <ArenaShowcasePanel :programme="programme" show-full-scoring />
+        </div>
+        <p v-else class="mt-4 text-sm text-slate-500">
+          Showcase data unavailable —
+          <a href="#mysteries" class="text-emerald-400 underline-offset-2 hover:underline">open problems</a>
+          has the full programme map.
+        </p>
+      </section>
+
       <!-- Leaderboard -->
       <section class="space-y-4">
         <div
@@ -476,6 +549,14 @@ function deuteronGapSigma(entry: LeaderboardEntry | null | undefined): number | 
                 >
                   coverage-adjusted score {{ fmt(data.current_best.score_coverage_adjusted, 1) }}
                 </div>
+                <button
+                  v-if="entryHasMetrics(data.current_best)"
+                  type="button"
+                  class="mt-1 text-xs text-emerald-400 underline-offset-2 hover:underline"
+                  @click="openEntry(data.current_best!)"
+                >
+                  View metrics breakdown →
+                </button>
               </div>
               <p v-else class="text-sm text-slate-400">
                 No certified entry yet. The first green Arena merge to main will establish the
@@ -511,12 +592,16 @@ function deuteronGapSigma(entry: LeaderboardEntry | null | undefined): number | 
                     <th class="px-3 py-2 text-left font-normal">Branch / PR</th>
                     <th class="px-3 py-2 text-left font-normal">When</th>
                     <th class="px-3 py-2 text-left font-normal">Badges</th>
+                    <th class="px-3 py-2 text-left font-normal">Metrics</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800">
                   <tr
                     v-for="e in [...(data.entries || [])].reverse()"
                     :key="e.sha + e.branch"
+                    class="transition-colors hover:bg-slate-900/60"
+                    :class="entryHasMetrics(e) ? 'cursor-pointer' : ''"
+                    @click="entryHasMetrics(e) && openEntry(e)"
                   >
                     <td class="px-3 py-2 text-slate-400">
                       <span class="inline-flex items-center gap-2">
@@ -569,9 +654,20 @@ function deuteronGapSigma(entry: LeaderboardEntry | null | undefined): number | 
                         >—</span
                       >
                     </td>
+                    <td class="px-3 py-2">
+                      <button
+                        v-if="entryHasMetrics(e)"
+                        type="button"
+                        class="text-[10px] text-emerald-400 underline-offset-2 hover:underline"
+                        @click.stop="openEntry(e)"
+                      >
+                        View
+                      </button>
+                      <span v-else class="text-[10px] text-slate-600">—</span>
+                    </td>
                   </tr>
                   <tr v-if="!hasEntries">
-                    <td colspan="7" class="px-3 py-8 text-center text-slate-500">
+                    <td colspan="8" class="px-3 py-8 text-center text-slate-500">
                       Leaderboard is empty — install
                       <code class="text-slate-400">hqiv-arena</code>, run locally, and open the
                       first improving PR.
@@ -580,6 +676,9 @@ function deuteronGapSigma(entry: LeaderboardEntry | null | undefined): number | 
                 </tbody>
               </table>
             </div>
+            <p v-if="hasEntries" class="mt-2 text-xs text-slate-600">
+              Click a row with metrics to see agreements vs test-case breakdown.
+            </p>
             <p v-if="data.note" class="mt-2 text-center text-xs text-slate-600">{{ data.note }}</p>
           </div>
         </template>
@@ -684,6 +783,8 @@ function deuteronGapSigma(entry: LeaderboardEntry | null | undefined): number | 
         </p>
       </section>
     </main>
+
+    <ArenaEntryModal v-if="selectedEntry" :entry="selectedEntry" @close="closeEntry" />
 
     <SiteFooter tagline="HQIV Arena · disregardfiat.tech/#arena" />
   </div>

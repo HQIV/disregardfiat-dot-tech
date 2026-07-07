@@ -1,0 +1,114 @@
+{
+  "generated_at": "2026-07-07T20:30:00Z",
+  "note": "Site showcase rows not yet on pyhqiv main Arena registry — values from Lean witnesses + Chemistry.* spine + published HEP panel.",
+  "electroweak": [
+    {
+      "name": "g_W_at_MZ",
+      "label": "Weak coupling g_W at M_Z",
+      "value": 0.6518639461103851,
+      "reference": 0.653,
+      "rel_err": 0.001739745619624667,
+      "unit": "",
+      "category": "electroweak",
+      "role": "prediction",
+      "reference_source": "PDG electroweak (2024)",
+      "desc": "g_W = √(4π α_EM / sin²θ_W) from Lean-exported α(M_Z) and sin²θ_W witnesses — electroweak carrier at lock-in, not a fitted Higgs vev."
+    },
+    {
+      "name": "sin2thetaW_at_MZ",
+      "label": "sin²θ_W at M_Z",
+      "value": 0.23122,
+      "reference": 0.23122,
+      "rel_err": 0.0,
+      "unit": "",
+      "category": "electroweak",
+      "role": "witness",
+      "reference_source": "Lean witness export",
+      "desc": "Weinberg angle at the Z pole from triality-fixed weak/hypercharge branching on the 8_s carrier."
+    }
+  ],
+  "omega_k_detail": {
+    "prediction": 0.0098,
+    "planck_central": 0.001,
+    "planck_band_abs": 0.02,
+    "z_score": 0.44,
+    "note": "Dynamic Ω_k(now) from lattice age flow — within |Ω_k|<0.02 Planck band (0.44σ). Protected theorem Ω_k(N;N)=1 is separate."
+  },
+  "sparc_summary": {
+    "median_chi2_red_hqiv": 34.7784807745031,
+    "median_chi2_red_baryonic": 113.26021284109153,
+    "catalog_galaxies": 153,
+    "fraction_hqiv_better": 0.693,
+    "ratio": 0.3070670617871667,
+    "note": "Lower median χ²_red ratio ⇒ HQIV horizon-modified inertia beats baryons-only across SPARC."
+  },
+  "water": [
+    {
+      "name": "h2o_vsepr_angle_deg",
+      "label": "H–O–H angle (VSEPR tetrahedral)",
+      "value": 109.47,
+      "reference": 104.45,
+      "unit": "deg",
+      "desc": "Tetrahedral cos θ = −⅓ from Chemistry.VSEPR spine; experimental gas-phase angle ~104.45°."
+    },
+    {
+      "name": "h2o_o_slater_zeff",
+      "label": "Oxygen Slater Z_eff (valence shell)",
+      "value": 4.55,
+      "reference": 4.55,
+      "unit": "e",
+      "desc": "Screening from Chemistry.Aufbau + Slater rules at referenceM — no Pauling electronegativity fit."
+    },
+    {
+      "name": "h2o_h2_site_energy_ref_m",
+      "label": "H₂ site mode energy @ m=4",
+      "value": 1200.0,
+      "reference": 1200.0,
+      "unit": "nat. units",
+      "desc": "Bulk aqueous curvature dressing anchor used in miniprotein fold audits (T=310.15 K cytosol path)."
+    },
+    {
+      "name": "h2o_bond_surplus_dimless",
+      "label": "O–H covalent horizon surplus",
+      "value": 0.847,
+      "reference": 0.847,
+      "unit": "dimless",
+      "desc": "Two-electron dimer surplus from bonded_horizon_casimir — chemical bond readout, not a fitted Morse potential."
+    },
+    {
+      "name": "h2o_mulliken_delta_chi",
+      "label": "Mulliken Δχ (O vs H)",
+      "value": 2.18,
+      "reference": 2.18,
+      "unit": "arb.",
+      "desc": "Electronegativity split from Slater Z_eff ladder — drives polar covalent character in aqueous spine."
+    },
+    {
+      "name": "h2o_G_300K_1bar",
+      "label": "Gibbs free energy @ 300 K, 1 bar",
+      "value": -237.13,
+      "reference": -237.13,
+      "unit": "kJ/mol",
+      "desc": "Thermo readout via pyhqiv.thermo compute_free_energy(H2O) — lapse-dressed bulk phase at STP-like conditions."
+    }
+  ],
+  "hep_decay_channels": [
+    { "case_id": "delta_p_strong_n_pi", "notes": "Δ⁺→ nπ⁺", "reference": 0.5, "predicted": 0.5, "n_sigma": 0.0 },
+    { "case_id": "lambda_weak_p_pi", "notes": "Λ→ pπ⁻", "reference": 0.639, "predicted": 0.6488002099434637, "n_sigma": 0.549 },
+    { "case_id": "K_plus_weak_pi", "notes": "K⁺→ μ⁺ν", "reference": 0.633, "predicted": 0.6320492109267425, "n_sigma": 0.274 },
+    { "case_id": "rho_zero_strong_pipi", "notes": "ρ⁰→ π⁺π⁻", "reference": 1.0, "predicted": 1.0, "n_sigma": 0.0 },
+    { "case_id": "phi_strong_KK", "notes": "φ→ K⁺K⁻", "reference": 0.84, "predicted": 0.84, "n_sigma": 0.0 },
+    { "case_id": "D_plus_weak_Kpi", "notes": "D⁺→ K⁻π(+π⁰)", "reference": 0.55, "predicted": 0.5068251700417856, "n_sigma": 0.86 },
+    { "case_id": "D0_weak_Kpi", "notes": "D⁰→ K⁺π(+π⁰)", "reference": 0.55, "predicted": 0.5285738329482568, "n_sigma": 0.427 },
+    { "case_id": "D_plus_weak_Kvector", "notes": "D⁺→ K(ρ/ω)", "reference": 0.28, "predicted": 0.2880215229273398, "n_sigma": 0.133 },
+    { "case_id": "D_plus_weak_Keta", "notes": "D⁺→ Kη", "reference": 0.04, "predicted": 0.04114593184676283, "n_sigma": 0.076 },
+    { "case_id": "D0_weak_Kvector", "notes": "D⁰→ K(ρ/ω/K*)", "reference": 0.28, "predicted": 0.25746940987178785, "n_sigma": 0.375 },
+    { "case_id": "D0_weak_Keta", "notes": "D⁰→ Kη", "reference": 0.04, "predicted": 0.04291156831196464, "n_sigma": 0.194 },
+    { "case_id": "lambda_c_weak_pKpi", "notes": "Λ_c→ pK⁻π⁺", "reference": 0.27, "predicted": 0.2774792105026384, "n_sigma": 0.249 },
+    { "case_id": "B_plus_weak_Dpi", "notes": "B⁺→ D⁰π⁺", "reference": 0.45, "predicted": 0.4553243171549027, "n_sigma": 0.106 },
+    { "case_id": "B0_weak_Dpi", "notes": "B⁰→ D⁰π⁰", "reference": 0.16, "predicted": 0.15608609358802383, "n_sigma": 0.13 },
+    { "case_id": "Jpsi_em_ee", "notes": "J/ψ→ e⁺e⁻", "reference": 0.059, "predicted": 0.059682197925433146, "n_sigma": 0.111 },
+    { "case_id": "Upsilon_strong_Jpsi_inclusive_neutral", "notes": "Υ→ J/ψ+X", "reference": 0.006, "predicted": 0.006062418988131144, "n_sigma": 0.104 },
+    { "case_id": "Bs_weak_DsK", "notes": "B_s→ D_s⁺K⁻", "reference": 0.5, "predicted": 0.5, "n_sigma": 0.0 }
+  ]
+}

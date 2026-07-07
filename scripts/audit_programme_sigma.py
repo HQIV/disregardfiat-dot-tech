@@ -518,8 +518,12 @@ def apply_audit(doc: dict) -> dict:
         name = m.get("name")
         if name in lean_core_map:
             m["lean_modules"] = lean_core_map[name]
+        if name == "derived_proton_mass_MeV":
+            m["desc"] = (
+                "Lock-in proton mass anchor at referenceM=4 (Lean DerivedNucleonMass + tuft). "
+                "Calibrates the resonance ladder — not scored as a blind PDG prediction."
+            )
 
-    # Correct known Arena metric wiring bugs on pyhqiv main until HQIV/pyhqiv merges the fix.
     _patch_sigma_metrics(out)
 
     return out
@@ -552,9 +556,20 @@ def _patch_sigma_metrics(doc: dict) -> None:
         "omega_k_present_now",
         0.44,
         0.56,
-        "Present-day Ω_k z-score vs |Ω_k|<0.02 Planck band (prediction ~0.0098). "
-        "Not raw rel_err vs Planck central 0.001.",
+        "Present-day Ω_k z-score vs |Ω_k|<0.02 Planck band (dynamic prediction ~0.0098). "
+        "Horizon-self Ω_k(N;N)=1 is a separate protected theorem.",
     )
+
+    if row := by_name.get("proton_electron_mass_ratio"):
+        row["desc"] = (
+            "m_p / m_e derived from the lock-in anchor + electron resonance ladder "
+            "(tuft + SM_GR_Unification) — ratio prediction, not the anchor itself."
+        )
+
+    if row := by_name.get("alpha_GUT"):
+        row["mainstream_note"] = (
+            "No PDG reference for α_GUT — internal β-running witness only; hidden from public Arena showcase."
+        )
 
     rels = [float(m.get("rel_err") or 0) for m in phenom]
     weights = [float(m.get("weight") or 1) for m in phenom]

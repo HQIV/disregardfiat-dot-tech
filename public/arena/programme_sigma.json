@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-07-07T18:54:07Z",
+  "generated_at": "2026-07-07T23:26:53Z",
   "pyhqiv_version": "0.4.1.dev1+unknown.gabc2030da.d20260707",
   "wikipedia": {
     "title": "List of unsolved problems in physics",
@@ -32,7 +32,7 @@
         "rel_err": 0.0,
         "unit": "MeV",
         "protected": true,
-        "desc": "Proton mass anchor formally derived from Lean (DerivedNucleonMass + tuft etc)",
+        "desc": "Lock-in proton mass anchor at referenceM=4 (Lean DerivedNucleonMass + tuft). Calibrates the resonance ladder — not scored as a blind PDG prediction.",
         "mainstream_note": "",
         "lean_modules": [
           "Hqiv.Physics.DerivedNucleonMass",
@@ -115,7 +115,7 @@
         "unit": "",
         "protected": false,
         "desc": "GUT coupling from Lean β-running engine (1/42 in paper)",
-        "mainstream_note": ""
+        "mainstream_note": "No PDG reference for α_GUT — internal β-running witness only; hidden from public Arena showcase."
       },
       {
         "name": "available_modes_ref",
@@ -254,7 +254,7 @@
         "rel_err": 0.56,
         "unit": "sigma",
         "protected": false,
-        "desc": "Present-day Ω_k z-score vs |Ω_k|<0.02 Planck band (prediction ~0.0098). Not raw rel_err vs Planck central 0.001.",
+        "desc": "Present-day Ω_k z-score vs |Ω_k|<0.02 Planck band (dynamic prediction ~0.0098). Horizon-self Ω_k(N;N)=1 is a separate protected theorem.",
         "mainstream_note": "Mainstream (ΛCDM): Ω_k0 ≈ 0 (flat universe today); flatness problem — requires special initial conditions or inflation to explain why so close to zero (depends on early universe dynamics)."
       },
       {
@@ -284,7 +284,7 @@
         "rel_err": 7.313894339417914e-09,
         "unit": "",
         "protected": false,
-        "desc": "m_p / m_e from HQIV resonance ladder + nucleon binding (tuft + SM_GR_Unification papers)",
+        "desc": "m_p / m_e derived from the lock-in anchor + electron resonance ladder (tuft + SM_GR_Unification) — ratio prediction, not the anchor itself.",
         "mainstream_note": "Mainstream: measured constant (CODATA/PDG fit to many experiments); no first-principles derivation in SM+GR"
       },
       {
@@ -975,7 +975,7 @@
   "lean_audit": {
     "repo": "https://github.com/HQIV/hqiv-lean",
     "branch": "main",
-    "audited_at": "2026-07-07T18:54:07Z",
+    "audited_at": "2026-07-07T23:26:53Z",
     "note": "Honest programme map: each card lists what the Lean spine already discharges, what fit-out remains, and whether we know of a conceptual blocker. 'Partial' means mechanism in spine with specific remaining work — not a vague hedge."
   },
   "lean_evidence_legend": {
