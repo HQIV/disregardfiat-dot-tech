@@ -26,7 +26,11 @@ Copy `deploy/caddy-disregardfiat.tech.snippet` into `/etc/caddy/Caddyfile` on th
 
 ```bash
 npm ci
-npm run dev
+npm run dev          # Vue site (proxies /api → 127.0.0.1:3020)
+npm run dev:api      # Arena API in another terminal
+npm run seed:leaderboard   # refresh public/arena/leaderboard.json from pyhqiv main
 ```
+
+For local GitHub OAuth, copy `.env.arena.example` to `.env.arena`, set `ARENA_CORS_ORIGIN=http://localhost:5173`, register a second OAuth callback `http://localhost:5173/api/v1/auth/github/callback` (or use anonymous keys via `POST /api/v1/keys`).
 
 Build: `npm run build`. Deploy is triggered on push to `main` via `.github/workflows/ci.yml`.

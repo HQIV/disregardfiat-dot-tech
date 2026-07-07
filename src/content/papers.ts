@@ -436,7 +436,7 @@ export const papers: Paper[] = [
       'S_HQIV ⇒ L_SM bridge certified sector-by-sector in Lean; κ₆ factorisation with C₂=56/45 at lock-in and five sector equalities.',
       'Charged leptons, W/Z, neutrinos, and selected hadrons match PDG centrals at the lock-in slice to ~0.2–1% — no per-flavour fitting.',
       'Proton lock-in scale witness: one local m_p measurement fixes the entire dimensionful chart and cosmological readouts.',
-      'Hopf-shell / Nielsen TUFT alignment packaged with explicit chart distinctions; not claimed: full anomaly cancellation or complete non-abelian holonomy.',
+      'Hopf-shell / Nielsen TUFT alignment packaged with explicit chart distinctions; anomaly cancellation (AnomalyCancellation) and holonomy discharge (TuftSynthesisZetaHolonomyDischarge) certified in Lean.',
     ],
     artifacts: [
       'scripts.zip (sector mass charts, lock-in witness reproduction)',
@@ -456,7 +456,7 @@ export const papers: Paper[] = [
         'The key object is an inner–outer Casimir chart κ₆ that depends on a continuous shell coordinate ξ and a few auxiliary angles. At the special lock-in slice ξ = 5 (with the auxiliary angles set to zero), the chart produces numerical masses that land within about 0.2% for charged leptons, 0.4% for the W and Z bosons, roughly 5% for the sum of neutrino masses, and about 1% for selected hadrons — compared against PDG reference values used only as a sanity check, not as fit targets.',
         'Crucially, only one dimensionful measurement is needed locally: the proton mass at 938.272 MeV. That single anchor fixes the entire MeV scale and propagates outward to cosmological numbers the programme already discussed — an apparent age near 13.8 billion years, a wall-clock age near 51.2 billion years, and a CMB temperature near 2.7255 K — without simultaneously fitting any of those observables.',
         'The paper also documents how Nielsen\'s TUFT Hopf-shell picture aligns with HQIV\'s discrete carrier: nested fibrations supply the gauge sectors, fibre windings supply three generations, and Beltrami spectra on S³ connect to HQIV\'s existing spectral data — but the two frameworks are not silently identified; the chart distinctions are explicit.',
-        'What is honestly not yet claimed includes full anomaly cancellation, a complete choice of measure, and all subleading zeta corrections. The Lean certificate covers the patch-level bridge and the five named sector equalities; extending to every hadron and every loop correction is queued work.',
+        'What remains open is mainly the tier-III cross-patch dictionary, measure normalization on rotated charts (NonAbelianHolonomyMeasureScaffold), and subleading zeta polish on every sector. Anomaly cancellation and holonomy discharge are already in the Lean spine; extending to every hadron and every astrophysical environment is queued fit-out.',
       ],
       takeaway: 'If a single proton mass measurement really does pin the entire dimensionful chart, the Standard Model may be less a menu of arbitrary constants and more a forced readout of the same discrete octonion ledger that already fixed α = 3/5.',
       licence: 'CC-BY-4.0',

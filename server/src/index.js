@@ -5,6 +5,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createStore } from './store.js'
 import { fetchPyhqivLeaderboard, mergeLeaderboards } from './leaderboard.js'
+import { enrichLeaderboard } from './leaderboard-enrich.js'
 import {
   arenaClaimRedirect,
   arenaErrorRedirect,
@@ -207,7 +208,7 @@ app.get('/api/v1/leaderboard', async (_req, res) => {
     res.json(mergeLeaderboards(remote, local))
   } catch (e) {
     const local = store.loadLocalLeaderboard()
-    res.json({ ...local, sources: ['arena-api'], warning: String(e.message || e) })
+    res.json(enrichLeaderboard({ ...local, sources: ['arena-api'], warning: String(e.message || e) }))
   }
 })
 

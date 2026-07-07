@@ -1,3 +1,6 @@
+import { seedLeaderboardIfEmpty } from './baseline-seed.js'
+import { enrichLeaderboard } from './leaderboard-enrich.js'
+
 const DEFAULT_PYHQIV_LEADERBOARD_URLS = [
   'https://raw.githubusercontent.com/HQIV/pyhqiv/main/arena/leaderboard.json',
   'https://raw.githubusercontent.com/disregardfiat/pyhqiv/main/arena/leaderboard.json',
@@ -16,7 +19,8 @@ export async function fetchPyhqivLeaderboard() {
     try {
       const res = await fetch(url, { cache: 'no-store' })
       if (!res.ok) throw new Error(`pyhqiv leaderboard HTTP ${res.status} (${url})`)
-      return res.json()
+      const data = await res.json()
+      return enrichLeaderboard(await seedLeaderboardIfEmpty(data))
     } catch (e) {
       lastErr = e
     }
@@ -33,7 +37,9 @@ export function mergeLeaderboards(remote, local) {
   const localBest = local?.current_best
   if (
     localBest?.score != null &&
-    (current_best?.score == null || localBest.score > current_best.score)
+    (current_best?.score == null ||
+      (localBest.score_coverage_adjusted ?? localBest.score) >
+        (current_best.score_coverage_adjusted ?? current_best.score))
   ) {
     current_best = localBest
   }
@@ -44,7 +50,7 @@ export function mergeLeaderboards(remote, local) {
     ),
   ].slice(-500)
 
-  return {
+  return enrichLeaderboard({
     entries,
     current_best,
     history,
@@ -55,5 +61,5 @@ export function mergeLeaderboards(remote, local) {
       local?.note ||
       'Merged HQIV/pyhqiv main + Arena API provisional entries.',
     sources: ['pyhqiv-main', 'arena-api'],
-  }
+  })
 }

@@ -33,17 +33,146 @@ export interface LeaderboardEntry {
   branch: string
   sha: string
   author: string
+  github_login?: string | null
+  avatar_url?: string | null
   score: number | null
+  /** Raw score × (coverage_count / coverage_total) — used for fair ranking when suite grows. */
+  score_coverage_adjusted?: number | null
   sigma_weighted: number | null
+  /** Max |z| across calibrated paper comparisons — the programme-facing σ (see pyhqiv metrics). */
+  sigma_programme_max_z?: number | null
+  /** σ metrics / tests counted in this run (see coverage_total on leaderboard). */
+  coverage_count?: number | null
+  coverage_total?: number | null
+  coverage_ratio?: number | null
+  num_metrics?: number | null
   timestamp: string
   regressions: number
   badges?: string[]
+  status?: string
+  metrics?: Record<string, ArenaMetricSnapshot>
+}
+
+export interface ArenaMetricSnapshot {
+  name?: string
+  value?: number
+  reference?: number
+  rel_err?: number
+  unit?: string
+  protected?: boolean
+  desc?: string
+}
+
+/** Programme σ: max |z| across paper comparisons (not the deuteron-dominated arena aggregate). */
+export function programmeMaxSigma(entry: LeaderboardEntry | null | undefined): number | null {
+  if (!entry) return null
+  if (entry.sigma_programme_max_z != null && Number.isFinite(entry.sigma_programme_max_z)) {
+    return entry.sigma_programme_max_z
+  }
+  const fromMetrics = entry.metrics?.paper_comparisons_max_abs_z?.value
+  if (fromMetrics != null && Number.isFinite(fromMetrics)) return fromMetrics
+  const sw = entry.sigma_weighted
+  if (sw != null && Number.isFinite(sw) && sw < 100) return sw
+  return null
+}
+
+/** Arena aggregate σ_weighted can be dominated by uncalibrated z-score metrics (e.g. deuteron ladder). */
+export function arenaSigmaWeighted(entry: LeaderboardEntry | null | undefined): number | null {
+  const sw = entry?.sigma_weighted
+  return sw != null && Number.isFinite(sw) ? sw : null
+}
+
+export function sigmaDisplayMisleading(entry: LeaderboardEntry | null | undefined): boolean {
+  const programme = programmeMaxSigma(entry)
+  const weighted = arenaSigmaWeighted(entry)
+  return weighted != null && weighted >= 100 && (programme == null || weighted / programme > 10)
+}
+
+const GITHUB_LOGIN_RE = /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37})$/
+
+export function looksLikeGithubLogin(s: string | null | undefined): boolean {
+  return typeof s === 'string' && GITHUB_LOGIN_RE.test(s)
+}
+
+export function entryCoverageCount(entry: LeaderboardEntry | null | undefined): number {
+  if (!entry) return 0
+  if (entry.coverage_count != null && Number.isFinite(entry.coverage_count)) {
+    return Math.max(0, Math.floor(entry.coverage_count))
+  }
+  if (entry.num_metrics != null && Number.isFinite(entry.num_metrics)) {
+    return Math.max(0, Math.floor(entry.num_metrics))
+  }
+  if (entry.metrics) return Object.keys(entry.metrics).length
+  return 0
+}
+
+export function entryGithubLogin(entry: LeaderboardEntry | null | undefined): string | null {
+  if (!entry) return null
+  if (entry.github_login && looksLikeGithubLogin(entry.github_login)) return entry.github_login
+  if (looksLikeGithubLogin(entry.author)) return entry.author
+  return null
+}
+
+export function githubAvatarUrl(login: string | null | undefined, size = 64): string | null {
+  if (!login || !looksLikeGithubLogin(login)) return null
+  return `https://github.com/${login}.png?size=${size}`
+}
+
+export function enrichLeaderboardEntry(
+  entry: LeaderboardEntry,
+  coverageTotal: number,
+): LeaderboardEntry {
+  const coverage_count = entryCoverageCount(entry)
+  const total = Math.max(coverageTotal, coverage_count, 1)
+  const coverage_ratio = coverage_count / total
+  const score = entry.score != null && Number.isFinite(entry.score) ? entry.score : null
+  const score_coverage_adjusted =
+    score != null ? Math.round(score * coverage_ratio * 10000) / 10000 : null
+  const github_login = entryGithubLogin(entry)
+  return {
+    ...entry,
+    coverage_count,
+    coverage_total: total,
+    coverage_ratio: Math.round(coverage_ratio * 10000) / 10000,
+    score_coverage_adjusted,
+    github_login,
+    avatar_url: entry.avatar_url ?? githubAvatarUrl(github_login, 64),
+  }
+}
+
+export function enrichLeaderboardData(data: LeaderboardData): LeaderboardData {
+  const raw = data.entries ?? []
+  const coverage_total = Math.max(
+    Number(data.coverage_total) || 0,
+    ...raw.map((e) => entryCoverageCount(e)),
+    1,
+  )
+  const entries = raw.map((e) => enrichLeaderboardEntry(e, coverage_total))
+  let current_best = data.current_best
+    ? enrichLeaderboardEntry(data.current_best, coverage_total)
+    : null
+  if (!current_best && entries.length) {
+    current_best = [...entries].sort(
+      (a, b) => (b.score_coverage_adjusted ?? b.score ?? 0) - (a.score_coverage_adjusted ?? a.score ?? 0),
+    )[0]
+  }
+  return { ...data, coverage_total, entries, current_best }
+}
+
+export function coverageLabel(entry: LeaderboardEntry | null | undefined): string {
+  if (!entry) return '—'
+  const n = entry.coverage_count ?? entryCoverageCount(entry)
+  const t = entry.coverage_total ?? n
+  if (!n && !t) return '—'
+  return `${n}/${t}`
 }
 
 export interface LeaderboardData {
   entries: LeaderboardEntry[]
   current_best: LeaderboardEntry | null
   history: Array<{ ts: string; score: number | null; sigma: number | null }>
+  /** Largest σ-metric suite size across entries (denominator for coverage fractions). */
+  coverage_total?: number | null
   badges?: Record<string, unknown>
   schema_version?: number
   note?: string

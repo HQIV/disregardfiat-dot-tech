@@ -19,7 +19,15 @@ import {
   cliExtras,
   cliWorkflow,
   protectedCores,
+  programmeMaxSigma,
+  arenaSigmaWeighted,
+  sigmaDisplayMisleading,
+  enrichLeaderboardData,
+  coverageLabel,
+  entryGithubLogin,
+  githubAvatarUrl,
   type LeaderboardData,
+  type LeaderboardEntry,
 } from '../content/arena'
 
 const data = ref<LeaderboardData | null>(null)
@@ -43,32 +51,44 @@ async function load() {
   loading.value = true
   error.value = null
   dataSource.value = null
+  const trySources: Array<{ url: string; source: 'api' | 'pyhqiv' | 'bundled' }> = [
+    { url: ARENA_LIVE_LEADERBOARD_URL, source: 'api' },
+    { url: ARENA_PYHQIV_LEADERBOARD_URL, source: 'pyhqiv' },
+    { url: ARENA_BUNDLED_LEADERBOARD_URL, source: 'bundled' },
+  ]
+  let lastErr: unknown = null
   try {
-    data.value = await fetchJson(ARENA_LIVE_LEADERBOARD_URL)
-    dataSource.value = 'api'
-  } catch (apiErr: unknown) {
-    try {
-      data.value = await fetchJson(ARENA_PYHQIV_LEADERBOARD_URL)
-      dataSource.value = 'pyhqiv'
-      error.value =
-        apiErr instanceof Error
-          ? `Arena API unavailable (${apiErr.message}); showing pyhqiv main only.`
-          : 'Arena API unavailable; showing pyhqiv main only.'
-    } catch {
+    for (const { url, source } of trySources) {
       try {
-        data.value = await fetchJson(ARENA_BUNDLED_LEADERBOARD_URL)
-        dataSource.value = 'bundled'
-        error.value = 'Arena API and pyhqiv leaderboard unavailable; showing bundled seed.'
-      } catch {
-        error.value = 'Could not load leaderboard data.'
-        data.value = {
-          entries: [],
-          current_best: null,
-          history: [],
-          schema_version: 1,
-          note: 'Leaderboard unavailable.',
+        const payload = await fetchJson(url)
+        if ((payload.entries?.length ?? 0) === 0 && source !== 'bundled') continue
+        data.value = enrichLeaderboardData(payload)
+        dataSource.value = source
+        if (source === 'pyhqiv' && lastErr) {
+          error.value =
+            lastErr instanceof Error
+              ? `Arena API unavailable (${lastErr.message}); showing pyhqiv main only.`
+              : 'Arena API unavailable; showing pyhqiv main only.'
+        } else if (source === 'bundled') {
+          error.value =
+            lastErr instanceof Error
+              ? `Arena API unavailable (${lastErr.message}); showing bundled seed.`
+              : 'Arena API and pyhqiv leaderboard empty; showing bundled seed.'
+        } else {
+          error.value = null
         }
+        return
+      } catch (e) {
+        lastErr = e
       }
+    }
+    error.value = 'Could not load leaderboard data.'
+    data.value = {
+      entries: [],
+      current_best: null,
+      history: [],
+      schema_version: 1,
+      note: 'Leaderboard unavailable.',
     }
   } finally {
     loading.value = false
@@ -159,6 +179,25 @@ function badgeLabel(key: string) {
 function badgeClass(key: string) {
   const tier = badgeByKey[key]?.tier ?? 'standard'
   return badgeTierClass[tier]
+}
+
+function fmtSigma(entry: LeaderboardEntry | null | undefined) {
+  const z = programmeMaxSigma(entry)
+  if (z != null) return `${fmt(z, 2)}σ`
+  const sw = arenaSigmaWeighted(entry)
+  if (sw != null) return fmt(sw, 4)
+  return '—'
+}
+
+function authorInitial(entry: LeaderboardEntry | null | undefined) {
+  const login = entryGithubLogin(entry)
+  const name = login || entry?.author || '?'
+  return name.slice(0, 1).toUpperCase()
+}
+
+function deuteronGapSigma(entry: LeaderboardEntry | null | undefined): number | null {
+  const v = entry?.metrics?.deuteron_binding_z?.value
+  return v != null && Number.isFinite(v) ? v : null
 }
 </script>
 
@@ -309,6 +348,9 @@ function badgeClass(key: string) {
           observables — horizons, lapse, mode counts, hadron masses, binding, temperatures, and
           more — with <strong class="font-medium text-slate-200">no major regressions</strong> on
           protected cores. New features require new tests that become permanent.
+          Leaderboard <strong class="font-medium text-slate-200">coverage</strong> shows how many
+          σ metrics counted in each run (e.g. 100/101); ranking uses the coverage-adjusted score so
+          wider suites are not penalized against older, narrower runs.
         </p>
         <p class="mt-3 flex flex-wrap gap-x-2 gap-y-1 text-xs text-slate-400">
           <span class="text-slate-500">Protected cores include:</span>
@@ -359,15 +401,80 @@ function badgeClass(key: string) {
             >
               <div
                 v-if="data.current_best"
-                class="flex flex-wrap items-baseline gap-x-4 gap-y-1"
+                class="space-y-3"
               >
-                <div class="font-mono text-3xl text-emerald-300">
-                  {{ fmt(data.current_best.score, 1) }}
+                <div class="inline-flex items-center gap-2 text-slate-200">
+                  <img
+                    v-if="data.current_best.avatar_url"
+                    :src="data.current_best.avatar_url"
+                    :alt="data.current_best.author"
+                    class="h-8 w-8 rounded-full ring-1 ring-slate-700"
+                    loading="lazy"
+                    width="32"
+                    height="32"
+                  />
+                  <span
+                    v-else
+                    class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-sm ring-1 ring-slate-700"
+                    aria-hidden="true"
+                    >{{ authorInitial(data.current_best) }}</span
+                  >
+                  <span class="font-medium">{{ data.current_best.author }}</span>
                 </div>
-                <div class="text-slate-400">σ = {{ fmt(data.current_best.sigma_weighted, 4) }}</div>
-                <div class="text-xs text-slate-500">
-                  {{ data.current_best.author }} · {{ short(data.current_best.sha) }} ·
-                  {{ new Date(data.current_best.timestamp).toLocaleDateString() }}
+                <div class="flex flex-wrap items-baseline gap-x-5 gap-y-2 text-sm">
+                  <div>
+                    <span class="text-xs uppercase tracking-wide text-slate-500">Score</span>
+                    <div class="font-mono text-3xl text-emerald-300">{{ fmt(data.current_best.score, 1) }}</div>
+                  </div>
+                  <div>
+                    <span class="text-xs uppercase tracking-wide text-slate-500">σ (max |z|)</span>
+                    <div class="text-slate-300">{{ fmtSigma(data.current_best) }}</div>
+                  </div>
+                  <div>
+                    <span class="text-xs uppercase tracking-wide text-slate-500">Coverage</span>
+                    <div class="text-slate-300">{{ coverageLabel(data.current_best) }}</div>
+                  </div>
+                  <div>
+                    <span class="text-xs uppercase tracking-wide text-slate-500">Branch</span>
+                    <div class="font-mono text-xs text-emerald-300">{{ data.current_best.branch }}</div>
+                  </div>
+                  <div>
+                    <span class="text-xs uppercase tracking-wide text-slate-500">When</span>
+                    <div class="text-xs text-slate-400">
+                      {{ new Date(data.current_best.timestamp).toLocaleString() }}
+                    </div>
+                  </div>
+                </div>
+                <div v-if="(data.current_best.badges || []).length" class="flex flex-wrap gap-1">
+                  <span
+                    v-for="b in data.current_best.badges || []"
+                    :key="b"
+                    class="inline-block rounded px-1.5 py-0.5 text-[10px] ring-1"
+                    :class="badgeClass(b)"
+                    :title="badgeByKey[b]?.desc || b"
+                    >{{ badgeLabel(b) }}</span
+                  >
+                </div>
+                <div
+                  v-if="sigmaDisplayMisleading(data.current_best)"
+                  class="text-xs text-slate-500"
+                  title="Arena σ_weighted averages rel_err across all metrics; deuteron_binding_z (~87kσ uncalibrated ladder gap) dominates until dynamic corrections land."
+                >
+                  arena aggregate σ_weighted = {{ fmt(arenaSigmaWeighted(data.current_best), 1) }}
+                  <span v-if="deuteronGapSigma(data.current_best)">
+                    · deuteron ladder |z| ≈ {{ fmt(deuteronGapSigma(data.current_best)!, 0) }}σ
+                  </span>
+                </div>
+                <div
+                  v-if="
+                    data.current_best.score_coverage_adjusted != null &&
+                    data.current_best.score != null &&
+                    data.current_best.score_coverage_adjusted !== data.current_best.score
+                  "
+                  class="text-[11px] text-slate-500"
+                  title="Score × (coverage_count / coverage_total) — fair comparison when the σ suite grows"
+                >
+                  coverage-adjusted score {{ fmt(data.current_best.score_coverage_adjusted, 1) }}
                 </div>
               </div>
               <p v-else class="text-sm text-slate-400">
@@ -392,12 +499,18 @@ function badgeClass(key: string) {
               <table class="w-full text-sm">
                 <thead class="bg-slate-900 text-slate-400">
                   <tr>
-                    <th class="px-3 py-2 text-left font-normal">Branch / PR</th>
-                    <th class="px-3 py-2 text-right font-normal">Score</th>
-                    <th class="px-3 py-2 text-right font-normal">σ (weighted)</th>
-                    <th class="px-3 py-2 text-left font-normal">Badges</th>
                     <th class="px-3 py-2 text-left font-normal">Author</th>
+                    <th class="px-3 py-2 text-right font-normal">Score</th>
+                    <th class="px-3 py-2 text-right font-normal">σ (max |z|)</th>
+                    <th
+                      class="px-3 py-2 text-right font-normal"
+                      title="σ metrics counted in this run vs current suite size (e.g. 100/101). Ranking uses coverage-adjusted score."
+                    >
+                      Coverage
+                    </th>
+                    <th class="px-3 py-2 text-left font-normal">Branch / PR</th>
                     <th class="px-3 py-2 text-left font-normal">When</th>
+                    <th class="px-3 py-2 text-left font-normal">Badges</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-800">
@@ -405,10 +518,43 @@ function badgeClass(key: string) {
                     v-for="e in [...(data.entries || [])].reverse()"
                     :key="e.sha + e.branch"
                   >
-                    <td class="px-3 py-2 font-mono text-xs text-emerald-300">{{ e.branch }}</td>
+                    <td class="px-3 py-2 text-slate-400">
+                      <span class="inline-flex items-center gap-2">
+                        <img
+                          v-if="e.avatar_url"
+                          :src="e.avatar_url"
+                          :alt="e.author"
+                          class="h-6 w-6 shrink-0 rounded-full ring-1 ring-slate-700"
+                          loading="lazy"
+                          width="24"
+                          height="24"
+                        />
+                        <span
+                          v-else
+                          class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-800 text-[10px] ring-1 ring-slate-700"
+                          aria-hidden="true"
+                          >{{ authorInitial(e) }}</span
+                        >
+                        <span>{{ e.author }}</span>
+                      </span>
+                    </td>
                     <td class="px-3 py-2 text-right tabular-nums">{{ fmt(e.score, 1) }}</td>
                     <td class="px-3 py-2 text-right tabular-nums text-slate-400">
-                      {{ fmt(e.sigma_weighted, 4) }}
+                      {{ fmtSigma(e) }}
+                    </td>
+                    <td
+                      class="px-3 py-2 text-right tabular-nums text-slate-400"
+                      :title="
+                        e.score_coverage_adjusted != null && e.score != null && e.score_coverage_adjusted !== e.score
+                          ? `Adjusted score ${fmt(e.score_coverage_adjusted, 1)}`
+                          : 'Full σ suite coverage'
+                      "
+                    >
+                      {{ coverageLabel(e) }}
+                    </td>
+                    <td class="px-3 py-2 font-mono text-xs text-emerald-300">{{ e.branch }}</td>
+                    <td class="px-3 py-2 text-xs text-slate-500">
+                      {{ new Date(e.timestamp).toLocaleString() }}
                     </td>
                     <td class="px-3 py-2">
                       <span
@@ -423,13 +569,9 @@ function badgeClass(key: string) {
                         >—</span
                       >
                     </td>
-                    <td class="px-3 py-2 text-slate-400">{{ e.author }}</td>
-                    <td class="px-3 py-2 text-xs text-slate-500">
-                      {{ new Date(e.timestamp).toLocaleString() }}
-                    </td>
                   </tr>
                   <tr v-if="!hasEntries">
-                    <td colspan="6" class="px-3 py-8 text-center text-slate-500">
+                    <td colspan="7" class="px-3 py-8 text-center text-slate-500">
                       Leaderboard is empty — install
                       <code class="text-slate-400">hqiv-arena</code>, run locally, and open the
                       first improving PR.

@@ -109,11 +109,14 @@ export function createStore(dataDir = DEFAULT_DATA_DIR) {
       id: crypto.randomBytes(8).toString('hex'),
       key_id: key.id,
       author: key.github || key.label || 'solver',
+      github_login: key.github || null,
       model: body.model,
       note: body.note,
-      claimed_score: body.claimed_score ?? null,
-      sigma_weighted: body.sigma_weighted ?? null,
+      claimed_score: body.claimed_score,
+      sigma_weighted: body.sigma_weighted,
       metrics: body.metrics ?? null,
+      coverage_count: body.coverage_count ?? body.num_metrics ?? null,
+      num_metrics: body.num_metrics ?? body.coverage_count ?? null,
       git_ref: body.git_ref ?? null,
       status: 'received',
       created_at: new Date().toISOString(),
@@ -141,16 +144,21 @@ export function createStore(dataDir = DEFAULT_DATA_DIR) {
 
   function appendProvisionalEntry(sub) {
     const lb = loadLocalLeaderboard()
+    const githubLogin = sub.github_login || (sub.author && /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37})$/.test(sub.author) ? sub.author : null)
     const entry = {
       branch: `api/${sub.id}`,
       sha: sub.id,
       author: sub.author,
+      github_login: sub.github_login || githubLogin,
       score: sub.claimed_score,
       sigma_weighted: sub.sigma_weighted,
       timestamp: sub.created_at,
       regressions: 0,
       badges: [],
       status: sub.status,
+      coverage_count: sub.metrics ? Object.keys(sub.metrics).length : sub.coverage_count ?? null,
+      num_metrics: sub.num_metrics ?? null,
+      metrics: sub.metrics ?? undefined,
     }
     lb.entries = lb.entries.filter((e) => e.sha !== sub.id)
     lb.entries.push(entry)
