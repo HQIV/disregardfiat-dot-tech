@@ -24,7 +24,7 @@ const props = defineProps<{
 
 const extras = ref<ShowcaseExtrasDocument | null>(null)
 const proteinFolds = ref<ProteinFoldRow[]>([])
-const activeTab = ref<string>('masses')
+const activeTab = ref<string>('spectroscopy')
 const showHidden = ref(false)
 
 onMounted(async () => {
@@ -361,6 +361,7 @@ const sparcSummary = computed(() => extras.value?.sparc_summary)
     <section v-else-if="activeTab === 'proteins'" class="space-y-3">
       <p class="text-sm text-slate-400">
         Per-target Cα RMSD vs PDB witnesses — derived peptide spine only, no fold coordinates passed in.
+        Bulk aqueous readouts at 310 K tie folding to the same H–O–H / f_LDL spine as the water tab.
       </p>
       <div class="overflow-x-auto rounded-xl border border-slate-800">
         <table class="w-full text-sm">
@@ -403,11 +404,104 @@ const sparcSummary = computed(() => extras.value?.sparc_summary)
     </section>
 
     <!-- Water -->
-    <section v-else-if="activeTab === 'water'" class="space-y-3">
+    <section v-else-if="activeTab === 'water'" class="space-y-4">
       <p class="text-sm text-slate-400">
-        H₂O spectral geometry and chemical readouts from the Chemistry.* Lean spine — bond angles, Slater
-        screening, horizon bond surplus, and bulk thermo at STP-like conditions.
+        H₂O spectral geometry, bulk thermo, and the generalized (T,P) phase engine (LDL/HDL end members,
+        metastable liquid branch). Sciortino / Li literature coordinates grade readouts only — never HQIV inputs.
       </p>
+
+      <div v-if="extras?.phase_diagram" class="rounded-xl border border-blue-900/50 bg-blue-950/20 p-4">
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-blue-300/90">
+          Phase diagram anchors (H₂O)
+        </h3>
+        <p class="mt-1 text-[11px] text-slate-500">
+          {{ extras.phase_diagram.derivation }} · {{ extras.phase_diagram.comparison_policy }}
+        </p>
+        <div class="mt-3 overflow-x-auto rounded-lg border border-slate-800">
+          <table class="w-full text-xs">
+            <thead class="bg-slate-900 text-slate-400">
+              <tr>
+                <th class="px-3 py-2 text-left font-normal">Anchor</th>
+                <th class="px-3 py-2 text-right font-normal">T [K]</th>
+                <th class="px-3 py-2 text-right font-normal">P [atm]</th>
+                <th class="px-3 py-2 text-left font-normal">Phase</th>
+                <th class="px-3 py-2 text-right font-normal">ρ_curv</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800">
+              <tr
+                v-for="(row, key) in extras.phase_diagram.anchor_points ?? {}"
+                :key="String(key)"
+              >
+                <td class="px-3 py-2 font-mono text-slate-300">{{ key }}</td>
+                <td class="px-3 py-2 text-right font-mono tabular-nums text-sky-200">
+                  {{ row.temperature_K }}
+                </td>
+                <td class="px-3 py-2 text-right font-mono tabular-nums text-sky-200">
+                  {{ row.pressure_atm }}
+                </td>
+                <td class="px-3 py-2 text-blue-200">{{ row.derived_phase }}</td>
+                <td class="px-3 py-2 text-right font-mono tabular-nums text-slate-300">
+                  {{ row.rho_curv }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="mt-3 space-y-1 text-[11px] text-slate-500">
+          <li
+            v-for="obs in extras.phase_diagram.water_llpt_observations ?? []"
+            :key="String(obs.doi ?? obs.label)"
+          >
+            {{ obs.source }}
+            <span v-if="obs.T_K"> · {{ obs.T_K }} K</span>
+            <span v-if="obs.P_atm"> · {{ obs.P_atm }} atm</span>
+            <span class="text-amber-400/80"> ({{ obs.role }})</span>
+          </li>
+        </ul>
+      </div>
+
+      <div
+        v-if="extras?.phase_diagram?.hoh_angle_witness?.cytosol_310K_1atm"
+        class="rounded-xl border border-emerald-900/40 bg-emerald-950/15 p-4"
+      >
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-emerald-300/90">
+          H–O–H angle tiers (comparison quarantine)
+        </h3>
+        <p class="mt-1 text-[11px] text-slate-500">
+          θ_tet = LDL network (109.47°); θ_dyn = torque-tree gas dress; ref =
+          {{ extras.phase_diagram.hoh_angle_witness.cytosol_310K_1atm.theta_gas_reference_deg }}°
+          (NIST CCCBDB / Hoy &amp; Bunker 1979).
+        </p>
+        <dl class="mt-3 grid gap-2 sm:grid-cols-3 text-xs">
+          <div>
+            <dt class="text-slate-500">θ_dyn</dt>
+            <dd class="font-mono text-emerald-200">
+              {{ Number(extras.phase_diagram.hoh_angle_witness.cytosol_310K_1atm.theta_dynamic_gas_deg).toFixed(3) }}°
+            </dd>
+          </div>
+          <div>
+            <dt class="text-slate-500">θ_mix @ cytosol f_LDL</dt>
+            <dd class="font-mono text-emerald-200">
+              {{ Number(extras.phase_diagram.hoh_angle_witness.cytosol_310K_1atm.theta_mixture_deg).toFixed(2) }}°
+            </dd>
+          </div>
+          <div>
+            <dt class="text-slate-500">|θ_dyn − ref|</dt>
+            <dd class="font-mono text-emerald-200">
+              {{ Math.abs(Number(extras.phase_diagram.hoh_angle_witness.cytosol_310K_1atm.theta_dyn_minus_ref_deg)).toFixed(3) }}°
+            </dd>
+          </div>
+        </dl>
+        <ul v-if="extras.phase_diagram.water_hoh_angle_observations?.length" class="mt-3 space-y-1 text-[11px] text-slate-500">
+          <li v-for="obs in extras.phase_diagram.water_hoh_angle_observations" :key="String(obs.doi ?? obs.label)">
+            {{ obs.source }} · {{ obs.theta_deg }}°
+            <span v-if="obs.sigma_deg"> ± {{ obs.sigma_deg }}°</span>
+            <span class="text-amber-400/80"> ({{ obs.role }})</span>
+          </li>
+        </ul>
+      </div>
+
       <div class="grid gap-3 sm:grid-cols-2">
         <div
           v-for="w in extras?.water ?? []"
@@ -423,6 +517,245 @@ const sparcSummary = computed(() => extras.value?.sparc_summary)
           </p>
           <p v-if="w.desc" class="mt-2 text-xs leading-relaxed text-slate-500">{{ w.desc }}</p>
         </div>
+      </div>
+    </section>
+
+    <!-- Spectroscopy -->
+    <section v-else-if="activeTab === 'spectroscopy'" class="space-y-4">
+      <p class="text-sm text-slate-400">
+        Diatomic rovibrational panel from
+        <code class="text-fuchsia-300/90">hqiv_molecular_spectroscopy.py</code>
+        (paper: lightcone chemistry extent). NIST/CRC/HITRAN grade readouts only —
+        never enter the solve. Headline accuracy is reported on
+        <strong class="font-medium text-slate-200">geometry-reliable</strong> rows from the
+        paper panel; NaCl gas-phase spectroscopy remains a hold-out, while the promoted Cl2
+        period-3 open-channel row is scored. Solid-lattice NaCl is handled separately in the
+        crystal-contact panel.
+      </p>
+      <div
+        v-if="extras?.spectroscopy?.summary"
+        class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
+      >
+        <div class="rounded-xl border border-fuchsia-900/40 bg-fuchsia-950/15 p-4">
+          <p class="text-[10px] uppercase text-fuchsia-300/70">Reliable |Δω_e|</p>
+          <p class="mt-1 font-mono text-xl text-white">
+            {{ Number(extras.spectroscopy.summary.mean_abs_error_pct_reliable?.omega_e ?? 0).toFixed(2) }}%
+          </p>
+        </div>
+        <div class="rounded-xl border border-fuchsia-900/40 bg-fuchsia-950/15 p-4">
+          <p class="text-[10px] uppercase text-fuchsia-300/70">Reliable |Δr_e|</p>
+          <p class="mt-1 font-mono text-xl text-white">
+            {{ Number(extras.spectroscopy.summary.mean_abs_error_pct_reliable?.r_e ?? 0).toFixed(2) }}%
+          </p>
+        </div>
+        <div class="rounded-xl border border-fuchsia-900/40 bg-fuchsia-950/15 p-4">
+          <p class="text-[10px] uppercase text-fuchsia-300/70">Geometry reliable</p>
+          <p class="mt-1 font-mono text-xl text-white">
+            {{ extras.spectroscopy.summary.n_reliable_geometry }}/{{ extras.spectroscopy.summary.n }}
+          </p>
+        </div>
+        <div class="rounded-xl border border-fuchsia-900/40 bg-fuchsia-950/15 p-4">
+          <p class="text-[10px] uppercase text-fuchsia-300/70">Bracket contains NIST</p>
+          <p class="mt-1 font-mono text-xl text-white">
+            {{ extras.spectroscopy.summary.omega_e_concentration_bracket?.count_nist_within_bracket }}/{{
+              extras.spectroscopy.summary.omega_e_concentration_bracket?.count_with_bracket
+            }}
+          </p>
+        </div>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-slate-800">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-900 text-slate-400">
+            <tr>
+              <th class="px-3 py-2 text-left font-normal">Molecule</th>
+              <th class="px-3 py-2 text-right font-normal">r_e [Å]</th>
+              <th class="px-3 py-2 text-right font-normal">|Δr_e|%</th>
+              <th class="px-3 py-2 text-right font-normal">ω_e [cm⁻¹]</th>
+              <th class="px-3 py-2 text-right font-normal">|Δω_e|%</th>
+              <th class="px-3 py-2 text-left font-normal">Route</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr
+              v-for="row in extras?.spectroscopy?.rows ?? []"
+              :key="row.name"
+              :class="row.geometry_reliable ? '' : 'opacity-50'"
+            >
+              <td class="px-3 py-2">
+                <span class="font-medium text-fuchsia-200">{{ row.name }}</span>
+                <span
+                  v-if="!row.geometry_reliable"
+                  class="ml-2 rounded border border-amber-800/50 px-1 text-[10px] text-amber-300"
+                  >quarantined</span
+                >
+              </td>
+              <td class="px-3 py-2 text-right font-mono tabular-nums">
+                {{ row.r_e_angstrom.toFixed(4) }}
+                <span v-if="row.r_e_ref != null" class="block text-[10px] text-slate-500"
+                  >ref {{ Number(row.r_e_ref).toFixed(4) }}</span
+                >
+              </td>
+              <td
+                class="px-3 py-2 text-right font-mono tabular-nums"
+                :class="row.r_e_err_pct <= 10 ? 'text-emerald-300' : 'text-amber-200'"
+              >
+                {{ row.r_e_err_pct.toFixed(2) }}
+              </td>
+              <td class="px-3 py-2 text-right font-mono tabular-nums">
+                {{ row.omega_e_cm1.toFixed(1) }}
+                <span v-if="row.omega_e_ref != null" class="block text-[10px] text-slate-500"
+                  >ref {{ Number(row.omega_e_ref).toFixed(1) }}</span
+                >
+              </td>
+              <td
+                class="px-3 py-2 text-right font-mono tabular-nums"
+                :class="row.omega_e_err_pct <= 10 ? 'text-emerald-300' : 'text-amber-200'"
+              >
+                {{ row.omega_e_err_pct.toFixed(2) }}
+              </td>
+              <td class="px-3 py-2 font-mono text-[10px] text-slate-500">
+                {{ row.geometry_route }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p v-if="extras?.spectroscopy?.input_policy" class="text-[11px] text-slate-500">
+        {{ extras.spectroscopy.input_policy }}
+      </p>
+    </section>
+
+    <!-- Crystals -->
+    <section v-else-if="activeTab === 'crystals'" class="space-y-4">
+      <p class="text-sm text-slate-400">
+        Solid-lattice nearest-neighbour contacts and Griffith-scale fracture witnesses from the
+        lightcone chemistry extent paper. Gas-phase spectroscopy constants are never used as solid inputs;
+        handbook K_IC / moduli stay quarantined.
+      </p>
+      <div class="overflow-x-auto rounded-xl border border-slate-800">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-900 text-slate-400">
+            <tr>
+              <th class="px-3 py-2 text-left font-normal">Crystal</th>
+              <th class="px-3 py-2 text-left font-normal">Kind</th>
+              <th class="px-3 py-2 text-right font-normal">nn [Å]</th>
+              <th class="px-3 py-2 text-right font-normal">Coord</th>
+              <th class="px-3 py-2 text-left font-normal">Route</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr v-for="w in extras?.crystal_contacts?.witnesses ?? []" :key="String(w.name)">
+              <td class="px-3 py-2 font-medium text-orange-200">{{ w.name }}</td>
+              <td class="px-3 py-2 text-slate-400">{{ w.crystal_kind }}</td>
+              <td class="px-3 py-2 text-right font-mono tabular-nums text-white">
+                {{ Number(w.nearest_neighbor_angstrom).toFixed(3) }}
+              </td>
+              <td class="px-3 py-2 text-right tabular-nums text-slate-400">{{ w.coordination }}</td>
+              <td class="px-3 py-2 font-mono text-[10px] text-slate-500">{{ w.geometry_route }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3 class="text-[0.7rem] font-semibold uppercase tracking-wider text-slate-400">
+          Fracture-scale witnesses
+        </h3>
+        <p v-if="extras?.crystal_fracture?.policy" class="mt-1 text-[11px] text-slate-500">
+          {{ extras.crystal_fracture.policy }}
+        </p>
+        <div class="mt-2 overflow-x-auto rounded-xl border border-slate-800">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-900 text-slate-400">
+              <tr>
+                <th class="px-3 py-2 text-left font-normal">Material</th>
+                <th class="px-3 py-2 text-right font-normal">K_scale [Pa√m]</th>
+                <th class="px-3 py-2 text-right font-normal">Cleavage</th>
+                <th class="px-3 py-2 text-right font-normal">Ductile</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800">
+              <tr v-for="w in extras?.crystal_fracture?.witnesses ?? []" :key="String(w.name)">
+                <td class="px-3 py-2 font-medium text-orange-200">{{ w.name }}</td>
+                <td class="px-3 py-2 text-right font-mono tabular-nums">
+                  {{ Number(w.K_scale_candidate_Pa_sqrt_m).toExponential(2) }}
+                </td>
+                <td class="px-3 py-2 text-right font-mono tabular-nums text-slate-400">
+                  {{ Number(w.cleavage_localization_index).toFixed(3) }}
+                </td>
+                <td class="px-3 py-2 text-right font-mono tabular-nums text-slate-400">
+                  {{ Number(w.ductile_carrier_score).toFixed(3) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Condensed phase -->
+    <section v-else-if="activeTab === 'condensed'" class="space-y-4">
+      <p class="text-sm text-slate-400">
+        Condensed-phase comparison audit (density, refractive index, melt temperature) for molecular and
+        crystal species. Errors are comparison residuals against NIST/CRC — never fitted back into formulae.
+      </p>
+      <div
+        v-if="extras?.condensed_phase?.summary"
+        class="grid gap-3 sm:grid-cols-3"
+      >
+        <div class="rounded-xl border border-teal-900/40 bg-teal-950/15 p-4">
+          <p class="text-[10px] uppercase text-teal-300/70">Mean |Δn|</p>
+          <p class="mt-1 font-mono text-xl text-white">
+            {{ Number(extras.condensed_phase.summary.mean_refractive_index_error_pct_vs_nist).toFixed(2) }}%
+          </p>
+        </div>
+        <div class="rounded-xl border border-teal-900/40 bg-teal-950/15 p-4">
+          <p class="text-[10px] uppercase text-teal-300/70">Mean |ΔT_sl|</p>
+          <p class="mt-1 font-mono text-xl text-white">
+            {{ Number(extras.condensed_phase.summary.mean_T_sl_error_pct_vs_nist).toFixed(2) }}%
+          </p>
+        </div>
+        <div class="rounded-xl border border-teal-900/40 bg-teal-950/15 p-4">
+          <p class="text-[10px] uppercase text-teal-300/70">Mean |Δρ|</p>
+          <p class="mt-1 font-mono text-xl text-white">
+            {{ Number(extras.condensed_phase.summary.mean_density_error_pct_vs_nist).toFixed(2) }}%
+          </p>
+        </div>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-slate-800">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-900 text-slate-400">
+            <tr>
+              <th class="px-3 py-2 text-left font-normal">Species</th>
+              <th class="px-3 py-2 text-right font-normal">n</th>
+              <th class="px-3 py-2 text-right font-normal">|Δn|%</th>
+              <th class="px-3 py-2 text-right font-normal">T_sl [K]</th>
+              <th class="px-3 py-2 text-right font-normal">|ΔT_sl|%</th>
+              <th class="px-3 py-2 text-left font-normal">Motif</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr v-for="s in extras?.condensed_phase?.species ?? []" :key="s.molecule">
+              <td class="px-3 py-2 font-medium text-teal-200">{{ s.molecule }}</td>
+              <td class="px-3 py-2 text-right font-mono tabular-nums">
+                <template v-if="s.refractive_index != null">{{ Number(s.refractive_index).toFixed(4) }}</template>
+                <template v-else>—</template>
+              </td>
+              <td class="px-3 py-2 text-right font-mono tabular-nums text-slate-300">
+                <template v-if="s.n_err_pct != null">{{ Number(s.n_err_pct).toFixed(2) }}</template>
+                <template v-else>—</template>
+              </td>
+              <td class="px-3 py-2 text-right font-mono tabular-nums">
+                <template v-if="s.T_sl_K != null">{{ Number(s.T_sl_K).toFixed(2) }}</template>
+                <template v-else>—</template>
+              </td>
+              <td class="px-3 py-2 text-right font-mono tabular-nums text-slate-300">
+                <template v-if="s.T_sl_err_pct != null">{{ Number(s.T_sl_err_pct).toFixed(2) }}</template>
+                <template v-else>—</template>
+              </td>
+              <td class="px-3 py-2 font-mono text-[10px] text-slate-500">{{ s.motif || s.crystal_kind }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
