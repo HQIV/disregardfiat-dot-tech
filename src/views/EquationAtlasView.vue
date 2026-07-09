@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import ChemistryBuilder from '../components/ChemistryBuilder.vue'
+import ChemistryProofPanel from '../components/ChemistryProofPanel.vue'
 import PeptideFoldPanel from '../components/PeptideFoldPanel.vue'
 import AtlasPhysicsPanel from '../components/AtlasPhysicsPanel.vue'
 import SiteFooter from '../components/SiteFooter.vue'
 import SimulationReposPanel from '../components/SimulationReposPanel.vue'
 
-type TabId = 'molecule' | 'peptide' | 'omaxwell' | 'gravity' | 'simulations'
+type TabId = 'molecule' | 'chemistryProofs' | 'peptide' | 'omaxwell' | 'gravity' | 'simulations'
 
 const tab = ref<TabId>('molecule')
 
@@ -55,6 +56,14 @@ const tabClass = (id: TabId, active: { border: string; bg: string; text: string 
         <button
           type="button"
           class="rounded-t-lg px-4 py-2 text-sm font-medium transition"
+          :class="tabClass('chemistryProofs', { border: 'border-emerald-700/60', bg: 'bg-emerald-950/20', text: 'text-emerald-100' })"
+          @click="tab = 'chemistryProofs'"
+        >
+          Chemistry proof audits
+        </button>
+        <button
+          type="button"
+          class="rounded-t-lg px-4 py-2 text-sm font-medium transition"
           :class="tabClass('peptide', { border: 'border-amber-700/60', bg: 'bg-amber-950/20', text: 'text-amber-100' })"
           @click="tab = 'peptide'"
         >
@@ -89,6 +98,7 @@ const tabClass = (id: TabId, active: { border: string; bg: string; text: string 
 
     <div class="mx-auto max-w-6xl px-4 py-8">
       <ChemistryBuilder v-if="tab === 'molecule'" />
+      <ChemistryProofPanel v-else-if="tab === 'chemistryProofs'" />
       <PeptideFoldPanel v-else-if="tab === 'peptide'" />
       <AtlasPhysicsPanel v-else-if="tab === 'omaxwell'" equation-id="o-maxwell-discrete" accent="cyan" />
       <AtlasPhysicsPanel v-else-if="tab === 'gravity'" equation-id="g-eff-phi-3-5" accent="emerald" />
@@ -99,8 +109,9 @@ const tabClass = (id: TabId, active: { border: string; bg: string; text: string 
       <div class="rounded-2xl border border-slate-800 bg-slate-900/30 p-6 text-sm text-slate-400">
         <p class="font-medium text-slate-200">About these calculators</p>
         <p class="mt-2 leading-relaxed">
-          Chemistry and peptides use only Z and lattice-derived constants. O-Maxwell and gravity tabs
-          run the same pyhqiv functions cited in Lean (<code class="text-violet-300/80">ModifiedMaxwell</code>,
+          Chemistry and peptides use only Z and lattice-derived constants. Chemistry proof audits expose
+          the test-backed lightcone chemistry paper witnesses in the same calculator space. O-Maxwell and
+          gravity tabs run the same pyhqiv functions cited in Lean (<code class="text-violet-300/80">ModifiedMaxwell</code>,
           <code class="text-violet-300/80">GRFromMaxwell</code>). For CMB perturbations and N-body runs,
           use the simulation repos — those pipelines are fit-out, not browser WASM.
         </p>
