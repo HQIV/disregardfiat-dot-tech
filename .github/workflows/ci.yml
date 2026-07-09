@@ -19,20 +19,3 @@ jobs:
 
       - name: Install and build
         run: npm ci && npm run build
-
-  deploy:
-    needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger server deploy hook
-        env:
-          DEPLOY_HOOK_TOKEN: ${{ secrets.DEPLOY_HOOK_TOKEN }}
-        run: |
-          if [ -z "${DEPLOY_HOOK_TOKEN}" ]; then
-            echo "::error::Add repository secret DEPLOY_HOOK_TOKEN (same value as DEPLOY_HOOK_TOKEN in /home/ubuntu/disregardfiat-dot-tech/.env.deploy on the server)."
-            exit 1
-          fi
-          curl -fsS -X POST \
-            -H "Authorization: Bearer ${DEPLOY_HOOK_TOKEN}" \
-            "https://disregardfiat.tech/_deploy/hook"
