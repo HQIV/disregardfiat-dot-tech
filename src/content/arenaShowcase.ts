@@ -16,6 +16,9 @@ export type ShowcaseCategory =
   | 'sparc'
   | 'proteins'
   | 'water'
+  | 'spectroscopy'
+  | 'crystals'
+  | 'condensed'
 
 export type MetricRole = 'anchor' | 'witness' | 'prediction' | 'bound' | 'derived'
 
@@ -71,9 +74,27 @@ export const SHOWCASE_CATEGORIES: ShowcaseCategoryMeta[] = [
   },
   {
     id: 'water',
-    title: 'Water & chemistry',
-    subtitle: 'H₂O spectral geometry + chemical readouts from Chemistry.* spine',
+    title: 'Water & phase',
+    subtitle: 'H₂O LDL/HDL, melt, Widom window, and bond-angle tiers',
     tone: 'blue',
+  },
+  {
+    id: 'spectroscopy',
+    title: 'Molecular spectroscopy',
+    subtitle: 'Diatomic r_e / ω_e / B_e vs NIST—geometry-reliable panel first',
+    tone: 'fuchsia',
+  },
+  {
+    id: 'crystals',
+    title: 'Crystal contacts',
+    subtitle: 'Solid-lattice nn distances + Griffith-scale fracture witnesses',
+    tone: 'orange',
+  },
+  {
+    id: 'condensed',
+    title: 'Condensed phase',
+    subtitle: 'Density, refractive index, melt T on molecular & crystal species',
+    tone: 'teal',
   },
 ]
 
@@ -111,6 +132,24 @@ export const METRIC_CATEGORY: Record<string, ShowcaseCategory> = {
   omega_k_present_now: 'cosmology',
   cmb_birefringence_z: 'cosmology',
   orbital_flyby_sparc_model_residual: 'sparc',
+  water_h2o_melt_T_residual_K: 'water',
+  water_phase_diagram_structural_pass_rate: 'water',
+  water_metastable_liquid_at_llcp: 'water',
+  water_llcp_observation_distance: 'water',
+  water_widom_peak_temperature_residual_K: 'water',
+  water_widom_gamma2_window_alignment_K: 'water',
+  water_h2o_bond_angle_residual_deg: 'water',
+  water_hoh_angle_taxonomy_open_gap_deg: 'water',
+  protein_hydrophobic_interface_ldl_excess: 'proteins',
+  thermo_allotrope_phase_residual: 'water',
+  chemistry_spectroscopy_reliable_omega_e_err_pct: 'spectroscopy',
+  chemistry_spectroscopy_reliable_r_e_err_pct: 'spectroscopy',
+  chemistry_spectroscopy_geometry_reliable_fraction: 'spectroscopy',
+  chemistry_spectroscopy_concentration_bracket_hit_rate: 'spectroscopy',
+  chemistry_condensed_phase_mean_n_err_pct: 'condensed',
+  chemistry_condensed_phase_mean_T_sl_err_pct: 'condensed',
+  chemistry_crystal_contact_panel_pass_rate: 'crystals',
+  chemistry_crystal_fracture_panel_pass_rate: 'crystals',
 }
 
 export const METRIC_ROLE: Record<string, MetricRole> = {
@@ -132,6 +171,14 @@ export const METRIC_ROLE: Record<string, MetricRole> = {
   omega_k_present_now: 'bound',
   cmb_birefringence_z: 'prediction',
   orbital_flyby_sparc_model_residual: 'prediction',
+  chemistry_spectroscopy_reliable_omega_e_err_pct: 'prediction',
+  chemistry_spectroscopy_reliable_r_e_err_pct: 'prediction',
+  chemistry_spectroscopy_geometry_reliable_fraction: 'witness',
+  chemistry_spectroscopy_concentration_bracket_hit_rate: 'prediction',
+  chemistry_condensed_phase_mean_n_err_pct: 'prediction',
+  chemistry_condensed_phase_mean_T_sl_err_pct: 'prediction',
+  chemistry_crystal_contact_panel_pass_rate: 'witness',
+  chemistry_crystal_fracture_panel_pass_rate: 'witness',
 }
 
 export const METRIC_DISPLAY_LABEL: Record<string, string> = {
@@ -139,8 +186,19 @@ export const METRIC_DISPLAY_LABEL: Record<string, string> = {
   proton_electron_mass_ratio: 'm_p / m_e (derived from anchor + ladder)',
   omega_k_present_now: 'Ω_k today vs Planck band',
   orbital_flyby_sparc_model_residual: 'SPARC median χ²_red ratio',
-  free_neutron_half_life: 'Free neutron lifetime',
-  g_W_at_MZ: 'Weak coupling g_W at M_Z',
+  water_phase_diagram_structural_pass_rate: 'H₂O phase diagram structural pass rate',
+  water_metastable_liquid_at_llcp: 'Metastable liquid at Sciortino LLCP',
+  water_h2o_melt_T_residual_K: 'H₂O melt T residual vs 273.15 K',
+  water_h2o_bond_angle_residual_deg: 'H–O–H θ_dyn vs NIST 104.478°',
+  protein_hydrophobic_interface_ldl_excess: 'Hydrophobic interface f_LDL excess',
+  chemistry_spectroscopy_reliable_omega_e_err_pct: 'Reliable diatomic mean |Δω_e|%',
+  chemistry_spectroscopy_reliable_r_e_err_pct: 'Reliable diatomic mean |Δr_e|%',
+  chemistry_spectroscopy_geometry_reliable_fraction: 'Spectroscopy geometry-reliable fraction',
+  chemistry_spectroscopy_concentration_bracket_hit_rate: 'ω_e concentration-bracket hit rate',
+  chemistry_condensed_phase_mean_n_err_pct: 'Condensed-phase mean |Δn|%',
+  chemistry_condensed_phase_mean_T_sl_err_pct: 'Condensed-phase mean |ΔT_sl|%',
+  chemistry_crystal_contact_panel_pass_rate: 'Crystal-contact panel pass rate',
+  chemistry_crystal_fracture_panel_pass_rate: 'Fracture-scale panel pass rate',
 }
 
 export const ROLE_LABEL: Record<MetricRole, string> = {
@@ -201,6 +259,86 @@ export type WaterShowcaseRow = {
 export type ShowcaseExtrasDocument = {
   electroweak: ShowcaseExtraRow[]
   water: WaterShowcaseRow[]
+  phase_diagram?: {
+    source?: string
+    derivation?: string
+    comparison_policy?: string
+    water_llpt_observations?: Array<Record<string, unknown>>
+    water_hoh_angle_observations?: Array<Record<string, unknown>>
+    hoh_angle_witness?: Record<string, Record<string, unknown>>
+    protein_interface?: Record<string, unknown>
+    widom_free_energy?: Record<string, unknown>
+    kim_compressibility_peak_T_K?: number
+    anchor_points?: Record<string, Record<string, unknown>>
+    end_members?: Record<string, { label?: string; rho_curv?: number }>
+  }
+  spectroscopy?: {
+    source?: string
+    lean_module?: string
+    input_policy?: string
+    parameter_policy?: string
+    summary?: {
+      n?: number
+      n_reliable_geometry?: number
+      mean_abs_error_pct_reliable?: Record<string, number>
+      omega_e_concentration_bracket?: Record<string, unknown>
+      downstream_rovibrational_covalent?: Record<string, unknown>
+    }
+    rows?: Array<{
+      name: string
+      geometry_reliable: boolean
+      geometry_route?: string
+      comparison_regime?: string
+      r_e_angstrom: number
+      r_e_ref?: number | null
+      r_e_err_pct: number
+      D_e_ev: number
+      D_e_ref?: number | null
+      omega_e_cm1: number
+      omega_e_ref?: number | null
+      omega_e_err_pct: number
+      B_e_cm1: number
+      B_e_ref?: number | null
+      B_e_err_pct: number
+      coupling_level?: string
+    }>
+  }
+  crystal_contacts?: {
+    source?: string
+    lean_module?: string
+    policy?: string
+    witnesses?: Array<Record<string, unknown>>
+  }
+  crystal_fracture?: {
+    source?: string
+    lean_module?: string
+    policy?: string
+    ethics?: Record<string, unknown>
+    witnesses?: Array<Record<string, unknown>>
+  }
+  condensed_phase?: {
+    source?: string
+    comparison_policy?: string
+    summary?: Record<string, unknown>
+    species?: Array<{
+      molecule: string
+      motif?: string
+      crystal_kind?: string
+      rho_curv?: number
+      density_g_cm3?: number
+      density_ref?: number
+      density_err_pct?: number
+      refractive_index?: number
+      n_ref?: number
+      n_err_pct?: number
+      T_sl_K?: number
+      T_sl_ref?: number
+      T_sl_err_pct?: number
+      k_th_W_mK?: number
+      optical_coupling_level?: string
+    }>
+  }
+  chemistry_audit?: Record<string, unknown>
   hep_decay_channels: HepDecayChannelRow[]
   sparc_summary?: {
     median_chi2_red_hqiv: number

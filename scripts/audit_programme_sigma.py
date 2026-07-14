@@ -426,6 +426,29 @@ AUDIT: dict[str, dict] = {
         "remaining": "Prebiotic chemistry narrative.",
         "blockers": "Programme choice — not targeted.",
     },
+    "water-anomalies-llpt": {
+        "status": "partial",
+        "lean_evidence_level": "theorem_pack",
+        "lean_modules": [
+            "Hqiv.QuantumChemistry.PhaseDiagramMixture",
+            "Hqiv.QuantumChemistry.PhaseGeometryDensity",
+            "Hqiv.QuantumChemistry.PhaseAllotropeDerivation",
+            "Hqiv.ProteinResearch.ProteinFoldThermodynamics",
+        ],
+        "hqiv": (
+            "Generalized (T,P) phase engine with LDL/HDL end members and metastable_liquid branch. "
+            "Sciortino LLCP (~198 K, 1250 atm) and Li two-state MD grade readouts only."
+        ),
+        "in_spine": (
+            "PhaseDiagramMixture mixture algebra; PhaseGeometryDensity tetrahedral melt ratio; "
+            "thermodynamic phase derivation (hqiv_lab/phase_diagram.py); protein cytosol vs cryo ρ dressings."
+        ),
+        "remaining": (
+            "Mixture material response (n, k_th, η) at full σ; cryo bulk solid-preference kinetics."
+        ),
+        "blockers": "Cryo bulk path still opens metastable liquid at 1 atm — solid-preference kinetics is an open fit-out.",
+        "papers": ["thermodynamics-arrow", "unified-framework"],
+    },
     "protein-folding": {
         "status": "partial",
         "lean_evidence_level": "theorem_pack",
@@ -440,7 +463,7 @@ AUDIT: dict[str, dict] = {
             "Diamond-node bond geometry, VSEPR/shell chemistry spine, secondary-structure register, "
             "tertiary contact graph, and NERF closure (hqiv_lab/miniprotein_*.py; Chemistry.Biomolecule in Lean)."
         ),
-        "remaining": "Full-protein benchmarks beyond miniprotein ladder; cryo vs cytosol temperature dressings at σ.",
+        "remaining": "Full-protein benchmarks beyond miniprotein ladder; mixture θ at interface in fold scoring.",
         "blockers": "None known for the published miniprotein panel — larger proteins are fit-out.",
         "papers": ["unified-framework", "tuft-sm-lagrangian"],
     },

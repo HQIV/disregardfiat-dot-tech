@@ -1,6 +1,6 @@
 {
-  "schema_version": 2,
-  "generated_at": "2026-07-07T23:26:53Z",
+  "schema_version": 1,
+  "generated_at": "2026-07-08T04:14:46Z",
   "pyhqiv_version": "0.4.1.dev1+unknown.gabc2030da.d20260707",
   "wikipedia": {
     "title": "List of unsolved problems in physics",
@@ -8,8 +8,8 @@
     "license_note": "Problem titles and grouping follow the English Wikipedia list; HQIV status text is programme commentary, not Wikipedia content."
   },
   "sigma_snapshot": {
-    "overall_score": 882.3377,
-    "sigma_weighted": 0.1333529141309064,
+    "overall_score": 357.4128,
+    "sigma_weighted": 1.79788521,
     "num_protected_regressions": 0,
     "alignment_cores": [
       {
@@ -19,11 +19,8 @@
         "rel_err": 0.0,
         "unit": "",
         "protected": true,
-        "desc": "Combinatorial curvature norm N67 = 6^7 √3 from discrete null lattice (Lean OctonionicLightCone)",
-        "mainstream_note": "",
-        "lean_modules": [
-          "Hqiv.Geometry.OctonionicLightCone"
-        ]
+        "desc": "Combinatorial curvature norm N67 = 6^7 \u221a3 from discrete null lattice (Lean OctonionicLightCone)",
+        "mainstream_note": ""
       },
       {
         "name": "derived_proton_mass_MeV",
@@ -32,12 +29,8 @@
         "rel_err": 0.0,
         "unit": "MeV",
         "protected": true,
-        "desc": "Lock-in proton mass anchor at referenceM=4 (Lean DerivedNucleonMass + tuft). Calibrates the resonance ladder — not scored as a blind PDG prediction.",
-        "mainstream_note": "",
-        "lean_modules": [
-          "Hqiv.Physics.DerivedNucleonMass",
-          "Hqiv.Physics.QuarkMetaResonance"
-        ]
+        "desc": "Proton mass anchor formally derived from Lean (DerivedNucleonMass + tuft etc)",
+        "mainstream_note": ""
       },
       {
         "name": "lapse_factor_ref_point",
@@ -47,10 +40,7 @@
         "unit": "",
         "protected": true,
         "desc": "ADM lapse at canonical reference-like point (Lean HQVMetric / HQVM_lapse)",
-        "mainstream_note": "",
-        "lean_modules": [
-          "Hqiv.Geometry.HQVMetric"
-        ]
+        "mainstream_note": ""
       },
       {
         "name": "omega_k_at_horizon_self",
@@ -59,11 +49,8 @@
         "rel_err": 0.0,
         "unit": "1",
         "protected": true,
-        "desc": "Ω_k(N;N) must be exactly 1 at the horizon (Lean theorem omega_k_at_horizon_self)",
-        "mainstream_note": "",
-        "lean_modules": [
-          "Hqiv.Geometry.OctonionicLightCone"
-        ]
+        "desc": "\u03a9_k(N;N) must be exactly 1 at the horizon (Lean theorem omega_k_at_horizon_self)",
+        "mainstream_note": ""
       },
       {
         "name": "omega_k_partial_at_reference",
@@ -72,11 +59,8 @@
         "rel_err": 0.0,
         "unit": "1",
         "protected": true,
-        "desc": "Ω_k at lock-in/reference shell relative to itself (Lean omega_k_lockin_calibration)",
-        "mainstream_note": "",
-        "lean_modules": [
-          "Hqiv.Geometry.OctonionicLightCone"
-        ]
+        "desc": "\u03a9_k at lock-in/reference shell relative to itself (Lean omega_k_lockin_calibration)",
+        "mainstream_note": ""
       },
       {
         "name": "reference_m",
@@ -85,11 +69,8 @@
         "rel_err": 0.0,
         "unit": "shell",
         "protected": true,
-        "desc": "Lock-in shell index (qcdShell + lattice steps) — changing this is a major formal shift",
-        "mainstream_note": "",
-        "lean_modules": [
-          "Hqiv.Geometry.OctonionicLightCone"
-        ]
+        "desc": "Lock-in shell index (qcdShell + lattice steps) \u2014 changing this is a major formal shift",
+        "mainstream_note": ""
       },
       {
         "name": "so8_dim",
@@ -99,11 +80,7 @@
         "unit": "dim",
         "protected": true,
         "desc": "so(8) Lie closure dimension (Lean SO8Closure + triality + GeneratorsLieClosure)",
-        "mainstream_note": "",
-        "lean_modules": [
-          "Hqiv.SO8Closure",
-          "Hqiv.GeneratorsLieClosure"
-        ]
+        "mainstream_note": ""
       }
     ],
     "phenomenology_metrics": [
@@ -114,8 +91,8 @@
         "rel_err": 0.0,
         "unit": "",
         "protected": false,
-        "desc": "GUT coupling from Lean β-running engine (1/42 in paper)",
-        "mainstream_note": "No PDG reference for α_GUT — internal β-running witness only; hidden from public Arena showcase."
+        "desc": "GUT coupling from Lean \u03b2-running engine (1/42 in paper)",
+        "mainstream_note": ""
       },
       {
         "name": "available_modes_ref",
@@ -134,8 +111,8 @@
         "rel_err": 0.01603676170197017,
         "unit": "",
         "protected": false,
-        "desc": "Baryon-to-photon ratio η × 10^10 at BBN/CMB from HQIV first-principles (dynamic shell integrator: curvature shells + vev + binding feedback + seed imprint over QCD-to-lock-in window). Paper script hqiv_dynamic_bulk_bbn.py gives ~6.19782 (not 6.10).",
-        "mainstream_note": "Mainstream (ΛCDM): fitted parameter (Ω_b h^2) from BBN light-element abundances + CMB damping tail (depends on baryon density + several other cosmological parameters + initial conditions). HQIV: derived ~6.19782 from axioms + discrete dynamics (no fit)."
+        "desc": "Baryon-to-photon ratio \u03b7 \u00d7 10^10 at BBN/CMB from HQIV first-principles (dynamic shell integrator: curvature shells + vev + binding feedback + seed imprint over QCD-to-lock-in window). Paper script hqiv_dynamic_bulk_bbn.py gives ~6.19782 (not 6.10).",
+        "mainstream_note": "Mainstream (\u039bCDM): fitted parameter (\u03a9_b h^2) from BBN light-element abundances + CMB damping tail (depends on baryon density + several other cosmological parameters + initial conditions). HQIV: derived ~6.19782 from axioms + discrete dynamics (no fit)."
       },
       {
         "name": "cmb_birefringence_z",
@@ -144,17 +121,17 @@
         "rel_err": 0.6063829787234045,
         "unit": "sigma",
         "protected": false,
-        "desc": "CMB birefringence β (deg) at now from HQIV (α imprint + self-clock; paper script 0.379 deg). Python current 0.3 from witness. Agrees with obs within ~0.4σ per paper.",
-        "mainstream_note": "Mainstream: predicts ~0 (no mechanism in standard inflation/GR) or new physics (axions, parity violation). HQIV predicts specific O(0.3-0.4)° from lattice monogamy α=3/5 and now conditions."
+        "desc": "CMB birefringence \u03b2 (deg) at now from HQIV (\u03b1 imprint + self-clock; paper script 0.379 deg). Python current 0.3 from witness. Agrees with obs within ~0.4\u03c3 per paper.",
+        "mainstream_note": "Mainstream: predicts ~0 (no mechanism in standard inflation/GR) or new physics (axions, parity violation). HQIV predicts specific O(0.3-0.4)\u00b0 from lattice monogamy \u03b1=3/5 and now conditions."
       },
       {
         "name": "deuteron_binding_z",
-        "value": 0.75,
+        "value": 0.7500000000308186,
         "reference": 1.0,
-        "rel_err": 0.25,
+        "rel_err": 0.24999999996918143,
         "unit": "sigma",
         "protected": false,
-        "desc": "Deuteron B from Lean spectraDeuteronBinding_MeV witness vs AME2020 (~0.75σ). Stale Arena getter used isotope_ladder uniform weights until pyhqiv fix lands.",
+        "desc": "Deuteron total binding B (MeV) from Lean spectraDeuteronBinding_MeV witness vs AME2020 (with real exp \u03c3). Heavier-nuclei ladder polish remains a separate Arena target.",
         "mainstream_note": "Mainstream: fitted from nucleon-nucleon potentials + ~dozens of parameters in chiral EFT / phenomenological models; not derived from deeper axioms"
       },
       {
@@ -165,7 +142,7 @@
         "unit": "decades",
         "protected": false,
         "desc": "Tuning exponent for initial curvature to produce observed near-flat universe today. HQIV dynamics from lattice gives natural small Omega_k(now) ~ paper value 0.0098 (agrees with Planck/bounds).",
-        "mainstream_note": "Mainstream GR/ΛCDM (no inflation): |Ω_k| at t~t_Pl must be <~10^{-60} (or 10^{-30} at GUT) or universe not flat today; extreme fine-tuning of initial conditions. Inflation stretches but brings eternal inflation, measure problems."
+        "mainstream_note": "Mainstream GR/\u039bCDM (no inflation): |\u03a9_k| at t~t_Pl must be <~10^{-60} (or 10^{-30} at GUT) or universe not flat today; extreme fine-tuning of initial conditions. Inflation stretches but brings eternal inflation, measure problems."
       },
       {
         "name": "free_neutron_half_life",
@@ -179,23 +156,23 @@
       },
       {
         "name": "hep_decay_panel_max_z",
-        "value": 0.8599807767351889,
+        "value": 0.8608533757867759,
         "reference": 3.0,
-        "rel_err": 0.7133397410882704,
+        "rel_err": 0.7130488747377414,
         "unit": "sigma",
         "protected": false,
-        "desc": "Max n_σ on curated 17-channel HEP branching panel (published max ~0.86σ, all within 3σ).",
+        "desc": "Max n_\u03c3 on curated 17-channel HEP branching panel (published max ~0.86\u03c3, all within 3\u03c3).",
         "mainstream_note": "Mainstream effective theories tuned per decay mode; HQIV open-channel generator (567 readouts, 81/81 structural witnesses)."
       },
       {
         "name": "hep_decay_panel_mean_z",
-        "value": 0.21115299095259038,
+        "value": 0.2106083506328392,
         "reference": 1.0,
-        "rel_err": 0.7888470090474096,
+        "rel_err": 0.7893916493671608,
         "unit": "sigma",
         "protected": false,
-        "desc": "Mean n_σ on curated 17-channel heavy-flavour branching panel (HEP decay readout paper; MC witness propagation, PDG quarantined).",
-        "mainstream_note": "Mainstream: CKM |V| elements + hadronic matrix elements fitted per channel; HQIV γ-rational ledger readout."
+        "desc": "Mean n_\u03c3 on curated 17-channel heavy-flavour branching panel (HEP decay readout paper; MC witness propagation, PDG quarantined).",
+        "mainstream_note": "Mainstream: CKM |V| elements + hadronic matrix elements fitted per channel; HQIV \u03b3-rational ledger readout."
       },
       {
         "name": "hep_decay_structural_pass_rate",
@@ -224,8 +201,8 @@
         "rel_err": 0.0,
         "unit": "fraction",
         "protected": false,
-        "desc": "Fraction of miniprotein audit targets passing per-target Cα RMSD gates (published: 11/11).",
-        "mainstream_note": "Mainstream fold benchmarks use similar pass/fail gates on Cα RMSD or GDT-TS."
+        "desc": "Fraction of miniprotein audit targets passing per-target C\u03b1 RMSD gates (published: 11/11).",
+        "mainstream_note": "Mainstream fold benchmarks use similar pass/fail gates on C\u03b1 RMSD or GDT-TS."
       },
       {
         "name": "miniprotein_mean_ca_rmsd",
@@ -234,7 +211,7 @@
         "rel_err": 0.2310709308930372,
         "unit": "angstrom",
         "protected": false,
-        "desc": "Mean Cα RMSD across 11-target miniprotein audit panel (PDB/COD witnesses grade HQIV fold readouts only; 11/11 pass at published gates).",
+        "desc": "Mean C\u03b1 RMSD across 11-target miniprotein audit panel (PDB/COD witnesses grade HQIV fold readouts only; 11/11 pass at published gates).",
         "mainstream_note": "Mainstream: Rosetta/AlphaFold-class engines; HQIV uses derived peptide spine + NERF closure (no PDB fold inputs)."
       },
       {
@@ -244,18 +221,18 @@
         "rel_err": 0.1261841909793205,
         "unit": "angstrom",
         "protected": false,
-        "desc": "Trp-cage (20-mer) Cα RMSD vs PDB witness — hardest miniprotein target in the published ladder.",
+        "desc": "Trp-cage (20-mer) C\u03b1 RMSD vs PDB witness \u2014 hardest miniprotein target in the published ladder.",
         "mainstream_note": "Mainstream: AF2/ESMFold benchmarks on miniproteins; HQIV spine-matrix readout with staged tertiary closure."
       },
       {
         "name": "omega_k_present_now",
-        "value": 0.44,
+        "value": 0.43999999999999995,
         "reference": 1.0,
         "rel_err": 0.56,
         "unit": "sigma",
         "protected": false,
-        "desc": "Present-day Ω_k z-score vs |Ω_k|<0.02 Planck band (dynamic prediction ~0.0098). Horizon-self Ω_k(N;N)=1 is a separate protected theorem.",
-        "mainstream_note": "Mainstream (ΛCDM): Ω_k0 ≈ 0 (flat universe today); flatness problem — requires special initial conditions or inflation to explain why so close to zero (depends on early universe dynamics)."
+        "desc": "Present-day \u03a9_k z-score vs Planck band (prediction ~0.0098; |\u03a9_k|<~0.02). Horizon-self \u03a9_k(N;N)=1 is a separate protected theorem.",
+        "mainstream_note": "Mainstream (\u039bCDM): \u03a9_k0 \u2248 0 (flat universe today); flatness problem \u2014 requires special initial conditions or inflation to explain why so close to zero (depends on early universe dynamics)."
       },
       {
         "name": "orbital_flyby_sparc_model_residual",
@@ -264,7 +241,7 @@
         "rel_err": 0.3070670617871667,
         "unit": "ratio",
         "protected": false,
-        "desc": "SPARC catalog median χ²_red(HQIV) / median χ²_red(baryonic) — lower means HQIV inertia screening beats baryons-only (published ~0.31).",
+        "desc": "SPARC catalog median \u03c7\u00b2_red(HQIV) / median \u03c7\u00b2_red(baryonic) \u2014 lower means HQIV inertia screening beats baryons-only (published ~0.31).",
         "mainstream_note": "Mainstream: dark-matter halos fitted per galaxy (NFW etc., many free params); HQIV horizon-modified inertia, no new particle."
       },
       {
@@ -274,8 +251,18 @@
         "rel_err": 0.0,
         "unit": "sigma",
         "protected": false,
-        "desc": "Max | (HQIV derived - exp) / published_1σ | across binding energies, half-lives, masses, BBN η, CMB etc. from the master paper-comparison suite. Core Arena 'sigma everywhere' driver.",
+        "desc": "Max | (HQIV derived - exp) / published_1\u03c3 | across binding energies, half-lives, masses, BBN \u03b7, CMB etc. from the master paper-comparison suite. Core Arena 'sigma everywhere' driver.",
         "mainstream_note": "Mainstream: per-observable fits / effective theories achieve |z| << 1 on data they were calibrated to (many free params per sector)"
+      },
+      {
+        "name": "protein_hydrophobic_interface_ldl_excess",
+        "value": 0.24,
+        "reference": 0.24,
+        "rel_err": 0.0,
+        "unit": "fraction",
+        "protected": false,
+        "desc": "f_LDL excess at hydrophobic protein\u2013solvent interface vs bulk (200 K supercooled witness).",
+        "mainstream_note": "HQIV interface dress \u03b3\u00b7\u03b1 toward LDL; no fitted hydrophobic potential."
       },
       {
         "name": "proton_electron_mass_ratio",
@@ -284,8 +271,18 @@
         "rel_err": 7.313894339417914e-09,
         "unit": "",
         "protected": false,
-        "desc": "m_p / m_e derived from the lock-in anchor + electron resonance ladder (tuft + SM_GR_Unification) — ratio prediction, not the anchor itself.",
+        "desc": "m_p / m_e from HQIV resonance ladder + nucleon binding (tuft + SM_GR_Unification papers)",
         "mainstream_note": "Mainstream: measured constant (CODATA/PDG fit to many experiments); no first-principles derivation in SM+GR"
+      },
+      {
+        "name": "thermo_allotrope_phase_residual",
+        "value": 0.4382671334089423,
+        "reference": 0.0,
+        "rel_err": 0.4382671334089423,
+        "unit": "K",
+        "protected": false,
+        "desc": "|T_sl(H\u2082O ice Ih) \u2212 273.15 K| from HQIV geometry melt ladder (allotrope phase residual).",
+        "mainstream_note": "Mainstream: empirical melting curves; HQIV derives T_sl from tetrahedral H-bond network + cohesive scales."
       },
       {
         "name": "tuft_hopf_kappa6_correction",
@@ -294,7 +291,7 @@
         "rel_err": 1.5134305703912246e-16,
         "unit": "",
         "protected": false,
-        "desc": "TUFT Hopf κ₆ = η_paper × γ × C₂ (C2 = lapse conc at lock-in) for advanced mass/binding corrections in papers. Python now mirrors Lean.",
+        "desc": "TUFT Hopf \u03ba\u2086 = \u03b7_paper \u00d7 \u03b3 \u00d7 C\u2082 (C2 = lapse conc at lock-in) for advanced mass/binding corrections in papers. Python now mirrors Lean.",
         "mainstream_note": "Mainstream: no equivalent; fitted parameters per sector. HQIV: derived topological correction from Hopf/Beltrami bridge (kappa6, C2 terms)."
       },
       {
@@ -304,18 +301,68 @@
         "rel_err": 0.0,
         "unit": "",
         "protected": false,
-        "desc": "Vacuum energy density from finite sum ½ N(m) ω(m) over causal modes 0 to m_now (matches paper kirchhoff_finite_mode script). HQIV gives observed small value naturally.",
-        "mainstream_note": "Mainstream QFT+GR (Planck cutoff): predicts ρ_vac ~10^{120} × observed (vacuum catastrophe); requires 120 orders fine-tuning or new physics (e.g. SUSY to 10^{-3} eV). No first-principles solution."
+        "desc": "Vacuum energy density from finite sum \u00bd N(m) \u03c9(m) over causal modes 0 to m_now (matches paper kirchhoff_finite_mode script). HQIV gives observed small value naturally.",
+        "mainstream_note": "Mainstream QFT+GR (Planck cutoff): predicts \u03c1_vac ~10^{120} \u00d7 observed (vacuum catastrophe); requires 120 orders fine-tuning or new physics (e.g. SUSY to 10^{-3} eV). No first-principles solution."
+      },
+      {
+        "name": "water_h2o_melt_T_residual_K",
+        "value": 0.4382671334089423,
+        "reference": 0.0,
+        "rel_err": 0.4382671334089423,
+        "unit": "K",
+        "protected": false,
+        "desc": "Bulk H\u2082O solid\u2192liquid transition temperature residual vs 273.15 K (PhaseGeometryDensity + thermodynamic phase engine).",
+        "mainstream_note": "Mainstream: NIST melting point; HQIV from ice Ih unit cell + shell-opening melt (no fitted potential)."
+      },
+      {
+        "name": "water_llcp_observation_distance",
+        "value": 0.0,
+        "reference": 0.0,
+        "rel_err": 0.0,
+        "unit": "norm",
+        "protected": false,
+        "desc": "Normalized (T,P) distance from HQIV LLCP-regime anchor to Sciortino observation (comparison grading; lower is better).",
+        "mainstream_note": "Literature LLCP ~198 K / 1250 atm grades HQIV readouts; coordinates never enter derivation."
+      },
+      {
+        "name": "water_metastable_liquid_at_llcp",
+        "value": 1.0,
+        "reference": 1.0,
+        "rel_err": 0.0,
+        "unit": "fraction",
+        "protected": false,
+        "desc": "HQIV classifies Sciortino LLCP coordinates (~198 K, ~1250 atm) as metastable_liquid (two-liquid branch witness).",
+        "mainstream_note": "Sciortino et al. Nat. Phys. 2025 (MB-pol) \u2014 comparison only, not an input."
+      },
+      {
+        "name": "water_phase_diagram_structural_pass_rate",
+        "value": 1.0,
+        "reference": 1.0,
+        "rel_err": 0.0,
+        "unit": "fraction",
+        "protected": false,
+        "desc": "Structural pass rate on H\u2082O phase-diagram anchors: cytosol liquid, ice below melt, LLCP-regime metastable liquid, T_melt window.",
+        "mainstream_note": "Mainstream: MD potentials (MB-pol, TIP4P) map LLPT; HQIV first-principles (T,P) engine with comparison quarantine."
+      },
+      {
+        "name": "water_widom_peak_temperature_residual_K",
+        "value": 79.0,
+        "reference": 0.0,
+        "rel_err": 79.0,
+        "unit": "K",
+        "protected": false,
+        "desc": "|T_peak(\u03ba proxy from cohesive ladder) \u2212 Kim et al. compressibility max ~229 K| at 1 atm.",
+        "mainstream_note": "Kim et al. Science 2020 compressibility anomaly \u2014 comparison only; HQIV peak from T_melt\u00b7(1\u2212\u03b3\u00b2), not fitted to Kim."
       }
     ],
-    "note": "Protected metrics are Lean↔Python exact witnesses (rel_err = 0). Phenomenology uses published error bars; deuteron/Ω_k(now) patched to Lean witness + Planck band until pyhqiv main Arena metrics merge."
+    "note": "Protected metrics are Lean\u2194Python exact witnesses (rel_err = 0). Phenomenology metrics use PDG/Planck/literature error bars; Arena rewards broad reduction of rel_err across many observables ('sigma everywhere'). sigma_weighted mixes large-magnitude witnesses \u2014 use per-metric rel_err for physics gaps."
   },
   "status_legend": {
-    "addressed": "Core mechanism closed in Lean (Arena may still polish σ on specific observables).",
-    "partial": "Mechanism in spine — named fit-out remains; see blockers field.",
-    "reinterpreted": "Problem reframed; spine covers the new story's algebra, numerics may lag.",
-    "open": "No dedicated spine module yet — design work needed.",
-    "out_of_scope": "Not on the HQIV roadmap."
+    "addressed": "Explicit mechanism or derivation in the published HQIV spine.",
+    "partial": "Direction claimed; quantitative closure or uniqueness still open.",
+    "reinterpreted": "Problem reframed (e.g. dark matter as inertia screening).",
+    "open": "Acknowledged gap; no paper claim yet.",
+    "out_of_scope": "Not a current programme target."
   },
   "problems": [
     {
@@ -323,33 +370,14 @@
       "wikipedia_topic": "General physics",
       "title": "Theory of everything",
       "status": "partial",
-      "hqiv": "Unified discrete action, holonomy discharge, and SM anomaly cancellation in Lean — tier-III patch dictionary still fit-out.",
+      "hqiv": "HQIV is a patch programme: discrete null-lattice combinatorics + horizon thermodynamics + certified so(8) closure aim to link gravity, gauge structure, and mass readouts on one spine \u2014 not yet a single accepted TOE Lagrangian.",
       "papers": [
         "unified-framework",
-        "octonionic-action",
-        "tuft-sm-lagrangian"
+        "octonionic-action"
       ],
       "arena_metrics": [
         "so8_dim",
         "curvature_norm_combinatorial"
-      ],
-      "in_spine": "One discrete action cell (O–Maxwell + gravity on shared φ); S_HQIV⇒L_SM bridge; three-generation SM anomaly-free (AnomalyCancellation); cyclic Stokes + SO(8) plaquette holonomy (ActionHolonomyGlue, SO8PlaquetteHolonomy, TuftSynthesisZetaHolonomyDischarge, WilsonLoop).",
-      "remaining": "Tier-III cross-patch dictionary for arbitrary observables; full continuum limit matching every standard QFT calculation workflow; Haar/measure normalization on rotated charts (NonAbelianHolonomyMeasureScaffold — explicit open frontier, not missing holonomy proofs).",
-      "blockers": "None known — the Lagrangian exists in the discrete spine; remaining work is dictionary and fit-out, not missing action postulates.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Geometry.OctonionicLightCone",
-        "Hqiv.SO8Closure",
-        "Hqiv.Physics.Action",
-        "Hqiv.Physics.ActionHolonomyGlue",
-        "Hqiv.Physics.SO8PlaquetteHolonomy",
-        "Hqiv.Physics.TuftSynthesisZetaHolonomyDischarge",
-        "Hqiv.Algebra.AnomalyCancellation",
-        "Hqiv.Physics.GRFromMaxwell",
-        "Hqiv.Physics.ModifiedMaxwell",
-        "Hqiv.Physics.DerivedNucleonMass",
-        "Hqiv.Physics.HopfShellBeltramiMassBridge",
-        "HqivSpine.Physics.WilsonLoop"
       ]
     },
     {
@@ -357,7 +385,7 @@
       "wikipedia_topic": "Quantum gravity",
       "title": "Quantum gravity (GR + QM consistency)",
       "status": "partial",
-      "hqiv": "GR+QM consistency on a finite causal carrier — graviton QFT kept as comparison layer.",
+      "hqiv": "Spacetime is modelled as a locally finite causal order with quadratic null-shell growth; gravity enters via modified inertia and HQVM lapse rather than a finished graviton QFT. Discrete carrier + Lean witnesses are the consistency gate.",
       "papers": [
         "unified-framework",
         "3d-causal-growth"
@@ -365,59 +393,31 @@
       "arena_metrics": [
         "omega_k_at_horizon_self",
         "lapse_factor_ref_point"
-      ],
-      "in_spine": "Locally finite causal order, finite Born/measurement ledgers, horizon-limited QFT closure, Ω_k(N;N)=1 at the horizon.",
-      "remaining": "Continuum graviton S-matrix baseline; exhaustive map of every GR clock into HQVM.",
-      "blockers": "None known — ontology is patch-first by design, not stuck on a hidden inconsistency.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.QuantumMechanics.HorizonLimitedQM_QFT_Closure",
-        "Hqiv.QuantumMechanics.HorizonLimitedRenormLocality",
-        "Hqiv.QuantumMechanics.BornMeasurementFinite",
-        "Hqiv.Geometry.HQVMetric",
-        "Hqiv.Geometry.OctonionicLightCone"
       ]
     },
     {
       "id": "black-hole-information",
       "wikipedia_topic": "Quantum gravity",
       "title": "Black hole information paradox",
-      "status": "partial",
-      "hqiv": "Soft-firewall bookkeeping on the auxiliary channel — Page-curve theorem still to build.",
+      "status": "addressed",
+      "hqiv": "Soft dynamical firewall: information is released through horizon bookkeeping on the auxiliary channel instead of being destroyed at a sharp Planck wall.",
       "papers": [
         "unified-framework"
       ],
-      "arena_metrics": [],
-      "in_spine": "Finite measurement layer with auxiliary transfer; horizon energy closure lemmas.",
-      "remaining": "Explicit black-hole patch geometry; proved information release / Page curve in Lean.",
-      "blockers": "Dedicated BH thermodynamics module not yet in the spine — engineering gap, not a claimed paradox resolution.",
-      "lean_evidence_level": "scaffold",
-      "lean_modules": [
-        "Hqiv.QuantumMechanics.BornMeasurementFinite",
-        "Hqiv.QuantumMechanics.HorizonLimitedQM_QFT_Closure"
-      ]
+      "arena_metrics": []
     },
     {
       "id": "problem-of-time",
       "wikipedia_topic": "Quantum gravity",
       "title": "Problem of time",
       "status": "partial",
-      "hqiv": "Multiple physical clocks are first-class; lapse/age ratio is proved, absolute Gyr values are readouts.",
+      "hqiv": "A shell-indexed rapidity dial and ADM lapse compression separate wall-clock evolution from apparent cosmological time; full reconciliation with every GR clock construction is still being spelled out in the variational layer.",
       "papers": [
         "unified-framework",
         "octonionic-action"
       ],
       "arena_metrics": [
         "lapse_factor_ref_point"
-      ],
-      "in_spine": "Shell-indexed rapidity, ADM lapse compression, UniverseAge ratio algebra, Now slice selection.",
-      "remaining": "Spell out every GR coordinate-time choice in the variational layer; tie complex-time Stokes bridge to all sectors.",
-      "blockers": "None known — documentation and chart glue, not a conceptual deadlock.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Geometry.UniverseAge",
-        "Hqiv.Geometry.Now",
-        "Hqiv.Geometry.HQVMetric"
       ]
     },
     {
@@ -425,75 +425,43 @@
       "wikipedia_topic": "Foundations of physics",
       "title": "Interpretation of quantum mechanics",
       "status": "reinterpreted",
-      "hqiv": "Pilot-wave style: Born rule from a finite measurement layer — not many-worlds.",
+      "hqiv": "Born-rule statistics from a finite measurement layer on the auxiliary field; deterministic local accounting \u2014 pilot-wave aligned, explicitly not many-worlds branching.",
       "papers": [
         "auxiliary-fields"
       ],
-      "arena_metrics": [],
-      "in_spine": "Born norms, collapse rules, and aux-channel transfer proved on finite patches (BornMeasurementFinite).",
-      "remaining": "Full apparatus map for every experimental setup; community acceptance of the interpretation frame.",
-      "blockers": "None known in the formal layer — this is a reframing, not a half-built proof.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.QuantumMechanics.BornMeasurementFinite",
-        "Hqiv.QuantumMechanics.HorizonLimitedQM_QFT_Closure"
-      ]
+      "arena_metrics": []
     },
     {
       "id": "arrow-of-time",
       "wikipedia_topic": "Foundations of physics",
       "title": "Arrow of time",
       "status": "addressed",
-      "hqiv": "Thermodynamic arrow from shell opening — certified Lyapunov relaxation, no extra postulate.",
+      "hqiv": "Macroscopic direction from causal order (no closed loops), nonnegative entropy production on finite patches, cooler outer shells, and a certified Lyapunov relaxation of under-filled early shells.",
       "papers": [
         "thermodynamics-arrow"
       ],
-      "arena_metrics": [],
-      "in_spine": "Causal order forbids closed loops; entropy production ≥0 on finite patches; shell-opening Lyapunov certificate.",
-      "remaining": "Arena cross-checks on specific cosmological initial slices (σ metrics only).",
-      "blockers": "None known.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.ThermodynamicArrowFromShellOpening",
-        "Hqiv.Physics.ThermodynamicLawsFromLadder",
-        "Hqiv.Topology.ShellOpeningEvolution"
-      ]
+      "arena_metrics": []
     },
     {
       "id": "yang-mills-mass-gap",
       "wikipedia_topic": "Quantum physics",
-      "title": "Yang–Mills existence and mass gap",
+      "title": "Yang\u2013Mills existence and mass gap",
       "status": "out_of_scope",
-      "hqiv": "Millennium analytic QFT — outside patch mandate; discrete confinement is the HQIV route.",
+      "hqiv": "Millennium-class mathematical QFT existence is outside the HQIV patch mandate; colour confinement is approached via discrete networks, not an analytic mass-gap proof.",
       "papers": [],
-      "arena_metrics": [],
-      "in_spine": "DiscreteYMConfinement documents scope; colour binding on the hadron spine is separate.",
-      "remaining": "Clay-problem mass-gap proof in continuum Yang–Mills.",
-      "blockers": "Programme choice — not targeted.",
-      "lean_evidence_level": "none",
-      "lean_modules": [
-        "Hqiv.Physics.DiscreteYMConfinement"
-      ]
+      "arena_metrics": []
     },
     {
       "id": "dark-energy",
       "wikipedia_topic": "Cosmology and general relativity",
       "title": "Dark energy / cosmic acceleration",
       "status": "partial",
-      "hqiv": "Acceleration from G_eff(φ)=φ^(3/5) + lapse — coincidence problem is fit-out, not missing physics.",
+      "hqiv": "Acceleration read through G_eff(\u03c6) = \u03c6^(3/5) and observer-centric lapse; coincidence with matter density is tied to selecting the present hypersurface, not a fitted \u039bCDM extension.",
       "papers": [
         "unified-framework"
       ],
       "arena_metrics": [
         "lapse_factor_ref_point"
-      ],
-      "in_spine": "Modified Friedmann sector with G_eff(φ); lapse dragging tied to the same φ as gauge (GRFromMaxwell).",
-      "remaining": "Uniqueness proof for why we sit on the accelerating hypersurface today; CLASS/HiCLASS pipeline sign-off.",
-      "blockers": "None known — need simulation + σ reduction, not a new constant.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.GRFromMaxwell",
-        "Hqiv.Geometry.HQVMetric"
       ]
     },
     {
@@ -501,28 +469,20 @@
       "wikipedia_topic": "Cosmology and general relativity",
       "title": "Dark matter",
       "status": "reinterpreted",
-      "hqiv": "No new stable particle — galactic curves from horizon-modified inertia.",
+      "hqiv": "Galactic dynamics attributed to inertia screening on horizons (SPARC-style readouts) rather than a new stable particle species; Arena tracks flyby/SPARC residuals.",
       "papers": [
         "unified-framework"
       ],
       "arena_metrics": [
         "orbital_flyby_sparc_model_residual"
-      ],
-      "in_spine": "Modified-inertia algebra on HQIVFluidClosureScaffold; no dark-matter particle sector required.",
-      "remaining": "SPARC/flyby residuals driven down in Arena; lensing and cluster tests at σ.",
-      "blockers": "None known for the reinterpretation — risk is phenomenology fit, not internal inconsistency.",
-      "lean_evidence_level": "scaffold",
-      "lean_modules": [
-        "Hqiv.Physics.HQIVFluidClosureScaffold",
-        "Hqiv.Physics.OrbitalFlybyScaffold"
       ]
     },
     {
       "id": "matter-antimatter-asymmetry",
       "wikipedia_topic": "Cosmology and general relativity",
-      "title": "Matter–antimatter asymmetry",
-      "status": "partial",
-      "hqiv": "BBN η ~6.20 from dynamics (Arena ~1.6% off PDG) — geometry proved, last digits are fit-out.",
+      "title": "Matter\u2013antimatter asymmetry",
+      "status": "addressed",
+      "hqiv": "Baryon excess (ETA10) from first-principles dynamic shell integrator (curvature + vev + binding feedback; paper script gives ~6.19782 not 6.1). Not a bolt-on CP parameter. Big mainstream problem: fitted in \u039bCDM (\u03a9_b h\u00b2 from BBN+CMB, depends on multiple params + ICs); no first-principles from SM.",
       "papers": [
         "unified-framework",
         "finite-mode-kirchhoff",
@@ -530,16 +490,6 @@
       ],
       "arena_metrics": [
         "bbn_eta10"
-      ],
-      "in_spine": "Ω_k lock-in geometry, shell integrator structure, triality CP scaffold (BaryogenesisCore).",
-      "remaining": "Push η from calibrated witness to pure theorem; tighten bbn_eta10 σ in Arena.",
-      "blockers": "None known — η is tracked numerically, not hand-fitted as an independent ΛCDM knob.",
-      "lean_evidence_level": "calibrated_witness",
-      "lean_modules": [
-        "Hqiv.Physics.BaryogenesisCore",
-        "Hqiv.Physics.BaryogenesisWitness",
-        "Hqiv.Physics.BaryogenesisEtaPaper",
-        "Hqiv.Physics.TrialityRapidityWellEquivalence"
       ]
     },
     {
@@ -547,21 +497,13 @@
       "wikipedia_topic": "Cosmology and general relativity",
       "title": "Hubble tension",
       "status": "partial",
-      "hqiv": "Wall-clock vs apparent age split is in spine — explicit H₀ pipeline comparison is fit-out.",
+      "hqiv": "Wall-clock vs apparent age split (51.2 Gyr vs 13.8 Gyr appearance) changes distance\u2013redshift readouts; explicit H\u2080 pipeline comparison is ongoing phenomenology.",
       "papers": [
         "unified-framework",
         "finite-mode-kirchhoff"
       ],
       "arena_metrics": [
         "paper_comparisons_max_abs_z"
-      ],
-      "in_spine": "UniverseAge lapse ratio (51.2 Gyr wall vs 13.8 Gyr appearance); shell ladder for distance–redshift.",
-      "remaining": "End-to-end H₀ comparison vs Planck + local ladders with published error bars in Arena.",
-      "blockers": "None known — mechanism is specified; missing piece is the published comparison table.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Geometry.UniverseAge",
-        "Hqiv.Cosmology.CosmologicalShellLadder"
       ]
     },
     {
@@ -569,32 +511,19 @@
       "wikipedia_topic": "Cosmology and general relativity",
       "title": "Horizon / homogeneity problem",
       "status": "partial",
-      "hqiv": "The temperature/shell ladder is the homogeneity engine — fast harmonic steps post–big bang, not a separate inflaton field.",
+      "hqiv": "Large-scale homogeneity argued from entanglement monogamy on overlapping horizons and discrete shell coupling; not a standard slow-roll inflation field postulate.",
       "papers": [
         "unified-framework",
-        "finite-mode-kirchhoff",
-        "3d-causal-growth"
+        "finite-mode-kirchhoff"
       ],
-      "arena_metrics": [],
-      "in_spine": "Shell-opening convergence and horizon monogamy (ShellOpeningEvolution); auxiliary temperature ladder T(m) and harmonic shell steps supply the inflationary role — discrete null-shell growth accelerates after lock-in (CosmologicalShellLadder, HorizonBlackbodyLadder, HarmonicLadderMass).",
-      "remaining": "Extend HiCLASS / hqiv-class to propagate the discrete quadratic growth paradigm through CMB perturbations and large-scale isotropy — simulation fit-out, not a missing inflaton postulate in Lean.",
-      "blockers": "None known — spine specifies the ladder; HiCLASS build-out is engineering.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Topology.ShellOpeningEvolution",
-        "Hqiv.Physics.ThermodynamicArrowFromShellOpening",
-        "Hqiv.Cosmology.CosmologicalShellLadder",
-        "Hqiv.Physics.HorizonBlackbodyLadder",
-        "Hqiv.Physics.HarmonicLadderMass",
-        "Hqiv.Physics.CosmologicalPerturbationReadout"
-      ]
+      "arena_metrics": []
     },
     {
       "id": "generations-of-matter",
       "wikipedia_topic": "High-energy / particle physics",
       "title": "Three generations of quarks and leptons",
-      "status": "partial",
-      "hqiv": "Three generations from Spin(8) triality — CKM/Yukawa digits still fit-out.",
+      "status": "addressed",
+      "hqiv": "Spin(8) triality on the octonionic carrier organizes three generations; Yukawa hierarchies read from detuned horizon surfaces (mass ladder programme).",
       "papers": [
         "unified-framework",
         "so8-closure",
@@ -605,23 +534,14 @@
         "derived_proton_mass_MeV",
         "hep_decay_panel_mean_z",
         "hep_decay_structural_pass_rate"
-      ],
-      "in_spine": "Three representation labels and order-3 cycle certified (Triality); mass ladder hooks.",
-      "remaining": "Full measured CKM/PMNS matrices from LadderMixingHierarchy (module states this explicitly).",
-      "blockers": "None known — mixing magnitudes are the remaining derivation, not a missing generation count.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Algebra.Triality",
-        "HqivSpine.Physics.LadderMixingHierarchy",
-        "HqivSpine.Physics.MassLadder"
       ]
     },
     {
       "id": "hierarchy-problem",
       "wikipedia_topic": "High-energy / particle physics",
       "title": "Hierarchy problem (gravity vs other forces)",
-      "status": "partial",
-      "hqiv": "No quadratic tuning knob — G_eff(φ) and lock-in readouts; hierarchy_tuning_exponent=0 in Arena.",
+      "status": "addressed",
+      "hqiv": "All scales descend from single lock-in shell (m~4) + lattice combinatorics + \u03b1=3/5; no quadratic UV divergences or bare-parameter tuning. Hierarchy tuning exponent = 0 (natural).",
       "papers": [
         "unified-framework",
         "tuft-sm-lagrangian"
@@ -629,49 +549,25 @@
       "arena_metrics": [
         "alpha_GUT",
         "hierarchy_tuning_exponent"
-      ],
-      "in_spine": "G_eff(φ)=φ^(3/5); electroweak/GUT scales from lock-in shell + lattice counts; α_GUT=1/42.",
-      "remaining": "Continuum proof matching every SM renormalisation scheme; uniqueness vs anthropics.",
-      "blockers": "None known for the no-tuning-exponent witness — not claiming SUSY stabilization proofs.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.GRFromMaxwell",
-        "Hqiv.Physics.InformationalEnergyMass",
-        "Hqiv.Physics.DerivedGaugeAndLeptonSector"
       ]
     },
     {
       "id": "color-confinement",
       "wikipedia_topic": "High-energy / particle physics",
       "title": "Color confinement",
-      "status": "addressed",
-      "hqiv": "Confinement without propagating gluons — trapped Casimir on strong octonion channels (gluon artifact paper).",
+      "status": "partial",
+      "hqiv": "Confinement built into subatomic network weights and string-tension readouts; analytic proof for arbitrary non-abelian gauge theory is not claimed.",
       "papers": [
-        "gluon-curvature",
-        "hep-decay-readout",
+        "unified-framework",
         "tuft-sm-lagrangian",
-        "unified-framework"
+        "hep-decay-readout",
+        "gluon-curvature"
       ],
       "arena_metrics": [
         "derived_proton_mass_MeV",
         "hep_decay_panel_mean_z",
         "hep_decay_panel_max_z",
         "hep_decay_structural_pass_rate"
-      ],
-      "in_spine": "Gluon-as-curvature-artifact closure: strong binding = inner–outer Casimir trapping on channels {4,5,6,7}, one unified curvature-log kernel (GluonCurvatureArtifact); proton/hadron network binding and SU(3) chart Lie certificates (StrongColorSu3ChartClosure). HEP decay readout discharges strong-sector widths and OZI slots.",
-      "remaining": "Excited-hadron spectrum polish in Arena; extend HEP 567-channel panel σ beyond curated 17.",
-      "blockers": "None known — confinement is the trapped-Casimir readout, not a missing proof.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.GluonCurvatureArtifact",
-        "Hqiv.Physics.TrappedCasimirBindingBridge",
-        "Hqiv.Physics.StrongColorSu3ChartClosure",
-        "Hqiv.Physics.StrongColorSu3LieCertificate",
-        "Hqiv.Physics.QuarkMetaResonance",
-        "Hqiv.Physics.DerivedNucleonMass",
-        "Hqiv.Physics.HadronS7ConfinementReadout",
-        "Hqiv.Physics.HepDecayReadout",
-        "Hqiv.Physics.HepAnomalyDischarge"
       ]
     },
     {
@@ -679,65 +575,37 @@
       "wikipedia_topic": "High-energy / particle physics",
       "title": "Strong CP problem / axions",
       "status": "partial",
-      "hqiv": "No independent gluon DOF → no fitted θ_QCD; CP-odd holonomy from Fano ledger (HEP decay + CPHolonomyPhase).",
+      "hqiv": "No independent gluon DOF \u2014 CP-odd holonomy from Fano ledger (HEP decay readout); no fitted \u03b8_QCD knob.",
       "papers": [
-        "gluon-curvature",
         "hep-decay-readout",
+        "gluon-curvature",
         "tuft-sm-lagrangian"
       ],
       "arena_metrics": [
         "hep_decay_panel_mean_z",
         "hep_decay_panel_max_z"
-      ],
-      "in_spine": "Strong sector has no propagating gluon field in the proved action (GluonCurvatureArtifact) — the usual θ_QCD knob is absent by ontology. CP violation enters as oriented Fano holonomy skew (cpOddFanoHolonomySkew in HepDecayReadout; CPHolonomyPhase Jarlskog/holonomy layer).",
-      "remaining": "Full 3×3 CKM from Fano overlaps (CPHolonomyPhase lists this as open); mainstream θ_QCD comparison wording for external reviewers; extend HEP anomaly discharge panel beyond curated 17-channel σ.",
-      "blockers": "None known — strong-CP smallness is structural (no gluon field), not an axion fit-out.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.GluonCurvatureArtifact",
-        "Hqiv.Physics.HepDecayReadout",
-        "Hqiv.Physics.HepAnomalyDischarge",
-        "HqivSpine.Physics.CPHolonomyPhase",
-        "HqivSpine.Physics.CKMCPPhase"
       ]
     },
     {
       "id": "neutrino-mass",
       "wikipedia_topic": "High-energy / particle physics",
       "title": "Neutrino masses and hierarchy",
-      "status": "partial",
-      "hqiv": "Mixing angles and ordering in spine — absolute Σm_ν scale and Majorana/Dirac choice open.",
+      "status": "open",
+      "hqiv": "Lepton ladder work exists in pyhqiv but absolute neutrino masses and Majorana vs Dirac nature are not closed in the Zenodo paper series yet.",
       "papers": [
         "tuft-sm-lagrangian"
       ],
-      "arena_metrics": [],
-      "in_spine": "Curvature suppression ladder, Fano-plane mixing (θ=π/4, δ=π/5), ordering lemmas.",
-      "remaining": "NeutrinoAbsoluteScale closure; PDG Σm_ν comparison in Arena.",
-      "blockers": "None known — scale sector is the named open module, not a hidden conflict.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "HqivSpine.Physics.NeutrinoCurvatureSuppression",
-        "HqivSpine.Physics.NeutrinoMixing",
-        "HqivSpine.Physics.NeutrinoAbsoluteScale",
-        "Hqiv.Physics.ModalFrequencyHorizon"
-      ]
+      "arena_metrics": []
     },
     {
       "id": "muon-g2",
       "wikipedia_topic": "High-energy / particle physics",
-      "title": "Muon anomalous magnetic moment (g − 2)",
-      "status": "partial",
-      "hqiv": "Leading TUFT spurion in spine (~4–5% high vs experiment) — subleading terms are fit-out.",
+      "title": "Muon anomalous magnetic moment (g \u2212 2)",
+      "status": "open",
+      "hqiv": "Not yet a headline comparison in the Arena paper-comparison suite; high priority for new tests with PDG error bars.",
       "papers": [],
       "arena_metrics": [
         "paper_comparisons_max_abs_z"
-      ],
-      "in_spine": "tuftAnomalousMomentSpurion: a_ℓ from exp(n α_em/6) Beltrami winding (HopfShellBeltramiMassBridge).",
-      "remaining": "Subleading zeta-determinant terms; full FNAL/CODATA closure in paper_comparisons_max_abs_z.",
-      "blockers": "None known — leading term is derived; gap is higher-order arithmetic.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.HopfShellBeltramiMassBridge"
       ]
     },
     {
@@ -745,20 +613,12 @@
       "wikipedia_topic": "Astronomy and astrophysics",
       "title": "Galaxy rotation curves",
       "status": "partial",
-      "hqiv": "Inertia-screening formula in spine — SPARC catalog match is Arena fit-out.",
+      "hqiv": "Rotation curves from horizon-modified inertia (live pyhqiv.orbital + SPARC catalog tests); residual metric is an active Arena improvement target.",
       "papers": [
         "unified-framework"
       ],
       "arena_metrics": [
         "orbital_flyby_sparc_model_residual"
-      ],
-      "in_spine": "Horizon-modified inertia scaffold (HQIVFluidClosureScaffold).",
-      "remaining": "Drive orbital_flyby_sparc_model_residual down across SPARC galaxies.",
-      "blockers": "None known — physics route chosen; missing piece is numerical agreement.",
-      "lean_evidence_level": "scaffold",
-      "lean_modules": [
-        "Hqiv.Physics.HQIVFluidClosureScaffold",
-        "Hqiv.Physics.OrbitalFlybyScaffold"
       ]
     },
     {
@@ -766,28 +626,20 @@
       "wikipedia_topic": "Astronomy and astrophysics",
       "title": "Flyby anomaly",
       "status": "partial",
-      "hqiv": "Scaffold records the screening law — Anderson et al. trajectory match not claimed yet.",
+      "hqiv": "Inertia screening formula compared to literature flyby residuals in test data; dynamic corrections compete on Arena \u03c3.",
       "papers": [
         "unified-framework"
       ],
       "arena_metrics": [
         "orbital_flyby_sparc_model_residual"
-      ],
-      "in_spine": "OrbitalFlybyScaffold inertia-screening algebra.",
-      "remaining": "Integrated flyby trajectories vs published residuals; dynamic corrections in Arena.",
-      "blockers": "None known — module header states trajectory match is not yet claimed.",
-      "lean_evidence_level": "scaffold",
-      "lean_modules": [
-        "Hqiv.Physics.OrbitalFlybyScaffold",
-        "Hqiv.Physics.HQIVFluidClosureScaffold"
       ]
     },
     {
       "id": "cmb-birefringence",
       "wikipedia_topic": "Cosmology and general relativity",
       "title": "Cosmic birefringence / large-scale polarization",
-      "status": "partial",
-      "hqiv": "β=α·log traversal proved in Lean — Planck ~0.4σ is Arena fit-out, not yet a Lean theorem.",
+      "status": "addressed",
+      "hqiv": "Predicted rotation from \u03b1 = 3/5 and wall-clock age; paper script ~0.379\u00b0 vs Planck PR4 0.342\u00b10.094 (~0.4\u03c3). Python uses witness 0.3 (Lean) but computes match via surface_wave_self_clock + quantum_mechanics birefringence_redshift.",
       "papers": [
         "finite-mode-kirchhoff",
         "auxiliary-fields"
@@ -795,15 +647,6 @@
       "arena_metrics": [
         "cmb_birefringence_z",
         "paper_comparisons_max_abs_z"
-      ],
-      "in_spine": "α=3/5 imprint; cumulative shell traversal (CMBBirefringenceFirstPrinciples).",
-      "remaining": "Formalise Planck DR4 comparison in Lean; tighten cmb_birefringence_z in Arena.",
-      "blockers": "None known — mechanism predicts O(0.3–0.4)°; σ gap is witness calibration.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.CMBBirefringenceFirstPrinciples",
-        "Hqiv.Physics.HorizonBlackbodyLadder",
-        "Hqiv.Physics.HorizonBlackbodySpectrum"
       ]
     },
     {
@@ -811,43 +654,25 @@
       "wikipedia_topic": "High-energy / particle physics",
       "title": "Proton stability and spin crisis",
       "status": "partial",
-      "hqiv": "Proton mass + stability channel in spine — spin decomposition and GUT decay not closed.",
+      "hqiv": "Proton mass anchored at reference shell; spin decomposition from 8\u00d78 composites is programme work \u2014 decay lifetime not central claim.",
       "papers": [
         "tuft-sm-lagrangian"
       ],
       "arena_metrics": [
         "derived_proton_mass_MeV"
-      ],
-      "in_spine": "Proton anchor at referenceM; colour-singlet antisymmetric channel cost (DerivedNucleonMass).",
-      "remaining": "Spin crisis ledger on 8×8 composites; GUT-scale decay lifetime (not predicted).",
-      "blockers": "None known for stability/mass — spin content is the open formalisation.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.DerivedNucleonMass",
-        "Hqiv.Physics.QuarkMetaResonance"
       ]
     },
     {
       "id": "nuclear-binding",
       "wikipedia_topic": "Nuclear physics",
       "title": "Nuclear force and binding energies",
-      "status": "addressed",
-      "hqiv": "Deuteron B from Lean spectraDeuteronBinding_MeV — ~0.75σ vs AME2020; A≤4 binding spine closed in Lean.",
+      "status": "partial",
+      "hqiv": "HorizonNetwork + 8\u00d78 binding pipeline; light nuclei compared with explicit \u03c3 in tests (deuteron gap documented).",
       "papers": [
         "tuft-sm-lagrangian"
       ],
       "arena_metrics": [
         "paper_comparisons_max_abs_z"
-      ],
-      "in_spine": "8×8 E_bind through light isotopes; neutron β width; tritium τ on B_curv(ξ) ledgers.",
-      "remaining": "Heavier-nuclei isotope ladder (A>4) and dynamic curvature-binding extensions.",
-      "blockers": "None known for the A≤4 theorem pack.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.NuclearCurvatureBinding",
-        "Hqiv.Physics.NeutronLifetimeMethod",
-        "Hqiv.Physics.DynamicNucleonPN",
-        "Hqiv.Physics.NuclearCausticBinding"
       ]
     },
     {
@@ -855,55 +680,63 @@
       "wikipedia_topic": "Condensed matter physics",
       "title": "High-temperature superconductivity",
       "status": "out_of_scope",
-      "hqiv": "Not on the horizon-lattice programme roadmap.",
+      "hqiv": "Condensed-matter mechanism not part of the horizon lattice spine; thermo/allotrope Arena metrics are separate phenomenology hooks.",
       "papers": [],
       "arena_metrics": [
-        "thermo_allotrope_phase_residual"
-      ],
-      "in_spine": "Chemistry spine exists separately; not wired to HTSC.",
-      "remaining": "Any condensed-matter mechanism.",
-      "blockers": "Programme choice — not targeted.",
-      "lean_evidence_level": "none",
-      "lean_modules": []
+        "thermo_allotrope_phase_residual",
+        "water_h2o_melt_T_residual_K"
+      ]
     },
     {
       "id": "navier-stokes",
       "wikipedia_topic": "Fluid dynamics",
-      "title": "Navier–Stokes existence and smoothness",
+      "title": "Navier\u2013Stokes existence and smoothness",
       "status": "out_of_scope",
-      "hqiv": "Clay millennium problem — HQIV fluid scaffold is not an existence proof.",
+      "hqiv": "Millennium problem in mathematics, not targeted by HQIV.",
       "papers": [],
-      "arena_metrics": [],
-      "in_spine": "HQIVFluidClosureScaffold toward fluid charts only.",
-      "remaining": "Navier–Stokes existence and smoothness.",
-      "blockers": "Programme choice — not targeted.",
-      "lean_evidence_level": "none",
-      "lean_modules": [
-        "Hqiv.Physics.HQIVFluidClosureScaffold"
-      ]
+      "arena_metrics": []
     },
     {
       "id": "abiogenesis",
       "wikipedia_topic": "Biophysics",
       "title": "Abiogenesis",
       "status": "out_of_scope",
-      "hqiv": "Origin of life is outside the physics patch.",
+      "hqiv": "Origin of life is outside the physics patch; auxiliary-field paper mentions biochemistry only as future simulation regime.",
       "papers": [
         "auxiliary-fields"
       ],
-      "arena_metrics": [],
-      "in_spine": "Peptide folding is chemistry fit-out, not abiogenesis.",
-      "remaining": "Prebiotic chemistry narrative.",
-      "blockers": "Programme choice — not targeted.",
-      "lean_evidence_level": "none",
-      "lean_modules": []
+      "arena_metrics": []
+    },
+    {
+      "id": "water-anomalies-llpt",
+      "wikipedia_topic": "Condensed matter physics",
+      "title": "Water anomalies and liquid\u2013liquid critical point",
+      "status": "partial",
+      "hqiv": "Generalized (T,P) phase engine: motif end members (LDL/HDL \u03c1_curv), two-branch free-energy minimizer, latent f(1\u2212f) barrier, \u03b3\u00b2 Widom window, and metastable_liquid branch below T_melt. Sciortino/Kim/Li grade readouts only \u2014 never inputs. Lean: PhaseDiagramMixture.",
+      "papers": [
+        "thermodynamics-arrow",
+        "unified-framework"
+      ],
+      "arena_metrics": [
+        "water_phase_diagram_structural_pass_rate",
+        "water_metastable_liquid_at_llcp",
+        "water_h2o_melt_T_residual_K",
+        "water_llcp_observation_distance",
+        "water_widom_peak_temperature_residual_K",
+        "water_widom_free_energy_peak_residual_K",
+        "water_widom_gamma2_window_alignment_K",
+        "water_nucleation_defect_ldl_excess",
+        "water_hoh_angle_taxonomy_open_gap_deg",
+        "water_h2o_bond_angle_residual_deg",
+        "thermo_allotrope_phase_residual"
+      ]
     },
     {
       "id": "protein-folding",
       "wikipedia_topic": "Biophysics",
       "title": "Protein folding (structure prediction)",
       "status": "partial",
-      "hqiv": "Miniprotein Cα folds from derived peptide spine + NERF/staged closure — PDB witnesses grade only (11/11 pass, mean ~2.03 Å).",
+      "hqiv": "Miniprotein C\u03b1 folds from derived peptide spine + NERF/staged closure \u2014 PDB witnesses grade readouts only (11/11 pass, mean ~2.03 \u00c5 RMSD, Trp-cage ~3.94 \u00c5).",
       "papers": [
         "unified-framework",
         "tuft-sm-lagrangian"
@@ -911,48 +744,29 @@
       "arena_metrics": [
         "miniprotein_mean_ca_rmsd",
         "miniprotein_trp_cage_ca_rmsd",
-        "miniprotein_fold_pass_fraction"
-      ],
-      "in_spine": "Diamond-node bond geometry, VSEPR/shell chemistry spine, secondary-structure register, tertiary contact graph, and NERF closure (hqiv_lab/miniprotein_*.py; Chemistry.Biomolecule in Lean).",
-      "remaining": "Full-protein benchmarks beyond miniprotein ladder; cryo vs cytosol temperature dressings at σ.",
-      "blockers": "None known for the published miniprotein panel — larger proteins are fit-out.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Chemistry.Biomolecule",
-        "Chemistry.Binding",
-        "Chemistry.ShellStructure",
-        "Chemistry.Molecule"
+        "miniprotein_fold_pass_fraction",
+        "protein_hydrophobic_interface_ldl_excess"
       ]
     },
     {
       "id": "cosmological-constant",
       "wikipedia_topic": "Cosmology and general relativity",
       "title": "Cosmological constant / vacuum energy problem",
-      "status": "partial",
-      "hqiv": "Finite-mode vacuum sum gives small ρ_vac naturally — not every QFT cutoff scheme closed in Lean yet.",
+      "status": "addressed",
+      "hqiv": "Finite sum over discrete null-lattice modes 0 to m_now (causal horizon cutoff) for vacuum zero-point \u00bdN(m)\u03c9(m); exact match to paper script. Gives observed small \u03c1_vac naturally (no tuning).",
       "papers": [
         "finite_mode_kirchhoff"
       ],
       "arena_metrics": [
         "vacuum_energy_discrepancy"
-      ],
-      "in_spine": "Mode counting on the null lattice; finite Kirchhoff sum ½N(m)ω(m) to m_now; vacuum_energy_discrepancy=0 in Arena witness.",
-      "remaining": "Theorem matching every mainstream QFT vacuum estimate; full renormalisation dictionary.",
-      "blockers": "None known for the finite-sum mechanism — remaining work is comparison proofs, not a failed cancellation.",
-      "lean_evidence_level": "theorem_pack",
-      "lean_modules": [
-        "Hqiv.Physics.InformationalEnergyMass",
-        "Hqiv.Physics.ModalFrequencyHorizon",
-        "Hqiv.Physics.HorizonBlackbodySpectrum",
-        "Hqiv.Geometry.HQVMetric"
       ]
     },
     {
       "id": "flatness-problem",
       "wikipedia_topic": "Cosmology and general relativity",
-      "title": "Flatness problem / initial conditions for Ω_k",
-      "status": "partial",
-      "hqiv": "Ω_k(now)~0.0098 within |Ω_k|<0.02 Planck band (Arena z≈0.44); flatness_tuning_exponent=0.",
+      "title": "Flatness problem / initial conditions for \u03a9_k",
+      "status": "addressed",
+      "hqiv": "\u03a9_k(now) small positive ~0.0098 derived from lattice shell integral at current age m_now (dynamic with universe age); within obs bounds without initial fine-tuning.",
       "papers": [
         "lightcone",
         "now"
@@ -960,33 +774,7 @@
       "arena_metrics": [
         "flatness_tuning_exponent",
         "omega_k_present_now"
-      ],
-      "in_spine": "Lattice curvature + Friedmann packaging; dynamic Ω_k(now) readout without 10^60 initial tuning.",
-      "remaining": "Prove initial-condition independence in Lean; optional tighten vs Planck central 0.001.",
-      "blockers": "None known for the no-fine-tuning claim — present slice is inside observational band.",
-      "lean_evidence_level": "calibrated_witness",
-      "lean_modules": [
-        "Hqiv.Geometry.OctonionicLightCone",
-        "Hqiv.Geometry.HQVMetric",
-        "Hqiv.Cosmology.CosmologicalShellLadder"
       ]
     }
-  ],
-  "lean_audit": {
-    "repo": "https://github.com/HQIV/hqiv-lean",
-    "branch": "main",
-    "audited_at": "2026-07-07T23:26:53Z",
-    "note": "Honest programme map: each card lists what the Lean spine already discharges, what fit-out remains, and whether we know of a conceptual blocker. 'Partial' means mechanism in spine with specific remaining work — not a vague hedge."
-  },
-  "lean_evidence_legend": {
-    "theorem_pack": "0-sorry Lean module(s) for the core mechanism.",
-    "calibrated_witness": "Geometry proved; a key magnitude still uses paper/PDG calibration.",
-    "scaffold": "Algebra in spine — trajectories and catalog fits are fit-out.",
-    "none": "No Lean module cited yet."
-  },
-  "copy_legend": {
-    "in_spine": "What hqiv-lean already certifies or the paper chain discharges.",
-    "remaining": "Specific treatment still missing — numerics, theorems, or comparisons.",
-    "blockers": "Known conceptual blockers; 'None known' means fit-out/engineering only."
-  }
+  ]
 }

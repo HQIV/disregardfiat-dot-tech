@@ -68,6 +68,9 @@ onMounted(async () => {
 
 const bakedWitness = computed(() => findWitnessBySequence(witnesses.value, sequence.value))
 
+const solventWitness = computed(() => audit.value?.aqueous_solvent_witness)
+const hohWitness = computed(() => solventWitness.value?.hoh_angle_cytosol_310K_1atm as Record<string, unknown> | undefined)
+
 const activeWitness = computed((): MiniproteinWitness | undefined => {
   if (importedWitness.value && importedWitness.value.sequence.toUpperCase() === sequence.value.toUpperCase()) {
     return importedWitness.value
@@ -406,6 +409,58 @@ const ladderRows = computed(() => audit.value?.fold_audit?.folds?.slice(0, 8) ??
           </div>
         </dl>
       </div>
+    </div>
+
+    <div
+      v-if="solventWitness && hohWitness"
+      class="mt-6 rounded-xl border border-blue-900/40 bg-blue-950/20 p-4"
+    >
+      <p class="text-[10px] font-medium uppercase tracking-wider text-blue-300/90">
+        Aqueous solvent @ folding T (310 K)
+      </p>
+      <p class="mt-1 text-[11px] text-slate-500">
+        Bulk ρ_curv, f_LDL, and local H–O–H mixture angle from
+        <code class="text-blue-300/70">ProteinSolventPhaseGeometry</code> +
+        <code class="text-blue-300/70">PhaseDiagramMixture</code>.
+        Gas-phase 104.478° is comparison quarantine only (Hoy &amp; Bunker 1979 / NIST CCCBDB).
+      </p>
+      <dl class="mt-3 grid gap-2 sm:grid-cols-2">
+        <div class="text-xs">
+          <dt class="text-slate-500">Bulk ρ_curv (cytosol / cryo)</dt>
+          <dd class="font-mono text-sky-200">
+            {{ solventWitness.bulk_rho_curv_cytosol?.toFixed(3) }} /
+            {{ solventWitness.bulk_rho_curv_cryo?.toFixed(3) }}
+          </dd>
+        </div>
+        <div class="text-xs">
+          <dt class="text-slate-500">f_LDL bulk @ 310 K</dt>
+          <dd class="font-mono text-sky-200">{{ Number(hohWitness.f_low_density).toFixed(3) }}</dd>
+        </div>
+        <div class="text-xs">
+          <dt class="text-slate-500">θ_dyn (gas slot)</dt>
+          <dd class="font-mono text-emerald-300">{{ Number(hohWitness.theta_dynamic_gas_deg).toFixed(3) }}°</dd>
+        </div>
+        <div class="text-xs">
+          <dt class="text-slate-500">θ_mix @ f_LDL</dt>
+          <dd class="font-mono text-emerald-300">{{ Number(hohWitness.theta_mixture_deg).toFixed(2) }}°</dd>
+        </div>
+        <div class="text-xs">
+          <dt class="text-slate-500">Comparison ref</dt>
+          <dd class="font-mono text-slate-300">
+            {{ Number(hohWitness.theta_gas_reference_deg).toFixed(3) }}°
+            <span class="text-slate-500">
+              (Δ {{ Number(hohWitness.theta_dyn_minus_ref_deg).toFixed(3) }}°)
+            </span>
+          </dd>
+        </div>
+        <div class="text-xs">
+          <dt class="text-slate-500">Interface f_LDL @ 200 K</dt>
+          <dd class="font-mono text-slate-300">
+            hydrophobic {{ Number(solventWitness.f_ldl_hydrophobic_interface_200K).toFixed(2) }}
+            · hydrophilic {{ Number(solventWitness.f_ldl_hydrophilic_interface_200K).toFixed(2) }}
+          </dd>
+        </div>
+      </dl>
     </div>
 
     <div v-if="foldAudit?.checks.length" class="mt-6 rounded-xl border border-slate-800 bg-slate-950/50 p-4">

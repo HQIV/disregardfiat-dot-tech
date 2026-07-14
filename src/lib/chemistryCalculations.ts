@@ -178,14 +178,34 @@ else:
 formula_candidates = []
 if z_counts == {8: 1, 1: 2}:
     formula_candidates.append("H2O")
+    # H–O–H angle tiers — mirrors DynamicCentreGeometry + PhaseDiagramMixture (no tabulated angle input)
+    STRONG = 4.0 / 8.0
+    def _centre_angle_rad_from_domains(n_domains):
+        return math.acos(-1.0 / (n_domains - 1)) if n_domains > 2 else math.pi
+    def _centre_angle_bent_dress(theta_tet, n_lp, n_domains):
+        n_bonds = max(n_domains - n_lp, 0)
+        torque_sites = max(n_domains + n_bonds, 1)
+        return theta_tet - STRONG * (n_lp / torque_sites) * (math.pi / 6.0)
+    n_lp_h2o = 2
+    n_dom_h2o = 4
+    theta_tet = _centre_angle_rad_from_domains(4)
+    theta_dyn = _centre_angle_bent_dress(theta_tet, n_lp_h2o, n_dom_h2o)
+    mol["h2o_geometry"] = {
+        "theta_tetrahedral_deg": math.degrees(theta_tet),
+        "theta_dynamic_gas_deg": math.degrees(theta_dyn),
+        "theta_gas_reference_deg": 104.478,
+        "theta_gas_reference_unc_deg": 0.01,
+        "theta_gas_reference_range_deg": [104.45, 104.51],
+        "theta_dyn_minus_ref_deg": math.degrees(theta_dyn) - 104.478,
+        "comparison_primary_source": "NIST CCCBDB / Hoy & Bunker 1979",
+        "comparison_primary_doi": "10.1016/0022-2852(79)90019-5",
+    }
 elif z_counts == {1: 2}:
     formula_candidates.append("H2")
 elif z_counts == {6: 1, 1: 4}:
     formula_candidates.append("CH4")
 elif z_counts == {7: 1, 1: 3}:
     formula_candidates.append("NH3")
-elif z_counts == {8: 1, 1: 2}:
-    formula_candidates.append("H2O")
 elif z_counts == {6: 1, 8: 1}:
     formula_candidates.append("CO")
 if formula_candidates:
@@ -302,6 +322,42 @@ export function formatChemistryResult(raw: unknown): CalcLine[] {
       { section: 'Molecule', label: 'VSEPR domains', value: fmt(mol.vsepr_domains) },
       { section: 'Molecule', label: 'VSEPR cos θ', value: fmt(mol.vsepr_cos) },
       { section: 'Molecule', label: 'Contact radius (dimless)', value: fmt(mol.contact_radius_dimless) },
+    )
+  }
+  const h2o = asRecord(mol.h2o_geometry)
+  if (h2o.theta_dynamic_gas_deg != null) {
+    lines.push(
+      {
+        section: 'H₂O geometry',
+        label: 'θ_tet (LDL network)',
+        value: `${fmt(h2o.theta_tetrahedral_deg)}°`,
+      },
+      {
+        section: 'H₂O geometry',
+        label: 'θ_dyn (gas HDL slot)',
+        value: `${fmt(h2o.theta_dynamic_gas_deg)}°`,
+        highlight: true,
+      },
+      {
+        section: 'H₂O geometry',
+        label: 'Comparison ref (median)',
+        value: `${fmt(h2o.theta_gas_reference_deg)} ± ${fmt(h2o.theta_gas_reference_unc_deg)}°`,
+      },
+      {
+        section: 'H₂O geometry',
+        label: 'θ_dyn − ref',
+        value: `${fmt(h2o.theta_dyn_minus_ref_deg)}°`,
+      },
+      {
+        section: 'H₂O geometry',
+        label: 'Literature span',
+        value: `${fmt((h2o.theta_gas_reference_range_deg as number[] | undefined)?.[0])}–${fmt((h2o.theta_gas_reference_range_deg as number[] | undefined)?.[1])}°`,
+      },
+      {
+        section: 'H₂O geometry',
+        label: 'Comparison source',
+        value: `${fmt(h2o.comparison_primary_source)} (${fmt(h2o.comparison_primary_doi)})`,
+      },
     )
   }
   if (mol.covalent_surplus != null) {

@@ -559,5 +559,79 @@
     "fold_temperature_K": 310.15,
     "cryo_crystallography_temperature_K": 100.0,
     "trp_cage_rg_angstrom": 6.086806148367839
+  },
+  "aqueous_solvent_witness": {
+    "fold_temperature_K": 310.15,
+    "cryo_temperature_K": 100.0,
+    "bulk_rho_curv_cytosol": 1.0,
+    "bulk_rho_curv_cryo": 0.7916666666666666,
+    "f_ldl_bulk_cytosol": 0.5738301098024224,
+    "f_ldl_hydrophobic_interface_200K": 0.24,
+    "f_ldl_hydrophilic_interface_200K": 0.0,
+    "hoh_angle_cytosol_310K_1atm": {
+      "f_low_density": 0.5738301098024224,
+      "theta_tetrahedral_deg": 109.47122063449069,
+      "theta_dynamic_gas_deg": 104.4712206344907,
+      "theta_mixture_deg": 107.34037118350281,
+      "theta_gas_reference_deg": 104.478,
+      "theta_gas_reference_unc_deg": 0.01,
+      "theta_gas_reference_range_deg": [
+        104.45,
+        104.51
+      ],
+      "theta_dyn_within_comparison_band": true,
+      "theta_tet_minus_ref_deg": 4.993220634490697,
+      "theta_dyn_minus_ref_deg": -0.006779365509288482,
+      "theta_mix_minus_ref_deg": 2.862371183502816
+    },
+    "hoh_angle_gas_reference_deg": 104.478,
+    "hoh_angle_observations": [
+      {
+        "source": "Hoy & Bunker, J. Mol. Spectrosc. 1979",
+        "doi": "10.1016/0022-2852(79)90019-5",
+        "bibkey": "hoy1979waterRotBend",
+        "label": "equilibrium structure \u03b8e (rotovibrational fit)",
+        "theta_deg": 104.4776,
+        "sigma_deg": 0.0019,
+        "phase": "gas",
+        "structure": "equilibrium",
+        "role": "comparison_only"
+      },
+      {
+        "source": "NIST CCCBDB (H2O, CAS 7732-18-5)",
+        "url": "https://cccbdb.nist.gov/expgeom2.asp?casno=7732185&charge=0",
+        "bibkey": "nistCCCBDBwaterH2O",
+        "label": "ground-state effective angle (aggregated)",
+        "theta_deg": 104.478,
+        "sigma_deg": 0.01,
+        "phase": "gas",
+        "structure": "ground_vibrational",
+        "role": "comparison_only",
+        "primary_comparison": true,
+        "note": "Arena median comparison target; cites Hoy & Bunker 1979 among others"
+      },
+      {
+        "source": "Cook et al., J. Mol. Struct. 1974",
+        "doi": "10.1016/0022-2860(74)90261-6",
+        "bibkey": "cook1974waterMicrowave",
+        "label": "average ground vibrational structure \u3008\u03b8\u3009",
+        "theta_deg": 104.5,
+        "sigma_deg": 0.05,
+        "phase": "gas",
+        "structure": "average",
+        "role": "comparison_only"
+      },
+      {
+        "source": "Benedict et al., J. Chem. Phys. 1956",
+        "doi": "10.1063/1.1742588",
+        "bibkey": "benedict1956waterRotation",
+        "label": "early microwave rotation spectrum (effective \u03b8)",
+        "theta_deg": 104.5,
+        "sigma_deg": 0.1,
+        "phase": "gas",
+        "structure": "effective",
+        "role": "comparison_only"
+      }
+    ]
   }
 }

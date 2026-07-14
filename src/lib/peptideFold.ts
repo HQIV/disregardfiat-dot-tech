@@ -194,6 +194,18 @@ export interface FoldWitness {
 export interface ProteinAuditData {
   fold_audit?: { folds: FoldWitness[] }
   spine_chemistry?: Record<string, unknown>
+  aqueous_solvent_witness?: {
+    fold_temperature_K?: number
+    cryo_temperature_K?: number
+    bulk_rho_curv_cytosol?: number
+    bulk_rho_curv_cryo?: number
+    f_ldl_bulk_cytosol?: number
+    f_ldl_hydrophobic_interface_200K?: number
+    f_ldl_hydrophilic_interface_200K?: number
+    hoh_angle_gas_reference_deg?: number
+    hoh_angle_cytosol_310K_1atm?: Record<string, unknown>
+    hoh_angle_observations?: Array<Record<string, unknown>>
+  }
 }
 
 export interface MiniproteinWitness {

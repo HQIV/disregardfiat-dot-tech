@@ -437,9 +437,12 @@ function entryHasMetrics(entry: LeaderboardEntry | null | undefined): boolean {
         <div>
           <h2 class="text-lg font-medium text-white">Physics showcase</h2>
           <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-400">
-            Case-by-case comparisons against PDG, AME, Planck, SPARC, PDB, and laboratory branching refs.
-            The proton at referenceM=4 is a <strong class="font-medium text-amber-200/90">lock-in anchor</strong>,
-            not a blind prediction. GUT-only and tuning-exponent metrics stay in scoring but are hidden here.
+            Case-by-case comparisons against PDG, AME, Planck, SPARC, PDB, NIST spectroscopy,
+            condensed-phase handbooks, and laboratory branching refs. The proton at referenceM=4 is a
+            <strong class="font-medium text-amber-200/90">lock-in anchor</strong>, not a blind prediction.
+            Chemistry tabs (spectroscopy / crystals / condensed) come from the lightcone chemistry extent
+            paper witnesses — NIST/CRC remain comparison quarantine. GUT-only and tuning-exponent metrics
+            stay in scoring but are hidden here.
           </p>
         </div>
 
