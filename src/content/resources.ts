@@ -42,6 +42,7 @@ export const resources: Resource[] = [
       'hqiv-lean — Lean 4 formalisations (axioms, derivations, octonionic constructions)',
       'pyhqiv (HQIV/pyhqiv) — Python implementation, tests, and the HQIV Arena CI scorer',
       'hqiv-arena CLI — clone, run, submit PRs; leaderboard at disregardfiat.tech/#arena',
+      'Arena chemistry panels — spectroscopy, crystal contacts, condensed-phase audits (lightcone chemistry extent)',
       'Browser calculators (Quantum Maxwell, octonion Lie-algebra)',
       'CLASS / N-body patches and analysis scripts',
       'Build instructions and Alectryon-ready proof documentation',

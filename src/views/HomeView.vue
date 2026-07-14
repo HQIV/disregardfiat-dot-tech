@@ -6,6 +6,7 @@ import { renderDisplay } from '../lib/katexRender'
 import {
   papers,
   exampleLayArticle,
+  firstPrinciplesDerivationChain,
   findPaperByPipelineStep,
   type Paper,
 } from '../content/papers'
@@ -136,6 +137,34 @@ function formatDate(iso: string): string {
     </header>
 
     <main class="mx-auto max-w-4xl space-y-12 px-4 py-10">
+      <section
+        class="rounded-2xl border border-emerald-900/50 bg-emerald-950/15 p-5 ring-1 ring-emerald-900/20 sm:p-7"
+      >
+        <p class="text-xs font-semibold uppercase tracking-wider text-emerald-300">
+          Shared first-principles spine
+        </p>
+        <h2 class="mt-2 text-xl font-medium text-white">
+          From 3D growth to the octonion carrier
+        </h2>
+        <p class="mt-3 text-sm leading-relaxed text-slate-300">
+          The published papers are meant to read as one derivation chain. The only meaningful
+          starting postulate is three extended spatial dimensions with monotone discrete growth;
+          everything downstream is a readout from the null-shell spine plus the closed
+          information ledger.
+        </p>
+        <ol class="mt-5 grid gap-3 text-sm md:grid-cols-5">
+          <li
+            v-for="(item, i) in firstPrinciplesDerivationChain"
+            :key="item.label"
+            class="rounded-xl border border-slate-800 bg-slate-900/50 p-4"
+          >
+            <p class="font-mono text-[0.7rem] text-emerald-300">0{{ i + 1 }}</p>
+            <h3 class="mt-1 text-sm font-semibold text-white">{{ item.label }}</h3>
+            <p class="mt-2 text-xs leading-relaxed text-slate-400">{{ item.body }}</p>
+          </li>
+        </ol>
+      </section>
+
       <!-- Paper index -->
       <section id="papers" class="space-y-6">
         <div class="flex flex-wrap items-end justify-between gap-3">
@@ -181,6 +210,13 @@ function formatDate(iso: string): string {
           <p class="mt-2 text-sm italic text-emerald-300/90">{{ p.hook }}</p>
 
           <p class="mt-4 text-sm leading-relaxed text-slate-300">{{ p.abstract }}</p>
+
+          <div class="mt-4 rounded-xl border border-emerald-900/50 bg-emerald-950/15 p-4">
+            <p class="text-[0.7rem] font-semibold uppercase tracking-wider text-emerald-300">
+              Role in the derivation spine
+            </p>
+            <p class="mt-1 text-sm leading-relaxed text-slate-300">{{ p.spineFocus }}</p>
+          </div>
 
           <div class="mt-5 grid gap-5 md:grid-cols-2">
             <div>

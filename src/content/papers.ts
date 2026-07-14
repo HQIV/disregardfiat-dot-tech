@@ -57,6 +57,8 @@ export type Paper = {
   zenodoUrl: string
   /** One-line index-card hook. */
   hook: string
+  /** Where this paper lands on the shared first-principles HQIV spine. */
+  spineFocus: string
   /** Trimmed abstract (≈ 3 sentences). */
   abstract: string
   /** Short headline for the home-page Lean resolution carousel. */
@@ -69,6 +71,39 @@ export type Paper = {
   pipelineSteps: number[]
   layArticle: LayArticle | null
 }
+
+export type FirstPrinciplesStep = {
+  label: string
+  body: string
+}
+
+export const firstPrinciplesDerivationChain: FirstPrinciplesStep[] = [
+  {
+    label: 'Postulate',
+    body:
+      'Three extended spatial dimensions undergo monotone discrete growth. The load-bearing count is the new null-shell surface structure, not a smooth bulk continuum.',
+  },
+  {
+    label: 'Shell Spine',
+    body:
+      'Stars-and-bars counting on the 3D light cone gives the quadratic HQIV spine A(m)=4(m+2)(m+1), cumulative ledgers, and the forward shell index used by every later readout.',
+  },
+  {
+    label: 'Monogamy Split',
+    body:
+      'Closing the horizon ledger under informational monogamy forces the unit split α=3/5 and γ=2/5; these are rational outputs of the 3D growth spine, not fitted constants.',
+  },
+  {
+    label: 'Octonions Arrive',
+    body:
+      'The same 3D null-lattice bookkeeping needs an eight-channel normed carrier for phase, triality, and gauge closure. The Fano octonion table supplies that carrier; G2 plus one phase-lift Δ closes to so(8).',
+  },
+  {
+    label: 'Readouts',
+    body:
+      'Gauge, gravity, mass, thermal, baryogenesis, binding, BBN, decay, and chemistry papers then read from the same spine: finite shell ledgers first, continuum notation only as a comparison layer.',
+  },
+]
 
 export type LeanResolutionSlide = {
   paperId: string
@@ -96,6 +131,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.18899939',
     zenodoUrl: 'https://zenodo.org/records/18899939',
     hook: 'The foundational paper: two independent routes converge on one auxiliary field and one modified inertia.',
+    spineFocus:
+      'Sets the whole chain: 3D discrete growth plus horizon monogamy produce the auxiliary field, the curvature imprint, and the first octonionic carrier route.',
     abstract:
       'HQIV is presented as a relativistic completion of Jacobson’s thermodynamic gravity that enforces entanglement monogamy on overlapping causal horizons together with an informational-energy conservation axiom. A geometric route (phase-horizon-corrected Maxwell equations satisfying Schüller’s hyperbolicity criterion) and a combinatorial route (integer mode counting on the discrete Planck-scale null lattice extended to octonions) converge on identical auxiliary-field and modified-inertia structures. The Standard Model is embedded inside Spin(8) with triality generations, the black-hole information paradox is resolved via a soft dynamical firewall, and a 51.2 Gyr wall-clock cosmic age is predicted with the observed 13.8 Gyr appearance following from observer-centric ADM lapse compression.',
     leanResolution:
@@ -145,6 +182,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.19336553',
     zenodoUrl: 'https://zenodo.org/records/19336553',
     hook: 'Born-rule statistics without dynamical collapse: a derived, pilot-wave-aligned reading of superposition on an octonionic ℝ⁸ carrier.',
+    spineFocus:
+      'Shows how the shell ledger becomes an auxiliary carrier for superposition, with α=3/5 and γ=2/5 fixed before measurement statistics are read out.',
     abstract:
       'A Lean-formalised discrete null-lattice light-cone construction derives an auxiliary field and rapidity ladder directly from combinatorial structure, supplying an explicit, lossless interpretation of quantum superposition on an octonionic ℝ⁸ carrier that exactly reproduces the inner-product invariants of standard quantum mechanics. Lattice combinatorics force the shell-wise curvature-imprint ratio α = 3/5 and the complementary unit-horizon fraction γ = 2/5 exactly. A finite measurement layer implements Born-rule normalisation together with closed energy accounting through auxiliary, birefringence and redshift channels — deterministic local accounting that rules out globally branching many-worlds interpretations and instead aligns the model with a pilot-wave ontology.',
     leanResolution:
@@ -184,32 +223,33 @@ export const papers: Paper[] = [
   {
     id: 'so8-closure',
     title:
-      'Review: From Discrete Null-Lattice Growth to so(8) — Concrete Realization and Exact Lie Closure',
-    shortTitle: 'so(8) closure (review)',
+      'From Discrete Null-Lattice Growth to so(8): Concrete Realization and Exact Lie Closure',
+    shortTitle: 'so(8) closure',
     kind: 'technical-note',
     tier: 0,
-    version: 'v1',
-    date: '2026-05-15',
-    doi: '10.5281/zenodo.20214211',
-    zenodoUrl: 'https://zenodo.org/records/20214211',
-    hook: 'A self-contained, certified construction: 𝔤₂ + Δ → 𝔰𝔬(8) on the Fano-basis octonion carrier.',
+    version: 'v2',
+    date: '2026-07-12',
+    doi: '10.5281/zenodo.21328050',
+    zenodoUrl: 'https://zenodo.org/records/21328050',
+    hook: 'One combinatorial postulate (3D null-shell growth) forces the carrier 8, Fano incidence, octonions, and 𝔤₂ + Δ → 𝔰𝔬(8) — not an independently postulated octonion factor.',
+    spineFocus:
+      'Supplies the audited arrival of the octonions on the HQIV Spine: transverse dim 3 → quadratic ledger → (α,γ)=(3/5,2/5) → carrier 8 → Cayley–Dickson 𝕆 → 𝔤₂ ∪ {Δ} = 𝔰𝔬(8).',
     abstract:
-      'Asks whether a discrete quadratic growth law on ℕ, motivated by null-shell counting, can be chained through a divergent curvature channel and a normalized phase readout to an explicit exceptional Lie-algebra closure in eight dimensions. In the concrete Fano-basis octonion matrix realisation, adjoining the antisymmetric phase-lift generator Δ (supported on the distinguished plane span{e₁, e₇}) to the 14-dimensional derivation algebra 𝔤₂ of the octonions generates — via iterated Lie brackets — the full 28-dimensional algebra 𝔰𝔬(8). The result is certified by an exact symbolic proof object over ℚ, a pedagogical so(3) + Δ₄ → so(4) toy model, and full Lean 4 verification.',
+      'From one meaningful combinatorial postulate — transverse spatial dimension three together with discrete null-shell growth — quadratic mode counting forces (α,γ)=(3/5,2/5), the orientation carrier 2³=8, seven imaginary directions and Fano incidence, then the octonions 𝕆=CayleyDickson³ ℝ and 𝔤₂ ∪ {Δ} ⇒ 𝔰𝔬(8) as gauge completion, not an independently postulated octonion factor. A closed machine-checked spine takes growth to carrier, Hopf maximality, Cayley–Dickson completion, and genuine so(8) with phase-lift Δ on span{e₁,e₇}. Separately, in the concrete Fano-basis matrix realisation, 𝔤₂ ∪ {Δ} generates the full 28-dimensional algebra, certified by an exact-ℚ certificate and companion-code.zip on the record.',
     leanResolution:
       'Standard Model gauge structure — 𝔤₂ + Δ generating the full 𝔰𝔬(8) algebra on the octonion carrier',
     keyClaims: [
+      'Spine primary: transverse dim 3 + discrete growth forces carrier 8, Fano incidence, and octonions (not an independent postulate).',
       '𝔤₂ + Δ generates 𝔰𝔬(8) on the Fano-basis octonion carrier (iterated Lie brackets).',
-      'Symbolic proof object over ℚ with rational structure constants (`so8_symbolic_certificate.json`).',
-      'Pedagogical toy model so(3) + Δ₄ → so(4) with its own rational certificate.',
-      'Lean 4 verification: HQIVPaperClaims (lightweight) + HQIVSO8Closure (heavyweight matrix closure).',
-      'Construction is realisation-specific: tied to the octonionic carrier compatible with triality and 3+1 null-lattice combinatorics.',
+      'Symbolic proof object over ℚ with rational structure constants; companion-code.zip on Zenodo.',
+      'Lean 4 verification: HQIVCleanSpine + HQIVSO8Closure (heavyweight matrix closure).',
+      'Construction is realisation-specific: full Lie generation tied to the printed Fano generator list.',
     ],
     artifacts: [
-      'so8_symbolic_certificate.json (rational structure constants)',
-      'so(3) + Δ₄ → so(4) pedagogical certificate',
-      'Lean modules: HQIVPaperClaims, HQIVSO8Closure',
-      'companion-code.zip (generators, build instructions, paper bundle)',
+      'companion-code.zip (HQIVCleanSpine, generators, paper bundle)',
       'so8_closure_full_appendix.pdf (symbolic pipeline + generator listings)',
+      'closure.pdf (v2 main text)',
+      'Lean modules: HQIVCleanSpine, HQIVSO8Closure',
     ],
     pipelineSteps: [0, 1, 5, 6, 7],
     layArticle: {
@@ -219,13 +259,13 @@ export const papers: Paper[] = [
         url: 'https://disregardfiat.tech',
       },
       contributedAt: '2026-05-28',
-      hook: 'Start with a simple rule about how much new structure appears on each expanding shell of light, add one tiny extra "twist" generator, and the mathematics automatically closes into the complete set of rotations possible in eight dimensions — with a computer proof checking every single step.',
+      hook: 'Start with three spatial dimensions and expanding shells of light, keep careful integer books, and the mathematics automatically closes into the complete set of rotations possible in eight dimensions — with a computer proof checking every single step.',
       paragraphs: [
         'Most people have heard of quarks and the strong force, or electrons and electromagnetism. These forces and particles are described by mathematical objects called symmetry groups — basically the allowed ways you can rotate or transform the system without changing the underlying rules. The Standard Model uses several such groups. One of the deepest open questions in physics is why these particular groups, and why they fit together the way they do.',
-        'This technical note works in reverse. It starts from the discrete shell-counting rule (the same quadratic growth law that appears in every HQIV paper) and asks what internal symmetry structure is forced once you also allow a small, natural "phase lift" — a gentle twist that accumulates as you move from one shell to the next. When that twist generator is added to the already-known 14-dimensional symmetry of the octonions (called G₂), the Lie brackets generate, step by step, the full 28-dimensional rotation algebra of eight-dimensional space, called so(8).',
-        'The construction is not assumed; it is exhibited explicitly using the concrete Fano-plane multiplication table for the octonions, and it is certified by an exact symbolic proof object with rational numbers plus a full Lean 4 verification. There is even a smaller "toy" version (so(3) plus a twist becoming so(4)) that lets students see the same pattern in four dimensions before tackling the eight-dimensional case. The result is tied to the octonionic carrier that already appeared in the earlier papers; it is not a generic claim about all possible algebras.',
+        'This paper works forward from one simple combinatorial seed: three spatial dimensions with discrete null-shell growth. That counting forces the famous 3/5 and 2/5 split, an eight-channel orientation carrier, seven imaginary directions arranged as on the Fano plane, and only then the octonions via the Cayley–Dickson construction. When a small natural "phase lift" generator is added to the already-known 14-dimensional symmetry of the octonions (called G₂), the Lie brackets generate, step by step, the full 28-dimensional rotation algebra of eight-dimensional space, called so(8).',
+        'The construction is not assumed; it is exhibited explicitly using the concrete Fano-plane multiplication table for the octonions, and it is certified by an exact symbolic proof object with rational numbers plus a full Lean 4 verification on the HQIV Spine. The octonions are not put in by hand — they arrive as the forced completion of the three-dimensional growth story.',
         'The payoff is that so(8) with its triality property gives exactly the right bookkeeping slots for color (the strong force), weak isospin, and the three generations of matter in a single unified structure. This is why the earlier foundational paper could claim that the Standard Model embeds inside Spin(8). The closure paper supplies the audited algebraic engine that makes that embedding possible.',
-        'What is not yet proven is that no other internal symmetry could complete the same discrete growth story. The paper presents the octonionic route as the natural and certified one given the 3D null-lattice starting point, but it leaves open the logical possibility of other carriers. The next work in the series uses this so(8) closure as a fixed, trusted foundation rather than re-deriving it each time.',
+        'What is not yet proven is that no other internal symmetry could complete the same discrete growth story. The paper presents the octonionic route as the natural and certified one given the 3D null-lattice starting point, but full Lie generation remains realisation-specific to the printed Fano generators. The next work in the series uses this so(8) closure as a fixed, trusted foundation rather than re-deriving it each time.',
       ],
       takeaway: 'The rich symmetry that describes quarks, leptons, and all the forces may not have been chosen by accident or by hand — it may be the automatic completion of a much simpler rule about how many new light-path possibilities appear on each successive shell.',
       licence: 'CC-BY-4.0',
@@ -244,6 +284,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20415586',
     zenodoUrl: 'https://zenodo.org/records/20415586',
     hook: 'The dimensional hinge: quadratic null-shell growth (not cubic bulk) plus a shared rapidity bridge conditionally forces the octonionic gauge layer in Lean-checked steps.',
+    spineFocus:
+      'Makes the minimal postulate explicit: three spatial dimensions with discrete null-shell growth, then conditional forcing toward the octonionic gauge layer.',
     abstract:
       'Mathematical sequel to the so(8) closure paper. Isolates the quadratic-vs-cubic signature of HQIV 3+1 null-lattice causal growth. Packages a machine-checked conditional forcing theorem (shared-manifold rapidity bridge + so(8) witness) and derives the curvature-imprint pair (α,γ)=(3/5,2/5) as the d=3 case of a closed family from unit-split plus minimal spanning-tree overlap. States the uniqueness conjecture for the octonionic gauge sector explicitly. All cited Lean theorems are sorry-free; full audit graph in appendix.',
     leanResolution:
@@ -290,6 +332,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20416085',
     zenodoUrl: 'https://zenodo.org/records/20416085',
     hook: 'The discrete action layer in one place: O–Maxwell Lagrangian, Euler–Lagrange identity, lapse dragging that unifies gauge and gravity sectors, and certified holonomy alignment.',
+    spineFocus:
+      'Turns the octonionic carrier into an action principle: discrete O-Maxwell differences, shared φ, and lapse dragging bind gauge and gravity to the same spine.',
     abstract:
       'Variational sequel centring the action already present in HQIV-LEAN: discrete octonion-indexed gauge potential A, O–Maxwell Lagrangian, proved Euler–Lagrange identity, gravitational constraint shown equivalent to the HQVM Friedmann identity with G_eff(φ)=φ^{3/5}, “lapse dragging” as the cross-sector φ identification, and holonomy alignment (cyclic Stokes, trivial plaquette holonomy, Wilson bounds). Introduces a tiered uniqueness thesis. Explicit minimal Fin 4 seed realisation with numerical verification and companion scripts.',
     leanResolution:
@@ -336,6 +380,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20416564',
     zenodoUrl: 'https://zenodo.org/records/20416564',
     hook: 'Blackbody spectrum as a finite sum with built-in Planck-pole UV cutoff and lock-in IR cutoff — no hand-imposed regularisation, no UV catastrophe.',
+    spineFocus:
+      'Applies the growth spine to radiation: finite null-shell mode counts replace continuum mode density and make the UV/IR cutoffs structural.',
     abstract:
       'Third paper in the Tier-1 foundation-extension quartet. Derives Kirchhoff’s law directly from the discrete null lattice (mode count N(m)=(m+2)(m+1) from stars-and-bars) plus informational monogamy fixing α=3/5. The spectrum is an explicit finite sum between m=0 (Planck pole) and the lock-in reference shell. Recovers radiation-era H ∝ T² from the propagation-shell identification. Quantitative prediction: 0.379° isotropic cosmic birefringence at the present epoch using wall-clock age (agrees with Planck PR4 EB within −0.40σ). All core theorems machine-checked in Lean 4.',
     leanResolution:
@@ -382,6 +428,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20478826',
     zenodoUrl: 'https://zenodo.org/records/20478826',
     hook: 'The four laws of thermodynamics and the arrow of time emerge from the shell temperature ladder T(m)=1/(m+1) — not postulated — with finite blackbody entropy and machine-checked dissipation signs.',
+    spineFocus:
+      'Reads thermodynamics from the same outward growth index: shell cooling, acyclicity, and finite entropy production give the arrow of time.',
     abstract:
       'Fourth paper in the Tier-1 foundation-extension quartet. On the discrete shell temperature ladder T(m)=1/(m+1), Lean certifies the zeroth through third laws, finite-shell photon density and entropy density s=(4/3)U/T without a continuum ω/T→∞ limit, and Stefan–Boltzmann T⁴ scaling once enough shells are occupied. The macroscopic arrow of time is derived as the conjunction of causal acyclicity, nonnegative discrete entropy production, monotonic outward shell indexing, and a machine-checked Lyapunov descent toward the S³ null reference. A new section derives (α,γ)=(3/5,2/5) directly from the octonionic null-lattice mode budget.',
     leanResolution:
@@ -428,6 +476,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20601215',
     zenodoUrl: 'https://zenodo.org/records/20601215',
     hook: 'From two discrete axioms plus octonion tables, Lean certifies a sector-by-sector bridge to the Standard Model Lagrangian — masses and Yukawa weights from the inner–outer Casimir chart κ₆(ξ,Φ,t), proton lock-in fixing the dimensionful chart.',
+    spineFocus:
+      'Uses the fixed octonion action and lock-in shell to read the Standard Model chart, with the proton anchor setting scale after the dimensionless spine is fixed.',
     abstract:
       'Opening Tier-2 combined foundation. From light-cone combinatorics + informational monogamy and concrete octonion tables, Lean certifies (zero sorry) a sector-by-sector bridge S_HQIV ⇒ L_SM in which masses and Yukawa weights follow the inner–outer Casimir chart κ₆(ξ,Φ,t)=η_local(ξ)·γ·C₂(ξ,Φ,t). At the reference lock-in slice ξ_lock=5, charged leptons, electroweak bosons, neutrinos, and selected hadrons match PDG centrals to ~0.2%, ~0.4%, Σm_ν≈6.6×10⁻³ eV (~5% of the cosmological cap), and ~1% respectively — PDG values are comparison layers only. A single local proton measurement m_p=938.272 MeV fixes the dimensionful chart and downstream cosmological outputs (apparent age ≈13.8 Gyr, wall-clock age ≈51.2 Gyr, T_CMB≈2.7255 K) without simultaneous fits.',
     leanResolution:
@@ -474,6 +524,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20711255',
     zenodoUrl: 'https://zenodo.org/records/20711255',
     hook: 'Baryon asymmetry as a theorem-level readout of the same lock-in calibration and horizon-ratio monotonicity used for hadrons and BBN.',
+    spineFocus:
+      'Places baryogenesis on the HQIV spine: monotone horizon ratios at lock-in generate η readouts using the same normalization as hadrons and BBN.',
     abstract:
       'Tier-2 capability demonstration on the shared discrete curvature-ratio spine. At lock-in shell m=4, horizon ratios Ω_k(n;N)=I(n)/I(N) are proved monotone with Ω_k(M;M)=1, and the baryon readout η(n;N) shares that normalisation; a single quarantined anchor η_paper supplies the comparison-layer scale. Primary artefacts are the Lean formalisation and Python reproduction bundle.',
     leanResolution:
@@ -503,6 +555,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20711453',
     zenodoUrl: 'https://zenodo.org/records/20711453',
     hook: 'Local-curvature slot equations B_curv(ξ), three β ledgers, and composite-trace binding — from nucleons through condensed matter.',
+    spineFocus:
+      'Reads nucleon mass and β decay from octonion-network composite traces while preserving the three separate ledgers imposed by the spine.',
     abstract:
       'Establishes the local-curvature slot equations witnessed from nucleon binding through bulk condensed matter. At lock-in shell referenceM=4, proton and neutron masses are constituent energies minus a shared 8×8 composite-trace binding on the 𝔰𝔬(8) network. Three strictly separate β ledgers (strong overlap, kinematic Q, weak width) yield free-neutron width to ≲0.01% without half-life fit parameters; integrated τ_n≈880 s at 300 K.',
     leanResolution:
@@ -532,6 +586,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20723606',
     zenodoUrl: 'https://zenodo.org/records/20723606',
     hook: 'Primordial Y_p, D/H, ³He/H, and ⁷Li/H from an 8×8 network readout when lock-in η and nucleon masses are fixed upstream.',
+    spineFocus:
+      'Shows downstream closure: once η, nucleon masses, and binding weights are fixed upstream, BBN abundances are read from the same 8×8 network.',
     abstract:
       'States what the BBN Lean stack proves about primordial light-element readouts when lock-in η, nucleon masses, and composite-trace binding weights are already fixed upstream. At lock-in the library defines an 8×8 network readout for Y_p, D/H, ³He/H, and ⁷Li/H; an integrated witness certifies Y_p in the observed band. Python reproduction at η_paper yields Y_p≈0.244, D/H≈2.51×10⁻⁵, ³He/H≈1.01×10⁻⁵, and ⁷Li/H≈2.54×10⁻¹⁰.',
     leanResolution:
@@ -561,6 +617,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20724572',
     zenodoUrl: 'https://zenodo.org/records/20724572',
     hook: 'Continuum “gluons” and “QCD binding” are reader translations of trapped Casimir on strong octonion channels — not independent vector fields.',
+    spineFocus:
+      'Clarifies the strong-sector readout: confinement is trapped Casimir on the octonion carrier, with continuum gluons only a comparison translation.',
     abstract:
       'Tier-2 closure note establishing that continuum gluons and QCD binding are reader translations of inner–outer Casimir trapping on the strong octonion channels, not independent vector fields in the proved discrete action. Hadronic and nuclear binding is discharged upstream by composite-trace weights; pion exchange and other meson mediators are not required in the proved library. Binding uses one network sum with trapped-Casimir factorisation of latticeSimplexCount·α_eff.',
     leanResolution:
@@ -590,6 +648,8 @@ export const papers: Paper[] = [
     doi: '10.5281/zenodo.20780430',
     zenodoUrl: 'https://zenodo.org/records/20780430',
     hook: '567 open-channel heavy-flavour readouts from γ-rational CKM/OZI ledger weights — PDG enters only in a quarantined comparison layer.',
+    spineFocus:
+      'Extends the three-ledger spine to heavy flavour: channel weights, contacts, and phase space are generated before comparison data enters quarantine.',
     abstract:
       'Heavy-flavour branching ratios read out from discrete combinatorial rules on the fixed three-ledger null-lattice spine, using only γ=2/5, γ-rational CKM/OZI weights, spine-discharge contacts, phase space, and normalization. Laboratory masses and PDG branching fractions enter exclusively in a quarantined comparison layer. Programmatic channel generation produces 567 open-channel readouts with zero structural failures on the 81-witness suite; curated panel of 17 channels lies within 3σ (mean 0.22σ).',
     leanResolution:
@@ -605,6 +665,39 @@ export const papers: Paper[] = [
       'Lean 4 HEP decay readout modules (paper_hep_decay_readout target)',
     ],
     pipelineSteps: [5, 6, 7, 8, 9, 10],
+    layArticle: null,
+  },
+  {
+    id: 'lightcone-chemistry',
+    title:
+      'Discrete Electronic Structure from the HQIV Light Cone: Condensed Packing, Bands, SCF/Fock/KS, and Core Spectroscopy without Fitted XC',
+    shortTitle: 'Light-cone chemistry extent',
+    kind: 'preprint',
+    tier: 2,
+    version: 'v1',
+    date: '2026-07-10',
+    doi: '10.5281/zenodo.21286980',
+    zenodoUrl: 'https://zenodo.org/records/21286980',
+    hook: 'Discrete electronic structure from the light cone: packing, bands, SCF/Fock/KS, and core XPS without fitted XC — Lean lemmas plus Python witnesses.',
+    spineFocus:
+      'Extends the null-lattice spine into chemistry: spectroscopy, condensed packing, bands, and discrete SCF on the same carrier, with NIST/CRC/HITRAN in comparison quarantine only.',
+    abstract:
+      'Tier-2 chemistry extent. From the discrete light cone the stack proves electron counting, octet capacity, VSEPR contact geometry, bond-order bookkeeping, hydrogenic line spectra, stoichiometry and Hess-law thermochemistry, finite-site energy traces, phase-geometry density, and discrete transport slots. A second-order binding architecture records spectral-gap, selection-weight, outside-contact, and voltage-generation ledgers. Condensed packing splits Lindemann lattice density from optical number density; on a fourteen-species panel mean density comparison error is ≈0.37%. The discrete electronic stack includes activation/KIE, multi-orbital bands, SCF, Fock, local-XC Kohn–Sham, EH AO integrals, and core XPS — a first-principles alternative to fitted XC for closed-shell solids and molecular ices. Laboratory data stay quarantined outside the derivation path.',
+    leanResolution:
+      'fitted exchange–correlation functionals — discrete SCF/Fock/KS and core XPS from light-cone slots without XC fitting',
+    keyClaims: [
+      'Electron counting, octet capacity, VSEPR geometry, bond orders, and hydrogenic spectra from discrete light-cone slots.',
+      'Second-order binding architecture: spectral gap, selection weights, n-body envelope, five-channel outside-contact G_eff, six-route voltage ledger.',
+      'Fourteen-species condensed packing panel at ≈0.37% mean density comparison error; gas-phase constants never used as solid inputs.',
+      'SCF, Fock, local-XC Kohn–Sham, AO integrals, and core XPS without fitted XC — continuum GTO/STO optional comparison only.',
+      'Arena chemistry panels (spectroscopy, crystals, condensed phase) seeded from the same witness payloads.',
+    ],
+    artifacts: [
+      'scripts.zip (spectroscopy, packing, bands, SCF/XPS witness reproduction)',
+      'Lean 4 chemistry-extent lemmas (zero sorry on load-bearing modules)',
+      'data/hqiv_lab_witnesses.json condensed-panel comparisons',
+    ],
+    pipelineSteps: [5, 6, 7, 8, 9, 10, 11],
     layArticle: null,
   },
 ]

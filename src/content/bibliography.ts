@@ -597,10 +597,18 @@ export const bibliography: Author[] = [
       {
         title:
           'From Discrete Null-Lattice Growth to so(8): Concrete Realization and Exact Lie Closure',
-        venue: 'Zenodo (HQIV community); latest version DOI 10.5281/zenodo.20214211 (2026-05-15)',
+        venue: 'Zenodo (HQIV community); latest version DOI 10.5281/zenodo.21328050 (2026-07-12)',
         year: 2026,
         type: 'preprint',
-        doi: '10.5281/zenodo.18899939',
+        doi: '10.5281/zenodo.21328050',
+      },
+      {
+        title:
+          'Discrete Electronic Structure from the HQIV Light Cone: Condensed Packing, Bands, SCF/Fock/KS, and Core Spectroscopy without Fitted XC',
+        venue: 'Zenodo (HQIV community); v1 DOI 10.5281/zenodo.21286980 (2026-07-10)',
+        year: 2026,
+        type: 'preprint',
+        doi: '10.5281/zenodo.21286980',
       },
       {
         title:

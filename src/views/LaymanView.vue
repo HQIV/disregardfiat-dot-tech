@@ -4,7 +4,7 @@ import HqivPipelineCanvas from '../components/HqivPipelineCanvas.vue'
 import LeanResolutionCarousel from '../components/LeanResolutionCarousel.vue'
 import SiteFooter from '../components/SiteFooter.vue'
 import { faq, laymanSteps, outcomes } from '../content/layman'
-import { papers, tierLabel } from '../content/papers'
+import { firstPrinciplesDerivationChain, papers, tierLabel } from '../content/papers'
 
 const emit = defineEmits<{
   explore: []
@@ -138,6 +138,37 @@ function next() {
       </section>
 
       <section
+        class="rounded-2xl border border-emerald-900/50 bg-emerald-950/15 p-5 sm:p-6"
+      >
+        <p class="text-xs font-semibold uppercase tracking-wider text-emerald-300">
+          First-principles chain
+        </p>
+        <h2 class="mt-1 text-2xl font-medium text-white">
+          The spine every paper inherits
+        </h2>
+        <p class="mt-3 text-sm leading-relaxed text-slate-300">
+          HQIV starts with three spatial dimensions and growth. The light-cone shell count gives
+          the spine, the information ledger fixes the 3/5 and 2/5 split, and the octonions arrive
+          as the eight-channel carrier that lets the same bookkeeping close into gauge structure.
+        </p>
+        <ol class="mt-5 space-y-3">
+          <li
+            v-for="(item, i) in firstPrinciplesDerivationChain"
+            :key="item.label"
+            class="rounded-xl border border-slate-800 bg-slate-900/50 p-4"
+          >
+            <div class="flex gap-3">
+              <span class="font-mono text-xs text-emerald-300">{{ i + 1 }}.</span>
+              <div>
+                <h3 class="text-sm font-semibold text-white">{{ item.label }}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-slate-400">{{ item.body }}</p>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section
         id="walkthrough"
         class="scroll-mt-20 rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-900/60 to-slate-950 p-5 sm:p-8"
       >
@@ -246,6 +277,13 @@ function next() {
 
             <h3 class="mt-3 text-lg font-semibold leading-snug text-white">{{ p.shortTitle }}</h3>
             <p class="mt-1 text-sm italic text-emerald-300/90">“{{ p.hook }}”</p>
+
+            <p
+              class="mt-3 rounded-lg border border-emerald-900/50 bg-emerald-950/15 p-3 text-sm leading-relaxed text-slate-300"
+            >
+              <span class="font-medium text-emerald-200">Spine role:</span>
+              {{ p.spineFocus }}
+            </p>
 
             <div class="mt-4">
               <p class="text-[0.7rem] font-semibold uppercase tracking-wider text-slate-400">Key points (plain language)</p>

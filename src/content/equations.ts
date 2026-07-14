@@ -320,7 +320,7 @@ export const equations: Equation[] = [
     ],
     references: {
       paper: 'closure + 3d_causal_growth',
-      zenodo: '10.5281/zenodo.20214211',
+      zenodo: '10.5281/zenodo.21328050',
       lean: 'Hqiv/Algebra/SO8Closure.lean + Hqiv/Algebra/SMEmbedding.lean',
     },
     relatedOldStep: 12,
